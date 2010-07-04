@@ -1,0 +1,3 @@
+[submodule "tools/Rake"]
+	path = tools/Rake
+	url = git://github.com/agross/rake-me.git
