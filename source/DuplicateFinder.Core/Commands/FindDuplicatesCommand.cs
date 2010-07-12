@@ -40,7 +40,7 @@ namespace DuplicateFinder.Core.Commands
 
 		public void Execute()
 		{
-			Duplicates = DuplicateFinder.FindDuplicates();
+			Duplicates = DuplicateFinder.FindDuplicates().ToList();
 
 			var bytesDeleted = Duplicates
 				.Select(x =>

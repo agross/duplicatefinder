@@ -119,6 +119,7 @@ namespace :compile do
 		FileList.new("#{configatron.dir.app}/**/*.csproj").each do |project|
 			MSBuild.compile \
 				:project => project,
+				:clrversion => "v4.0.30319",
 				:properties => {
 					:SolutionDir => configatron.dir.source.to_absolute.chomp('/').concat('/').escape,
 					:Configuration => configatron.build.configuration,
@@ -132,6 +133,7 @@ namespace :compile do
 		FileList.new("#{configatron.dir.test}/**/*.Tests.csproj").each do |project|
 			MSBuild.compile \
 				:project => project,
+				:clrversion => "v4.0.30319",
 				:properties => {
 					:SolutionDir => configatron.dir.source.to_absolute.chomp('/').concat('/').escape,
 					:Configuration => configatron.build.configuration
@@ -145,17 +147,7 @@ end
 namespace :tests do
 	desc 'Runs unit tests'
 	task :run => ['compile:tests'] do
-		FileList.new("#{configatron.dir.build}/Tests/**/*.Tests.dll").each do |assembly|
-			Mspec.run \
-				:tool => configatron.tools.mspec,
-				:reportdirectory => configatron.dir.test_results,
-				:assembly => assembly
-		end
-	end
-	
-	desc 'Runs integation tests'
-	task :integration => ['compile:tests', 'db:all:rebuild'] do
-		FileList.new("#{configatron.dir.build}/IntegrationTests/**/*.Integration.Tests.dll").each do |assembly|
+		FileList.new("#{configatron.dir.build}/Tests/**/#{configatron.project}*.dll").each do |assembly|
 			Mspec.run \
 				:tool => configatron.tools.mspec,
 				:reportdirectory => configatron.dir.test_results,
