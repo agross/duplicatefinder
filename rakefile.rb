@@ -55,9 +55,6 @@ namespace :env do
 		yaml = Configuration.load_yaml 'properties.yml', :hash => env_key, :inherit => :default_to, :override_with => :local_properties
 		configatron.configure_from_hash yaml
 		
-		configatron.deployment.backups = File.join(configatron.deployment.root.to_s, "Backups")
-		
-		configatron.deployment.debugging_enabled = configatron.build.configuration == 'Debug'
 		configatron.deployment.package = "#{configatron.project}-#{configatron.build.number || '1.0.0.0'}.zip".in(configatron.dir.deploy)
 
 		CLEAN.clear
@@ -116,6 +113,10 @@ end
 namespace :compile do
 	desc 'Compiles the application'
 	task :app => [:clobber, 'generate:version', 'generate:config'] do
+		FileList.new('**/*Specs.cs'.in(configatron.dir.source)).each do |f|
+			File.truncate(f, 0) if configatron.build.configuration.match(/Release/)
+		end
+		
 		FileList.new("#{configatron.dir.app}/**/*.csproj").each do |project|
 			MSBuild.compile \
 				:project => project,
@@ -128,20 +129,7 @@ namespace :compile do
 		end
 	end
 
-	desc 'Compiles the tests'
-	task :tests => [:clobber, 'generate:version', 'generate:config'] do
-		FileList.new("#{configatron.dir.test}/**/*.Tests.csproj").each do |project|
-			MSBuild.compile \
-				:project => project,
-				:clrversion => "v4.0.30319",
-				:properties => {
-					:SolutionDir => configatron.dir.source.to_absolute.chomp('/').concat('/').escape,
-					:Configuration => configatron.build.configuration
-				}
-		end
-	end
-
-	task :all => [:app, :tests]
+	task :all => [:app]
 end
 
 namespace :tests do
@@ -253,7 +241,7 @@ end
 desc 'Packages the build artifacts'
 namespace :package do
 	desc 'Prepares the application for packaging'
-	task :app do
+	task :app => ['compile:app'] do
 		sourceDir = "#{configatron.dir.build}/Application"
 		files = FileList.new() \
 			.include("#{sourceDir}/**/*") \
