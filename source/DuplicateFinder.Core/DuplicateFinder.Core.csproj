@@ -34,8 +34,8 @@
     <Reference Include="Machine.Specifications">
       <HintPath>..\..\tools\Machine.Specifications\Machine.Specifications.dll</HintPath>
     </Reference>
-    <Reference Include="Magnum">
-      <HintPath>..\..\lib\Magnum\Magnum.dll</HintPath>
+    <Reference Include="NDesk.Options">
+      <HintPath>..\..\lib\NDesk.Options\NDesk.Options.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\tools\Rhino Mocks\Rhino.Mocks.dll</HintPath>
@@ -54,12 +54,33 @@
     <Compile Include="CommandLineParserSpecs.cs">
       <DependentUpon>CommandLineParser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Commands\DeleteDuplicatesCommand.cs" />
     <Compile Include="Commands\FindDuplicatesCommand.cs" />
+    <Compile Include="Abstractions\ConsoleOutput.cs" />
+    <Compile Include="Commands\FindDuplicatesCommandSpecs.cs">
+      <DependentUpon>FindDuplicatesCommand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\ShowHelpCommand.cs" />
+    <Compile Include="Commands\ShowHelpCommandSpecs.cs">
+      <DependentUpon>ShowHelpCommand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Deletion\AllButFirstDuplicateSelectorSpecs.cs">
+      <DependentUpon>AllButFirstDuplicateSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Deletion\FileDeleterSpecs.cs">
+      <DependentUpon>FileDeleter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Deletion\KeepOneCopyInDirectorySelector.cs" />
+    <Compile Include="Deletion\KeepOneCopyInDirectorySelectorSpecs.cs">
+      <DependentUpon>KeepOneCopyInDirectorySelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="DuplicateFinder.cs" />
     <Compile Include="DuplicateFinderSpecs.cs">
       <DependentUpon>DuplicateFinder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Deletion\FileDeleter.cs" />
+    <Compile Include="Deletion\AllButFirstDuplicateSelector.cs" />
+    <Compile Include="ISelectFilesToDelete.cs" />
+    <Compile Include="Deletion\WhatIfFileDeleter.cs" />
     <Compile Include="HashCodeProviders\FileContentHashCodeProvider.cs" />
     <Compile Include="HashCodeProviders\FileContentHashCodeProviderSpecs.cs">
       <DependentUpon>FileContentHashCodeProvider.cs</DependentUpon>
@@ -72,11 +93,19 @@
     <Compile Include="HashCodeProviders\FileSizeHashCodeProviderSpecs.cs">
       <DependentUpon>FileSizeHashCodeProvider.cs</DependentUpon>
     </Compile>
+    <Compile Include="ICommandLineParser.cs" />
+    <Compile Include="Streams\HeadStreamDecorator.cs" />
+    <Compile Include="IFileDeleter.cs" />
     <Compile Include="IHashCodeProvider.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="IDuplicateFinder.cs" />
+    <Compile Include="IOutput.cs" />
+    <Compile Include="IStreamDecorator.cs" />
     <Compile Include="Streams\HeadStream.cs" />
-    <Compile Include="FileSystem.cs" />
+    <Compile Include="Abstractions\FileSystem.cs" />
+    <Compile Include="Streams\HeadStreamDecoratorSpecs.cs">
+      <DependentUpon>HeadStreamDecorator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Streams\HeadStreamSpecs.cs">
       <DependentUpon>HeadStream.cs</DependentUpon>
     </Compile>
@@ -88,6 +117,10 @@
       <DependentUpon>RecursiveFileFinder.cs</DependentUpon>
     </Compile>
     <Compile Include="Streams\TailStream.cs" />
+    <Compile Include="Streams\TailStreamDecorator.cs" />
+    <Compile Include="Streams\TailStreamDecoratorSpecs.cs">
+      <DependentUpon>TailStreamDecorator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Streams\TailStreamSpecs.cs">
       <DependentUpon>TailStream.cs</DependentUpon>
     </Compile>

@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace DuplicateFinder.Core.HashCodeProviders
 {
-	public class FileSizeHashCodeProvider : IHashCodeProvider
+	internal class FileSizeHashCodeProvider : IHashCodeProvider
 	{
 		readonly IFileSystem _fileSystem;
 

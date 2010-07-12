@@ -3,7 +3,7 @@ using System.IO;
 
 namespace DuplicateFinder.Core.HashCodeProviders
 {
-	public class FileNameHashCodeProvider : IHashCodeProvider
+	internal class FileNameHashCodeProvider : IHashCodeProvider
 	{
 		public IEnumerable<string> CalculateHashCode(string path)
 		{

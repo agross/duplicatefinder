@@ -3,7 +3,7 @@ using System.IO;
 
 namespace DuplicateFinder.Core.Streams
 {
-	public class TailStream : Stream
+	internal class TailStream : Stream
 	{
 		readonly Stream _inner;
 		readonly long _tailBytes;

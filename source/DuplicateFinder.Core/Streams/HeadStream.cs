@@ -3,7 +3,7 @@ using System.IO;
 
 namespace DuplicateFinder.Core.Streams
 {
-	public class HeadStream : Stream
+	internal class HeadStream : Stream
 	{
 		readonly long _headBytes;
 		readonly Stream _inner;

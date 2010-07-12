@@ -4,18 +4,23 @@ namespace DuplicateFinder.Core
 {
 	public class RecursiveFileFinder : IFileFinder
 	{
-		readonly string _directory;
 		readonly IFileSystem _fileSystem;
 
 		public RecursiveFileFinder(IFileSystem fileSystem, string directory)
 		{
 			_fileSystem = fileSystem;
-			_directory = directory;
+			BaseDirectory = directory;
+		}
+
+		public string BaseDirectory
+		{
+			get;
+			private set;
 		}
 
 		public IEnumerable<string> GetFiles()
 		{
-			return _fileSystem.AllFilesWithin(_directory);
+			return _fileSystem.AllFilesWithin(BaseDirectory);
 		}
 	}
 }

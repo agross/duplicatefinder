@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -43,7 +42,7 @@ namespace DuplicateFinder.Core.HashCodeProviders
 		static IHashCodeProvider Provider;
 		static IEnumerable<string> Hash;
 		static IFileSystem FileSystem;
-		static Func<Stream, Stream>[] StreamProcessors;
+		static IStreamDecorator[] Decorators;
 		static Stream AppliedStream;
 		static Stream Stream;
 
@@ -56,26 +55,26 @@ namespace DuplicateFinder.Core.HashCodeProviders
 					.Stub(x => x.CreateStreamFrom(@"c:\some\file.txt"))
 					.Return(Stream);
 
-				StreamProcessors = new[]
-				                   {
-				                   	MockRepository.GenerateStub<Func<Stream, Stream>>(),
-				                   	MockRepository.GenerateStub<Func<Stream, Stream>>()
-				                   };
+				Decorators = new[]
+				             {
+				             	MockRepository.GenerateStub<IStreamDecorator>(),
+				             	MockRepository.GenerateStub<IStreamDecorator>()
+				             };
 
 				AppliedStream = MockRepository.GenerateStub<Stream>();
 
-				StreamProcessors.Each(x => x
-				                           	.Stub(y => y(null))
-				                           	.IgnoreArguments()
-				                           	.Return(AppliedStream));
+				Decorators.Each(x => x
+				                     	.Stub(y => y.GetStream(null))
+				                     	.IgnoreArguments()
+				                     	.Return(AppliedStream));
 
-				Provider = new FileContentHashCodeProvider(FileSystem, StreamProcessors);
+				Provider = new FileContentHashCodeProvider(FileSystem, Decorators);
 			};
 
 		Because of = () => { Hash = Provider.CalculateHashCode(@"c:\some\file.txt").ToArray(); };
 
 		It should_apply_each_stream_processor_to_the_source_stream =
-			() => StreamProcessors.Each(x => x.AssertWasCalled(y => y(Stream)));
+			() => Decorators.Each(x => x.AssertWasCalled(y => y.GetStream(Stream)));
 
 		It should_compute_the_hash_of_the_file_contents_for_each_content_part =
 			() => Hash.Count().ShouldEqual(2);

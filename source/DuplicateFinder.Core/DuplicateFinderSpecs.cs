@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using DuplicateFinder.Core.HashCodeProviders;
-
 using Machine.Specifications;
 using Machine.Specifications.Utility;
 
@@ -52,7 +50,7 @@ namespace DuplicateFinder.Core
 					           	.IgnoreArguments()
 					           	.Return(new[] { "hash 1", "hash 2" }));
 
-				Finder = new DuplicateFinder(FileFinders, HashCodeProviders);
+				Finder = new DuplicateFinder(FileFinders, HashCodeProviders, MockRepository.GenerateStub<IOutput>());
 			};
 
 		Because of = () => { Duplicates = Finder.FindDuplicates().ToArray(); };
@@ -95,7 +93,7 @@ namespace DuplicateFinder.Core
 				                        	MockRepository.GenerateStub<IHashCodeProvider>()
 				                        };
 
-				Finder = new DuplicateFinder(FileFinders, hashCodeProviders);
+				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, MockRepository.GenerateStub<IOutput>());
 			};
 
 		Because of = () => { Duplicates = Finder.FindDuplicates(); };

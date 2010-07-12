@@ -27,14 +27,14 @@ namespace DuplicateFinder.Core.Streams
 
 		It should_report_the_tail_length_as_the_stream_length =
 			() => Stream.Length.ShouldEqual(Tail);
-		
+
 		It should_report_zero_as_the_current_seek_position =
 			() => Stream.Position.ShouldEqual(0);
 
 		const int StreamLength = 200;
 		const int Tail = 20;
 	}
-	
+
 	[Subject(typeof(TailStream))]
 	public class When_a_tail_stream_is_created_with_the_tail_being_longer_than_the_stream
 	{

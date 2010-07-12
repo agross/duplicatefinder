@@ -1,73 +1,102 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using DuplicateFinder.Core.Abstractions;
 using DuplicateFinder.Core.Commands;
+using DuplicateFinder.Core.Deletion;
 using DuplicateFinder.Core.HashCodeProviders;
+using DuplicateFinder.Core.Streams;
 
-using Magnum.CommandLineParser;
-using Magnum.Monads.Parser;
+using NDesk.Options;
 
 namespace DuplicateFinder.Core
 {
-	public class CommandLineParser
+	public class CommandLineParser : ICommandLineParser
 	{
-		public ICommand Parse(string commandLine)
+		readonly FileSystem _fileSystem;
+		readonly ConsoleOutput _output;
+
+		public CommandLineParser()
 		{
-			return CommandLine.Parse<ICommand>(commandLine, InitializeParser).First();
+			_fileSystem = new FileSystem();
+			_output = new ConsoleOutput();
 		}
 
-		static void InitializeParser(ICommandLineElementParser<ICommand> x)
+		public ICommand Parse(string[] args)
 		{
-			/*Parser<IEnumerable<ICommandLineElement>, ISwitchElement> switches =
-				(from whatIf in x.Switches("whatif") select whatIf);
+			var showHelp = false;
+			var hashes = new List<Func<IHashCodeProvider>>();
+			var decorators = new List<IStreamDecorator>();
+			var deletionSelector = (ISelectFilesToDelete) new AllButFirstDuplicateSelector();
+			var deleter = (IFileDeleter) new FileDeleter(_fileSystem, _output);
 
-			Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> contentDefinitions =
-				(from first in x.Definition("first") select first)
-					.Or(from last in x.Definition("last") select last);
+			var options = new OptionSet
+			              {
+			              	{
+			              		"n|name", "Compare files by name",
+			              		v => hashes.Add(() => new FileNameHashCodeProvider())
+			              		},
+			              	{
+			              		"s|size", "Compare files by file size",
+			              		v => hashes.Add(() => new FileSizeHashCodeProvider(_fileSystem))
+			              		},
+			              	{
+			              		"c|content", "Compare files by content",
+			              		v => hashes.Add(() => new FileContentHashCodeProvider(_fileSystem, decorators.ToArray()))
+			              		},
+			              	{
+			              		"h|head|first=", "Compare files by head content (first {N} bytes, requires --content)",
+			              		(long v) => decorators.Add(new HeadStreamDecorator(v))
+			              		},
+			              	{
+			              		"t|tail|last=", "Compare files by tail content (last {N} bytes, requires --content)",
+			              		(long v) => decorators.Add(new TailStreamDecorator(v))
+			              		},
+			              	{
+			              		"k|keep=",
+			              		"Keeps the first duplicate encountered under {DIRECTORY}, and deletes duplicates from other directories. If not specified, all but the first duplicate encountered are deleted."
+			              		,
+			              		v => deletionSelector = new KeepOneCopyInDirectorySelector(v)
+			              		},
+			              	{
+			              		"whatif|dry-run", "Do not delete anything",
+			              		v => deleter = new WhatIfFileDeleter(_output)
+			              		},
+			              	{
+			              		"?|help", "Show this message and exit",
+			              		v => showHelp = v != null
+			              		}
+			              };
 
-			Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> keepDefinition =
-				(from keep in x.Definition("keep") select keep);
+			var directories = options.Parse(args);
 
-			Parser<IEnumerable<ICommandLineElement>, ISwitchElement> comparison =
-				(from name in x.Switch("name") select name)
-					.Or(from size in x.Switch("size") select size)
-					.Or(from content in x.Switch("content") select content);
+			var messages = Missing(hashes, "The comparison type is missing")
+				.Union(Missing(directories, "No directories to compare"));
 
-			x.Add(from find in x.Argument("find")
-			      from byName in comparison.Optional("name", false)
-			      	.Where(z => z.Value)
-			      	.Select(z => new FileNameHashCodeProvider())
-			      from bySize in comparison.Optional("size", false)
-			      	.Where(z => z.Value)
-			      	.Select(z => new FileSizeHashCodeProvider(new FileSystem()))
-			      from byContent in comparison.Optional("content", false)
-			      	.Where(z => z.Value)
-			      	.Select(z => new FileContentHashCodeProvider(new FileSystem()))
-			      from dir1 in x.Argument()
-			      from dir2 in x.Argument()
-			      select (ICommand) new FindDuplicatesCommand(new IHashCodeProvider[] { byName, bySize, byContent }, 
-					  dir1.Id, 
-					  dir2.Id));
+			if (showHelp || messages.Any())
+			{
+				return new ShowHelpCommand(options, _output, messages.ToArray());
+			}
 
-			x.Add(from find in x.Argument("delete")
-			      from byName in comparison.Optional("name", false)
-			      	.Where(z => z.Value)
-			      	.Select(z => new FileNameHashCodeProvider())
-			      from bySize in comparison.Optional("size", false)
-			      	.Where(z => z.Value)
-			      	.Select(z => new FileSizeHashCodeProvider(new FileSystem()))
-			      from byContent in comparison.Optional("content", false)
-			      	.Where(z => z.Value)
-			      	.Select(z => new FileContentHashCodeProvider(new FileSystem()))
-			      from keep in keepDefinition.Optional("keep", null)
-			      from whatIf in switches.Optional("whatif", false)
-			      from dir1 in x.Argument()
-			      from dir2 in x.Argument()
-			      select (ICommand) new DeleteDuplicatesCommand(new IHashCodeProvider[] { byName, bySize, byContent },
-			                                                    dir1.Id,
-			                                                    dir2.Id,
-			                                                    keep.Value,
-			                                                    whatIf.Value));*/
+			var finder = new DuplicateFinder(directories.Select(x => (IFileFinder) new RecursiveFileFinder(_fileSystem, x)),
+			                                 hashes.Select(x => x()), _output);
+
+			return new FindDuplicatesCommand(_output,
+			                                 finder,
+			                                 deletionSelector,
+			                                 deleter);
+		}
+
+		static IEnumerable<string> Missing(IEnumerable hashes, string message)
+		{
+			if (hashes.Cast<object>().Any())
+			{
+				yield break;
+			}
+
+			yield return message;
 		}
 	}
 }

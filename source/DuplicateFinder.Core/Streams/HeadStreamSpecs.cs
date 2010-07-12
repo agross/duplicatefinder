@@ -14,14 +14,14 @@ namespace DuplicateFinder.Core.Streams
 		static Stream Inner;
 
 		Establish context = () =>
-		{
-			var bytes = Enumerable
-				.Range(1, StreamLength)
-				.Select(Convert.ToByte)
-				.ToArray();
+			{
+				var bytes = Enumerable
+					.Range(1, StreamLength)
+					.Select(Convert.ToByte)
+					.ToArray();
 
-			Inner = new MemoryStream(bytes);
-		};
+				Inner = new MemoryStream(bytes);
+			};
 
 		Because of = () => { Stream = new HeadStream(Inner, Head); };
 
@@ -42,14 +42,14 @@ namespace DuplicateFinder.Core.Streams
 		static Stream Inner;
 
 		Establish context = () =>
-		{
-			var bytes = Enumerable
-				.Range(1, StreamLength)
-				.Select(Convert.ToByte)
-				.ToArray();
+			{
+				var bytes = Enumerable
+					.Range(1, StreamLength)
+					.Select(Convert.ToByte)
+					.ToArray();
 
-			Inner = new MemoryStream(bytes);
-		};
+				Inner = new MemoryStream(bytes);
+			};
 
 		Because of = () => { Stream = new HeadStream(Inner, Head); };
 
@@ -73,19 +73,19 @@ namespace DuplicateFinder.Core.Streams
 		static Encoding StreamEncoding;
 
 		Establish context = () =>
-		{
-			StreamEncoding = Encoding.Default;
+			{
+				StreamEncoding = Encoding.Default;
 
-			var bytes = Enumerable
-				.Range(1, StreamLength)
-				.Select(Convert.ToByte).ToArray();
+				var bytes = Enumerable
+					.Range(1, StreamLength)
+					.Select(Convert.ToByte).ToArray();
 
-			HeadBytes = StreamEncoding.GetString(bytes.Take(Head).ToArray());
+				HeadBytes = StreamEncoding.GetString(bytes.Take(Head).ToArray());
 
-			Inner = new MemoryStream(bytes);
+				Inner = new MemoryStream(bytes);
 
-			Stream = new HeadStream(Inner, Head);
-		};
+				Stream = new HeadStream(Inner, Head);
+			};
 
 		Because of = () => { Contents = new StreamReader(Stream, StreamEncoding).ReadToEnd(); };
 
@@ -112,20 +112,20 @@ namespace DuplicateFinder.Core.Streams
 		static Encoding StreamEncoding;
 
 		Establish context = () =>
-		{
-			StreamEncoding = Encoding.Default;
+			{
+				StreamEncoding = Encoding.Default;
 
-			var bytes = Enumerable
-				.Range(1, StreamLength)
-				.Select(Convert.ToByte)
-				.ToArray();
+				var bytes = Enumerable
+					.Range(1, StreamLength)
+					.Select(Convert.ToByte)
+					.ToArray();
 
-			HeadBytes = StreamEncoding.GetString(bytes);
+				HeadBytes = StreamEncoding.GetString(bytes);
 
-			Inner = new MemoryStream(bytes);
+				Inner = new MemoryStream(bytes);
 
-			Stream = new HeadStream(Inner, Head);
-		};
+				Stream = new HeadStream(Inner, Head);
+			};
 
 		Because of = () => { Contents = new StreamReader(Stream, StreamEncoding).ReadToEnd(); };
 

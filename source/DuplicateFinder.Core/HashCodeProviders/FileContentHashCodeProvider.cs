@@ -6,29 +6,33 @@ using System.Security.Cryptography;
 
 namespace DuplicateFinder.Core.HashCodeProviders
 {
-	public class FileContentHashCodeProvider : IHashCodeProvider
+	internal class FileContentHashCodeProvider : IHashCodeProvider
 	{
 		static readonly SHA1CryptoServiceProvider Sha;
 		readonly IFileSystem _fileSystem;
-		readonly Func<Stream, Stream>[] _streamProcessors;
 
 		static FileContentHashCodeProvider()
 		{
 			Sha = new SHA1CryptoServiceProvider();
 		}
 
-		// TODO: Replace Func with one param (that might be null -> no transform)
-		public FileContentHashCodeProvider(IFileSystem fileSystem, params Func<Stream, Stream>[] streamProcessors)
+		public FileContentHashCodeProvider(IFileSystem fileSystem, params IStreamDecorator[] streamDecorators)
 		{
 			_fileSystem = fileSystem;
-			_streamProcessors = streamProcessors.Any() ? streamProcessors : DoNotTransformStream();
+			StreamDecorators = streamDecorators;
+		}
+
+		public IStreamDecorator[] StreamDecorators
+		{
+			get;
+			private set;
 		}
 
 		public IEnumerable<string> CalculateHashCode(string path)
 		{
-			foreach (var processor in _streamProcessors)
+			foreach (var stream in StreamsFor(path))
 			{
-				using (var stream = processor(_fileSystem.CreateStreamFrom(path)))
+				using(stream)
 				{
 					var hash = Sha.ComputeHash(stream);
 					yield return Convert.ToBase64String(hash);
@@ -36,10 +40,18 @@ namespace DuplicateFinder.Core.HashCodeProviders
 			}
 		}
 
-		static Func<Stream, Stream>[] DoNotTransformStream()
+		IEnumerable<Stream> StreamsFor(string path)
 		{
-			Func<Stream, Stream> passThrough = x => x;
-			return new[] { passThrough };
+			if (!StreamDecorators.Any())
+			{
+				yield return _fileSystem.CreateStreamFrom(path);
+				yield break;
+			}
+
+			foreach (var decorator in StreamDecorators)
+			{
+				yield return decorator.GetStream(_fileSystem.CreateStreamFrom(path));
+			}
 		}
 	}
 }

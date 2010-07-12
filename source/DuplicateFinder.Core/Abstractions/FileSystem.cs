@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace DuplicateFinder.Core
+namespace DuplicateFinder.Core.Abstractions
 {
 	internal class FileSystem : IFileSystem
 	{
@@ -12,12 +12,18 @@ namespace DuplicateFinder.Core
 
 		public Stream CreateStreamFrom(string path)
 		{
-			return File.OpenRead(path);
+			return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 		}
 
 		public long GetSize(string path)
 		{
 			return new FileInfo(path).Length;
+		}
+
+		public void Delete(string path)
+		{
+			File.SetAttributes(path, FileAttributes.Normal);
+			File.Delete(path);
 		}
 	}
 }
