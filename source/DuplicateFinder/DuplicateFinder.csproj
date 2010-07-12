@@ -8,7 +8,7 @@
     <ProjectGuid>{CA9DC48A-7334-4CF1-B98D-6C909A980E6C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DuplicateFinder</RootNamespace>
+    <RootNamespace>DuplicateFinder.Console</RootNamespace>
     <AssemblyName>DuplicateFinder</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -45,6 +45,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DuplicateFinder.Core\DuplicateFinder.Core.csproj">
+      <Project>{E4D3B7B8-D50F-4772-89A7-152DA92AAA34}</Project>
+      <Name>DuplicateFinder.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

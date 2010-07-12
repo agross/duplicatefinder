@@ -31,6 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Machine.Specifications">
+      <HintPath>..\..\tools\Machine.Specifications\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Magnum">
+      <HintPath>..\..\lib\Magnum\Magnum.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\tools\Rhino Mocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -41,7 +50,47 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="CommandLineParser.cs" />
+    <Compile Include="CommandLineParserSpecs.cs">
+      <DependentUpon>CommandLineParser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\DeleteDuplicatesCommand.cs" />
+    <Compile Include="Commands\FindDuplicatesCommand.cs" />
+    <Compile Include="DuplicateFinder.cs" />
+    <Compile Include="DuplicateFinderSpecs.cs">
+      <DependentUpon>DuplicateFinder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HashCodeProviders\FileContentHashCodeProvider.cs" />
+    <Compile Include="HashCodeProviders\FileContentHashCodeProviderSpecs.cs">
+      <DependentUpon>FileContentHashCodeProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HashCodeProviders\FileNameHashCodeProvider.cs" />
+    <Compile Include="HashCodeProviders\FileNameHashCodeProviderSpecs.cs">
+      <DependentUpon>FileNameHashCodeProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HashCodeProviders\FileSizeHashCodeProvider.cs" />
+    <Compile Include="HashCodeProviders\FileSizeHashCodeProviderSpecs.cs">
+      <DependentUpon>FileSizeHashCodeProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IHashCodeProvider.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="IDuplicateFinder.cs" />
+    <Compile Include="Streams\HeadStream.cs" />
+    <Compile Include="FileSystem.cs" />
+    <Compile Include="Streams\HeadStreamSpecs.cs">
+      <DependentUpon>HeadStream.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IFileFinder.cs" />
+    <Compile Include="IFileSystem.cs" />
+    <Compile Include="RecursiveFileFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecursiveFileFinderSpecs.cs">
+      <DependentUpon>RecursiveFileFinder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Streams\TailStream.cs" />
+    <Compile Include="Streams\TailStreamSpecs.cs">
+      <DependentUpon>TailStream.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
