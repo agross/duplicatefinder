@@ -134,7 +134,7 @@ end
 
 namespace :tests do
 	desc 'Runs unit tests'
-	task :run => ['compile:tests'] do
+	task :run => ['compile:all'] do
 		FileList.new("#{configatron.dir.build}/Tests/**/#{configatron.project}*.dll").each do |assembly|
 			Mspec.run \
 				:tool => configatron.tools.mspec,
