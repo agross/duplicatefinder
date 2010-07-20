@@ -111,12 +111,20 @@ namespace :generate do
 end
 
 namespace :compile do
-	desc 'Compiles the application'
-	task :app => [:clobber, 'generate:version', 'generate:config'] do
-		FileList.new('**/*Specs.cs'.in(configatron.dir.source)).each do |f|
-			File.truncate(f, 0) if configatron.build.configuration.match(/Release/)
+	task :prepare_release do
+		if not configatron.build.configuration.match(/Release/)
+			next
 		end
 		
+		SideBySideSpecs.new({
+			:references => ['Machine.Specifications', 'Rhino.Mocks'],
+			:projects => FileList.new("#{configatron.dir.source}/**/*.csproj"),
+			:specs => FileList.new("#{configatron.dir.source}/**/*Specs.cs")
+		}).remove
+	end
+	
+	desc 'Compiles the application'
+	task :app => [:clobber, 'generate:version', 'generate:config', 'compile:prepare_release'] do
 		FileList.new("#{configatron.dir.app}/**/*.csproj").each do |project|
 			MSBuild.compile \
 				:project => project,
