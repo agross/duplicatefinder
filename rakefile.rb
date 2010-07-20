@@ -128,8 +128,22 @@ namespace :compile do
 				}
 		end
 	end
+	
+	desc 'Compiles tests'
+	task :tests => [:clobber, 'generate:version', 'generate:config'] do
+		FileList.new("#{configatron.dir.app}/**/*.Tests.csproj").each do |project|
+			MSBuild.compile \
+				:project => project,
+				:clrversion => "v4.0.30319",
+				:properties => {
+					:SolutionDir => configatron.dir.source.to_absolute.chomp('/').concat('/').escape,
+					:Configuration => configatron.build.configuration,
+					:TreatWarningsAsErrors => false
+				}
+		end
+	end
 
-	task :all => [:app]
+	task :all => [:app, :tests]
 end
 
 namespace :tests do
@@ -162,7 +176,7 @@ namespace :tests do
 	end
 	
 	desc 'Runs NCover code coverage'
-	task :ncover => ['compile:tests', 'db:all:rebuild'] do
+	task :ncover => ['compile:all'] do
 		applicationAssemblies = FileList.new() \
 			.include("#{configatron.dir.build}/Tests/**/#{configatron.project}*.dll") \
 			.include("#{configatron.dir.build}/Tests/**/#{configatron.project}*.exe") \
@@ -171,7 +185,7 @@ namespace :tests do
 			.uniq() \
 			.join(';')
 			
-		FileList.new("#{configatron.dir.build}/**/*.Tests.dll").each do |assembly|
+		FileList.new("#{configatron.dir.build}/Tests/**/#{configatron.project}*.dll").each do |assembly|
 			NCover.run_coverage \
 				:tool => configatron.tools.ncover,
 				:report_dir => configatron.dir.test_results,
@@ -179,7 +193,8 @@ namespace :tests do
 				:application_assemblies => applicationAssemblies,
 				:program => configatron.tools.mspec,
 				:assembly => assembly.to_absolute.escape,
-				:args => ["#{('--teamcity ' if ENV['TEAMCITY_PROJECT_NAME']) || ''}"]
+				:args => ["#{('--teamcity ' if ENV['TEAMCITY_PROJECT_NAME']) || ''}",
+						  "//ea Machine.Specifications.SubjectAttribute"]
 		end
 		
 		NCover.explore \
