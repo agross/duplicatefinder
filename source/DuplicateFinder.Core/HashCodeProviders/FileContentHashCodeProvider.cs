@@ -32,7 +32,7 @@ namespace DuplicateFinder.Core.HashCodeProviders
 		{
 			foreach (var stream in StreamsFor(path))
 			{
-				using(stream)
+				using (stream)
 				{
 					var hash = Sha.ComputeHash(stream);
 					yield return Convert.ToBase64String(hash);

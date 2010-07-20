@@ -224,7 +224,7 @@ namespace :tests do
 		results = StyleCop.analyze \
 			:tool => configatron.tools.stylecop,
 			:directories => configatron.dir.app,
-			:ignore_file_pattern => ['(?:Version|Solution|Assembly|FxCop)Info\.cs$', '\.Designer\.cs$', '\.hbm\.cs$', 'QueryBuilder\.cs$'],
+			:ignore_file_pattern => ['(?:Version|Solution|Assembly|FxCop)Info\.cs$', '\.Designer\.cs$', '\.hbm\.cs$', 'Specs\.cs$'],
 			:settings_file => 'Settings.StyleCop'.in(configatron.dir.source),
 			:report => 'StyleCop.xml'.in(configatron.dir.test_results),
 			:report_xsl => 'StyleCopReport.xsl'.in(configatron.tools.stylecop.dirname) \

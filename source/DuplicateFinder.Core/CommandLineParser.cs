@@ -56,8 +56,7 @@ namespace DuplicateFinder.Core
 			              		},
 			              	{
 			              		"k|keep=",
-			              		"Keeps the first duplicate encountered under {DIRECTORY}, and deletes duplicates from other directories. If not specified, all but the first duplicate encountered are deleted."
-			              		,
+			              		"Keeps the first duplicate encountered under {DIRECTORY}, and deletes duplicates from other directories. If not specified, all but the first duplicate encountered are deleted.",
 			              		v => deletionSelector = new KeepOneCopyInDirectorySelector(v)
 			              		},
 			              	{
@@ -81,7 +80,8 @@ namespace DuplicateFinder.Core
 			}
 
 			var finder = new DuplicateFinder(directories.Select(x => (IFileFinder) new RecursiveFileFinder(_fileSystem, x)),
-			                                 hashes.Select(x => x()), _output);
+			                                 hashes.Select(x => x()),
+			                                 _output);
 
 			return new FindDuplicatesCommand(_output,
 			                                 finder,
