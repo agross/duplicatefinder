@@ -263,16 +263,27 @@ end
 
 desc 'Packages the build artifacts'
 namespace :package do
-	desc 'Prepares the application for packaging'
-	task :app => ['compile:app'] do
-		sourceDir = "#{configatron.dir.build}/Application"
-		files = FileList.new() \
-			.include("#{sourceDir}/**/*") \
+	desc "Merges the application's binaries into one executable"
+	task :ilmerge => ['compile:app'] do
+		assemblies = FileList.new("#{configatron.dir.build}/Application/*.exe", "#{configatron.dir.build}/Application/*.dll")
 
-		files.copy_hierarchy \
-			:source_dir => sourceDir, 
-			:target_dir => configatron.dir.for_deployment.to_absolute
+		ILMerge.merge \
+			:tool => configatron.tools.ilmerge, 
+			:assemblies => assemblies,
+			:params => {
+				:out => "#{configatron.dir.for_deployment}/#{configatron.project}.exe",
+				:log => "#{configatron.dir.build}/ilmerge.log",
+				:target => :exe,
+				:v2 => true,
+				:internalize => true,
+				:closed => true,
+				:ndebug => false,
+				:copyattrs => false
+			}
 	end
+	
+	desc 'Prepares the application for packaging'
+	task :app => ['package:ilmerge']
 	
 	desc 'Prepares OSS licenses for packaging'
 	task :licenses do
