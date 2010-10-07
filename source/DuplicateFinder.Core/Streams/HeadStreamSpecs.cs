@@ -34,6 +34,24 @@ namespace DuplicateFinder.Core.Streams
 		const int StreamLength = 200;
 		const int Head = 20;
 	}
+	
+	[Subject(typeof(HeadStream))]
+	public class When_a_head_stream_is_closed
+	{
+		static Stream Stream;
+		static Stream Inner;
+
+		Establish context = () =>
+			{
+				Inner = new MemoryStream();
+				Stream = new HeadStream(Inner, 1);
+			};
+
+		Because of = () => Stream.Close();
+
+		It should_close_the_inner_stream =
+			() => Inner.CanRead.ShouldBeFalse();
+	}
 
 	[Subject(typeof(HeadStream))]
 	public class When_a_head_stream_is_created_with_the_head_being_longer_than_the_stream

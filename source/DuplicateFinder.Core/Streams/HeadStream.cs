@@ -92,5 +92,11 @@ namespace DuplicateFinder.Core.Streams
 			}
 			return offset;
 		}
+
+		public override void Close()
+		{
+			_inner.Close();
+			base.Close();
+		}
 	}
 }
