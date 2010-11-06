@@ -67,6 +67,6 @@ namespace DuplicateFinder.Core.Commands
 			() => Deleter.AssertWasCalled(x => x.Delete(Arg<string>.Matches(y => y.Contains("file"))), o => o.Repeat.Times(5));
 
 		It should_print_the_number_of_bytes_that_were_deleted =
-			() => Output.AssertWasCalled(x => x.WriteLine("0 bytes deleted."));
+			() => Output.AssertWasCalled(x => x.WriteLine("0 Bytes deleted."));
 	}
 }

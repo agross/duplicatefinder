@@ -62,7 +62,7 @@ namespace DuplicateFinder.Core.Commands
 				.Select(FileDeleter.Delete)
 				.Sum();
 
-			_output.WriteLine(String.Format("{0} bytes deleted.", bytesDeleted));
+			_output.WriteLine(String.Format("{0} deleted.", bytesDeleted.ToFileSize()));
 		}
 	}
 }

@@ -79,6 +79,10 @@
     </Compile>
     <Compile Include="Deletion\FileDeleter.cs" />
     <Compile Include="Deletion\AllButFirstDuplicateSelector.cs" />
+    <Compile Include="FileSizeExtensions.cs" />
+    <Compile Include="FileSizeExtensionsSpecs.cs">
+      <DependentUpon>FileSizeExtensions.cs</DependentUpon>
+    </Compile>
     <Compile Include="ISelectFilesToDelete.cs" />
     <Compile Include="Deletion\WhatIfFileDeleter.cs" />
     <Compile Include="HashCodeProviders\FileContentHashCodeProvider.cs" />
