@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -19,3 +20,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("33815a36-d8c5-49cd-b6b8-9f657fbbe531")]
+
+[assembly: InternalsVisibleTo("DuplicateFinder.Core.Integration.Tests")]

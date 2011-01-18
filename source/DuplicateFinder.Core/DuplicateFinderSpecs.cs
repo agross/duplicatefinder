@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Machine.Specifications;
@@ -100,5 +101,44 @@ namespace DuplicateFinder.Core
 
 		It should_not_find_duplicates =
 			() => Duplicates.ShouldBeEmpty();
+	}
+
+	[Subject(typeof(DuplicateFinder))]
+	public class When_duplicates_are_searched_and_files_cannot_be_read
+	{
+		static IDuplicateFinder Finder;
+		static IFileFinder[] FileFinders;
+		static IEnumerable<IEnumerable<string>> Duplicates;
+
+		Establish context = () =>
+			{
+				FileFinders = new[]
+				              {
+				              	MockRepository.GenerateStub<IFileFinder>(),
+				              	MockRepository.GenerateStub<IFileFinder>()
+				              };
+				FileFinders
+					.Each(x => x
+					           	.Stub(y => y.GetFiles())
+					           	.Return(new[] { @"c:\path\file 1.txt" }));
+
+				var throws = MockRepository.GenerateStub<IHashCodeProvider>();
+				throws
+					.Stub(x => x.CalculateHashCode(null))
+					.IgnoreArguments()
+					.Throw(new FileNotFoundException());
+
+				var hashCodeProviders = new[]
+				                        {
+				                        	throws
+				                        };
+
+				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, MockRepository.GenerateStub<IOutput>());
+			};
+
+		Because of = () => { Duplicates = Finder.FindDuplicates(); };
+
+		It should_succeed =
+			() => true.ShouldBeTrue();
 	}
 }
