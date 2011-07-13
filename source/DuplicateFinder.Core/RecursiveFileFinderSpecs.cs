@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-using Machine.Specifications;
+using FakeItEasy;
 
-using Rhino.Mocks;
+using Machine.Specifications;
 
 namespace DuplicateFinder.Core
 {
@@ -15,10 +15,10 @@ namespace DuplicateFinder.Core
 
 		Establish context = () =>
 			{
-				FileSystem = MockRepository.GenerateStub<IFileSystem>();
-				FileSystem
-					.Stub(x => x.AllFilesWithin(@"c:\some\path"))
-					.Return(new[] { @"c:\some\path\file1.txt", @"c:\some\path\file2.txt" });
+				FileSystem = A.Fake<IFileSystem>();
+				A
+					.CallTo(()=> FileSystem.AllFilesWithin(@"c:\some\path"))
+					.Returns(new[] { @"c:\some\path\file1.txt", @"c:\some\path\file2.txt" });
 
 				Finder = new RecursiveFileFinder(FileSystem, @"c:\some\path");
 			};

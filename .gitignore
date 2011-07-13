@@ -17,6 +17,7 @@ obj
 ~*
 *.swp
 _ReSharper.*
+*_mm_cache.bin
 
 !tools/Ruby/bin
 

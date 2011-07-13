@@ -21,7 +21,7 @@ global:
   # Tools used/invoked during the build.
   tools:
     ilmerge: tools/ILMerge/ILMerge.exe
-    mspec: tools/Machine.Specifications/mspec.exe
+    mspec: packages/Machine.Specifications.0.4.13.0/tools/mspec-clr4.exe
     cloc: tools/CLOC/cloc.exe
     ncover: tools/NCover/NCover.Console.exe
     ncoverexplorer: tools/NCoverExplorer/NCoverExplorer.Console.exe

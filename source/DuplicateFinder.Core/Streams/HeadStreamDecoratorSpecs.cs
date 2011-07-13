@@ -1,8 +1,8 @@
 using System.IO;
 
-using Machine.Specifications;
+using FakeItEasy;
 
-using Rhino.Mocks;
+using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Streams
 {
@@ -14,7 +14,7 @@ namespace DuplicateFinder.Core.Streams
 
 		Establish context = () => { Decorator = new HeadStreamDecorator(42); };
 
-		Because of = () => { Decorated = Decorator.GetStream(MockRepository.GenerateStub<Stream>()); };
+		Because of = () => { Decorated = Decorator.GetStream(A.Fake<Stream>()); };
 
 		It should_create_a_head_stream =
 			() => Decorated.ShouldBeOfType<HeadStream>();

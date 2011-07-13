@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 
+using FakeItEasy;
+
 using Machine.Specifications;
 using Machine.Specifications.Utility;
-
-using Rhino.Mocks;
 
 namespace DuplicateFinder.Core
 {
@@ -21,47 +21,48 @@ namespace DuplicateFinder.Core
 			{
 				FileFinders = new[]
 				              {
-				              	MockRepository.GenerateStub<IFileFinder>(),
-				              	MockRepository.GenerateStub<IFileFinder>()
+				              	A.Fake<IFileFinder>(),
+				              	A.Fake<IFileFinder>()
 				              };
-				FileFinders
-					.First()
-					.Stub(x => x.GetFiles())
-					.Return(new[] { @"c:\path\dup 1.txt", @"c:\path\dup 2.txt" });
+				var finder1 = FileFinders[0];
+				A
+					.CallTo(() => finder1.GetFiles())
+					.Returns(new[] { @"c:\path\dup 1.txt", @"c:\path\dup 2.txt" });
 
-				FileFinders
-					.Skip(1).First()
-					.Stub(x => x.GetFiles())
-					.Return(new[] { @"c:\other path\dup 3.txt", @"c:\other path\no dup.txt" });
+				var finder2 = FileFinders[1];
+				A
+					.CallTo(() => finder2.GetFiles())
+					.Returns(new[] { @"c:\other path\dup 3.txt", @"c:\other path\no dup.txt" });
 
 				HashCodeProviders = new[]
 				                    {
-				                    	MockRepository.GenerateStub<IHashCodeProvider>(),
-				                    	MockRepository.GenerateStub<IHashCodeProvider>()
+				                    	A.Fake<IHashCodeProvider>(),
+				                    	A.Fake<IHashCodeProvider>()
 				                    };
 
 				HashCodeProviders
-					.First()
-					.Stub(y => y.CalculateHashCode(Arg<string>.Matches(s => s.Contains("no dup"))))
-					.Return(new[] { "some other hash" });
+					.Each(x => A.CallTo(() => x.CalculateHashCode(null))
+					           	.WithAnyArguments()
+					           	.Returns(new[] { "hash 1", "hash 2" }));
 
-				HashCodeProviders
-					.Each(x => x
-					           	.Stub(y => y.CalculateHashCode(null))
-					           	.IgnoreArguments()
-					           	.Return(new[] { "hash 1", "hash 2" }));
+				var hash1 = HashCodeProviders.First();
+				A
+					.CallTo(() => hash1.CalculateHashCode(A<string>.That.Matches(x => x.Contains("no dup"))))
+					.Returns(new[] { "some other hash" });
 
-				Finder = new DuplicateFinder(FileFinders, HashCodeProviders, MockRepository.GenerateStub<IOutput>());
+				Finder = new DuplicateFinder(FileFinders, HashCodeProviders, A.Fake<IOutput>());
 			};
 
 		Because of = () => { Duplicates = Finder.FindDuplicates().ToArray(); };
 
 		It should_search_for_files =
-			() => FileFinders.Each(x => x.AssertWasCalled(y => y.GetFiles()));
+			() => FileFinders.Each(x => A.CallTo(() => x.GetFiles()).MustHaveHappened());
 
 		It should_create_hash_values_for_each_file =
-			() => HashCodeProviders.Each(x => x.AssertWasCalled(y => y.CalculateHashCode(null),
-			                                                    o => o.IgnoreArguments().Repeat.Times(4)));
+			() => HashCodeProviders
+				.Each(x => A
+					.CallTo(() => x.CalculateHashCode(A<string>.Ignored))
+					.MustHaveHappened(Repeated.Exactly.Times(4)));
 
 		It should_group_duplicates_by_hash_value =
 			() => Duplicates.First().Count().ShouldEqual(3);
@@ -81,20 +82,20 @@ namespace DuplicateFinder.Core
 			{
 				FileFinders = new[]
 				              {
-				              	MockRepository.GenerateStub<IFileFinder>(),
-				              	MockRepository.GenerateStub<IFileFinder>()
+				              	A.Fake<IFileFinder>(),
+				              	A.Fake<IFileFinder>()
 				              };
 				FileFinders
-					.Each(x => x
-					           	.Stub(y => y.GetFiles())
-					           	.Return(new[] { @"c:\path\file 1.txt", @"c:\path\file 2.txt" }));
+					.Each(x => A
+								.CallTo(() => x.GetFiles())
+					           	.Returns(new[] { @"c:\path\file 1.txt", @"c:\path\file 2.txt" }));
 
 				var hashCodeProviders = new[]
 				                        {
-				                        	MockRepository.GenerateStub<IHashCodeProvider>()
+				                        	A.Fake<IHashCodeProvider>()
 				                        };
 
-				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, MockRepository.GenerateStub<IOutput>());
+				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>());
 			};
 
 		Because of = () => { Duplicates = Finder.FindDuplicates(); };
@@ -114,26 +115,26 @@ namespace DuplicateFinder.Core
 			{
 				FileFinders = new[]
 				              {
-				              	MockRepository.GenerateStub<IFileFinder>(),
-				              	MockRepository.GenerateStub<IFileFinder>()
+				              	A.Fake<IFileFinder>(),
+				              	A.Fake<IFileFinder>()
 				              };
 				FileFinders
-					.Each(x => x
-					           	.Stub(y => y.GetFiles())
-					           	.Return(new[] { @"c:\path\file 1.txt" }));
+					.Each(x => A
+								.CallTo(() => x.GetFiles())
+					           	.Returns(new[] { @"c:\path\file 1.txt" }));
 
-				var throws = MockRepository.GenerateStub<IHashCodeProvider>();
-				throws
-					.Stub(x => x.CalculateHashCode(null))
-					.IgnoreArguments()
-					.Throw(new FileNotFoundException());
+				var throws = A.Fake<IHashCodeProvider>();
+				A
+					.CallTo(() => throws.CalculateHashCode(null))
+					.WithAnyArguments()
+					.Throws(new FileNotFoundException());
 
 				var hashCodeProviders = new[]
 				                        {
 				                        	throws
 				                        };
 
-				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, MockRepository.GenerateStub<IOutput>());
+				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>());
 			};
 
 		Because of = () => { Duplicates = Finder.FindDuplicates(); };

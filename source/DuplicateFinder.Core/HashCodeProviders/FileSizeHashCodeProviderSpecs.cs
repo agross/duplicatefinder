@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using Machine.Specifications;
+using FakeItEasy;
 
-using Rhino.Mocks;
+using Machine.Specifications;
 
 namespace DuplicateFinder.Core.HashCodeProviders
 {
@@ -16,10 +16,10 @@ namespace DuplicateFinder.Core.HashCodeProviders
 
 		Establish context = () =>
 			{
-				FileSystem = MockRepository.GenerateStub<IFileSystem>();
-				FileSystem
-					.Stub(x => x.GetSize(@"c:\some\file.txt"))
-					.Return(1234567890);
+				FileSystem = A.Fake<IFileSystem>();
+				A
+					.CallTo(() => FileSystem.GetSize(@"c:\some\file.txt"))
+					.Returns(1234567890);
 
 				Provider = new FileSizeHashCodeProvider(FileSystem);
 			};

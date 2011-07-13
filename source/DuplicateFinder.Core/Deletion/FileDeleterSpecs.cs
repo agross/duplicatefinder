@@ -1,8 +1,8 @@
 ﻿using System;
 
-using Machine.Specifications;
+using FakeItEasy;
 
-using Rhino.Mocks;
+using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Deletion
 {
@@ -15,19 +15,21 @@ namespace DuplicateFinder.Core.Deletion
 
 		Establish context = () =>
 			{
-				FileSystem = MockRepository.GenerateStub<IFileSystem>();
-				FileSystem
-					.Stub(x => x.GetSize(@"c:\some\file"))
-					.Return(42);
+				FileSystem = A.Fake<IFileSystem>();
+				A
+					.CallTo(() => FileSystem.GetSize(@"c:\some\file"))
+					.Returns(42);
 
 				Deleter = new FileDeleter(FileSystem,
-				                          MockRepository.GenerateStub<IOutput>());
+				                          A.Fake<IOutput>());
 			};
 
 		Because of = () => { FileSize = Deleter.Delete(@"c:\some\file"); };
 
 		It should_delete_the_file =
-			() => FileSystem.AssertWasCalled(x => x.Delete(@"c:\some\file"));
+			() => A
+				.CallTo(()=> FileSystem.Delete(@"c:\some\file"))
+				.MustHaveHappened();
 
 		It should_return_the_file_s_size =
 			() => FileSize.ShouldEqual(42);
@@ -42,13 +44,13 @@ namespace DuplicateFinder.Core.Deletion
 
 		Establish context = () =>
 			{
-				FileSystem = MockRepository.GenerateStub<IFileSystem>();
-				FileSystem
-					.Stub(x => x.GetSize(@"c:\some\file"))
-					.Throw(new InvalidOperationException());
+				FileSystem = A.Fake<IFileSystem>();
+				A
+					.CallTo(() => FileSystem.GetSize(@"c:\some\file"))
+					.Throws(new InvalidOperationException());
 
 				Deleter = new FileDeleter(FileSystem,
-				                          MockRepository.GenerateStub<IOutput>());
+				                          A.Fake<IOutput>());
 			};
 
 		Because of = () => { FileSize = Deleter.Delete(@"c:\some\file"); };
