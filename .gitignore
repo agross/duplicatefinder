@@ -17,6 +17,7 @@ obj
 ~*
 *.swp
 _ReSharper.*
+*_mm_cache.bin
 
 !tools/Ruby/bin
 !tools/Ruby/lib/ruby/gems/1.8/gems/rake-0.8.7/bin

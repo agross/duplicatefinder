@@ -117,7 +117,7 @@ namespace :compile do
 		end
 		
 		SideBySideSpecs.new({
-			:references => ['Machine.Specifications', 'Rhino.Mocks'],
+			:references => ['Machine.Specifications', 'FakeItEasy', 'Castle.Core'],
 			:projects => FileList.new("#{configatron.dir.source}/**/*.csproj"),
 			:specs => FileList.new("#{configatron.dir.source}/**/*Specs.cs")
 		}).remove
@@ -265,7 +265,9 @@ desc 'Packages the build artifacts'
 namespace :package do
 	desc "Merges the application's binaries into one executable"
 	task :ilmerge => ['compile:app'] do
-		assemblies = FileList.new("#{configatron.dir.build}/Application/*.exe", "#{configatron.dir.build}/Application/*.dll")
+		assemblies = FileList.new("#{configatron.dir.build}/Application/*.exe") \
+      .include("#{configatron.dir.build}/Application/*.dll") \
+      .exclude("#{configatron.dir.build}/Application/*.vshost.exe")
 
 		ILMerge.merge \
 			:tool => configatron.tools.ilmerge, 
@@ -274,7 +276,7 @@ namespace :package do
 				:out => "#{configatron.dir.for_deployment}/#{configatron.project}.exe",
 				:log => "#{configatron.dir.build}/ilmerge.log",
 				:target => :exe,
-				:v2 => true,
+				:targetplatform => "v4",
 				:internalize => true,
 				:closed => true,
 				:ndebug => false,

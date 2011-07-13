@@ -1,10 +1,10 @@
 using System.IO;
 
+using FakeItEasy;
+
 using Machine.Specifications;
 
 using NDesk.Options;
-
-using Rhino.Mocks;
 
 namespace DuplicateFinder.Core.Commands
 {
@@ -19,10 +19,10 @@ namespace DuplicateFinder.Core.Commands
 			{
 				OutputString = new StringWriter();
 
-				Output = MockRepository.GenerateStub<IOutput>();
-				Output
-					.Stub(x => x.GetTextWriter())
-					.Return(OutputString);
+				Output = A.Fake<IOutput>();
+				A
+					.CallTo(() => Output.GetTextWriter())
+					.Returns(OutputString);
 
 				var options = new OptionSet { { "foo", v => { } } };
 
@@ -32,7 +32,9 @@ namespace DuplicateFinder.Core.Commands
 		Because of = () => Command.Execute();
 
 		It should_display_messages =
-			() => Output.AssertWasCalled(x => x.WriteLine("some message"));
+			() => A
+				.CallTo(() => Output.WriteLine("some message"))
+				.MustHaveHappened();
 
 		It should_display_the_help_contents =
 			() => OutputString.GetStringBuilder().ToString().ShouldContain("foo");

@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 
+using FakeItEasy;
+
 using Machine.Specifications;
 using Machine.Specifications.Utility;
-
-using Rhino.Mocks;
 
 namespace DuplicateFinder.Core.HashCodeProviders
 {
@@ -18,11 +18,11 @@ namespace DuplicateFinder.Core.HashCodeProviders
 
 		Establish context = () =>
 			{
-				FileSystem = MockRepository.GenerateStub<IFileSystem>();
-				FileSystem
-					.Stub(x => x.CreateStreamFrom(null))
-					.IgnoreArguments()
-					.Return(MockRepository.GenerateStub<Stream>());
+				FileSystem = A.Fake<IFileSystem>();
+				A
+					.CallTo(() => FileSystem.CreateStreamFrom(null))
+					.WithAnyArguments()
+					.Returns(A.Fake<Stream>());
 
 				Provider = new FileContentHashCodeProvider(FileSystem);
 			};
@@ -30,7 +30,9 @@ namespace DuplicateFinder.Core.HashCodeProviders
 		Because of = () => { Hash = Provider.CalculateHashCode(@"c:\some\file.txt").ToArray(); };
 
 		It should_read_the_file_contents =
-			() => FileSystem.AssertWasCalled(x => x.CreateStreamFrom(@"c:\some\file.txt"));
+			() => A
+				.CallTo(()=> FileSystem.CreateStreamFrom(@"c:\some\file.txt"))
+				.MustHaveHappened();
 
 		It should_compute_the_hash_of_the_file_contents =
 			() => Hash.First().ShouldNotBeEmpty();
@@ -48,25 +50,25 @@ namespace DuplicateFinder.Core.HashCodeProviders
 
 		Establish context = () =>
 			{
-				Stream = MockRepository.GenerateStub<Stream>();
+				Stream = A.Fake<Stream>();
 
-				FileSystem = MockRepository.GenerateStub<IFileSystem>();
-				FileSystem
-					.Stub(x => x.CreateStreamFrom(@"c:\some\file.txt"))
-					.Return(Stream);
+				FileSystem = A.Fake<IFileSystem>();
+				A
+					.CallTo(() => FileSystem.CreateStreamFrom(@"c:\some\file.txt"))
+					.Returns(Stream);
 
 				Decorators = new[]
 				             {
-				             	MockRepository.GenerateStub<IStreamDecorator>(),
-				             	MockRepository.GenerateStub<IStreamDecorator>()
+				             	A.Fake<IStreamDecorator>(),
+				             	A.Fake<IStreamDecorator>()
 				             };
 
-				AppliedStream = MockRepository.GenerateStub<Stream>();
+				AppliedStream = A.Fake<Stream>();
 
-				Decorators.Each(x => x
-				                     	.Stub(y => y.GetStream(null))
-				                     	.IgnoreArguments()
-				                     	.Return(AppliedStream));
+				Decorators.Each(x => A
+										.CallTo(() => x.GetStream(null))
+				                     	.WithAnyArguments()
+				                     	.Returns(AppliedStream));
 
 				Provider = new FileContentHashCodeProvider(FileSystem, Decorators);
 			};
@@ -74,7 +76,7 @@ namespace DuplicateFinder.Core.HashCodeProviders
 		Because of = () => { Hash = Provider.CalculateHashCode(@"c:\some\file.txt").ToArray(); };
 
 		It should_apply_each_stream_processor_to_the_source_stream =
-			() => Decorators.Each(x => x.AssertWasCalled(y => y.GetStream(Stream)));
+			() => Decorators.Each(x => A.CallTo(() => x.GetStream(Stream)).MustHaveHappened());
 
 		It should_compute_the_hash_of_the_file_contents_for_each_content_part =
 			() => Hash.Count().ShouldEqual(2);
