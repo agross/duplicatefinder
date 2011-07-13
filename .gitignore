@@ -18,7 +18,10 @@ obj
 *.swp
 _ReSharper.*
 
-/teamcity-info.xml
-/local-properties.yml
-/build
-/deploy
+!tools/Ruby/bin
+!tools/Ruby/lib/ruby/gems/1.8/gems/rake-0.8.7/bin
+
+teamcity-info.xml
+local-properties.yml
+build
+deploy
