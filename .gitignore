@@ -18,7 +18,9 @@ obj
 *.swp
 _ReSharper.*
 
-/teamcity-info.xml
-/local-properties.yml
-/build
+!tools/Ruby/bin
+
+teamcity-info.xml
+local-properties.yml
+build
 /deploy
