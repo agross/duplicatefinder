@@ -1,10 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateFinder.Core", "DuplicateFinder.Core\DuplicateFinder.Core.csproj", "{E4D3B7B8-D50F-4772-89A7-152DA92AAA34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateFinder.Core", "Source\DuplicateFinder.Core\DuplicateFinder.Core.csproj", "{E4D3B7B8-D50F-4772-89A7-152DA92AAA34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateFinder", "DuplicateFinder\DuplicateFinder.csproj", "{CA9DC48A-7334-4CF1-B98D-6C909A980E6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateFinder", "Source\DuplicateFinder\DuplicateFinder.csproj", "{CA9DC48A-7334-4CF1-B98D-6C909A980E6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateFinder.Core.Integration.Tests", "DuplicateFinder.Core.Integration.Tests\DuplicateFinder.Core.Integration.Tests.csproj", "{C00FFA8F-B5C4-4A2E-92E9-D4AB7E2C2A48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateFinder.Core.Integration.Tests", "Source\DuplicateFinder.Core.Integration.Tests\DuplicateFinder.Core.Integration.Tests.csproj", "{C00FFA8F-B5C4-4A2E-92E9-D4AB7E2C2A48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
