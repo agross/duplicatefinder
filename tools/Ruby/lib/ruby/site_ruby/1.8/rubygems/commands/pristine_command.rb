@@ -51,13 +51,12 @@ revert the gem.
     gem_name = nil
 
     specs = if options[:all] then
-              Gem::SourceIndex.from_installed_gems.map do |name, spec|
+              Gem.source_index.map do |name, spec|
                 spec
               end
             else
               gem_name = get_one_gem_name
-              Gem::SourceIndex.from_installed_gems.find_name(gem_name,
-                                                          options[:version])
+              Gem.source_index.find_name(gem_name, options[:version])
             end
 
     if specs.empty? then
@@ -73,11 +72,15 @@ revert the gem.
     say "Restoring gem(s) to pristine condition..."
 
     specs.each do |spec|
-      gem = Dir[File.join(Gem.dir, 'cache', spec.file_name)].first
+      gem = spec.cache_gem
 
       if gem.nil? then
-        alert_error "Cached gem for #{spec.full_name} not found, use `gem install` to restore"
-        next
+        require 'rubygems/remote_fetcher'
+
+        say "Cached gem for #{spec.full_name} not found, attempting to fetch..."
+        dep = Gem::Dependency.new spec.name, spec.version
+        Gem::RemoteFetcher.fetcher.download_to_cache dep
+        gem = spec.cache_gem
       end
 
       # TODO use installer options

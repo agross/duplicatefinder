@@ -5,6 +5,7 @@
 #++
 
 require 'rubygems/specification'
+require 'rubygems/deprecate'
 
 ##
 # The SourceIndex object indexes all the gems available from a
@@ -28,53 +29,52 @@ class Gem::SourceIndex
 
   attr_accessor :spec_dirs
 
-  class << self
-    ##
-    # Factory method to construct a source index instance for a given
-    # path.
-    #
-    # deprecated::
-    #   If supplied, from_installed_gems will act just like
-    #   +from_gems_in+.  This argument is deprecated and is provided
-    #   just for backwards compatibility, and should not generally
-    #   be used.
-    #
-    # return::
-    #   SourceIndex instance
+  ##
+  # Factory method to construct a source index instance for a given
+  # path.
+  #
+  # deprecated::
+  #   If supplied, from_installed_gems will act just like
+  #   +from_gems_in+.  This argument is deprecated and is provided
+  #   just for backwards compatibility, and should not generally
+  #   be used.
+  #
+  # return::
+  #   SourceIndex instance
 
-    def from_installed_gems(*deprecated)
-      if deprecated.empty?
-        from_gems_in(*installed_spec_directories)
-      else
-        from_gems_in(*deprecated) # HACK warn
-      end
+  def self.from_installed_gems(*deprecated)
+    if deprecated.empty?
+      from_gems_in(*installed_spec_directories)
+    else
+      warn "NOTE: from_installed_gems(arg) is deprecated. From #{caller.first}"
+      from_gems_in(*deprecated) # HACK warn
     end
+  end
 
-    ##
-    # Returns a list of directories from Gem.path that contain specifications.
+  ##
+  # Returns a list of directories from Gem.path that contain specifications.
 
-    def installed_spec_directories
-      Gem.path.collect { |dir| File.join(dir, "specifications") }
-    end
+  def self.installed_spec_directories
+    # TODO: move to Gem::Utils
+    Gem.path.collect { |dir| File.join(dir, "specifications") }
+  end
 
-    ##
-    # Creates a new SourceIndex from the ruby format gem specifications in
-    # +spec_dirs+.
+  ##
+  # Creates a new SourceIndex from the ruby format gem specifications in
+  # +spec_dirs+.
 
-    def from_gems_in(*spec_dirs)
-      source_index = new
-      source_index.spec_dirs = spec_dirs
-      source_index.refresh!
-    end
+  def self.from_gems_in(*spec_dirs)
+    new spec_dirs
+  end
 
-    ##
-    # Loads a ruby-format specification from +file_name+ and returns the
-    # loaded spec.
+  ##
+  # Loads a ruby-format specification from +file_name+ and returns the
+  # loaded spec.
 
-    def load_specification(file_name)
+  def self.load_specification(file_name)
+    Deprecate.skip_during do
       Gem::Specification.load file_name
     end
-
   end
 
   ##
@@ -84,13 +84,23 @@ class Gem::SourceIndex
   # TODO merge @gems and @prerelease_gems and provide a separate method
   # #prerelease_gems
 
-  def initialize(specifications={})
+  def initialize specs_or_dirs = []
     @gems = {}
-    specifications.each{ |full_name, spec| add_spec spec }
     @spec_dirs = nil
+
+    case specs_or_dirs
+    when Hash then
+      warn "NOTE: SourceIndex.new(hash) is deprecated; From #{caller.first}."
+      specs_or_dirs.each{ |full_name, spec| add_spec spec }
+    when Array, String then
+      self.spec_dirs = Array(specs_or_dirs)
+      refresh!
+    else
+      arg = specs_or_dirs.inspect
+      warn "NOTE: SourceIndex.new(#{arg}) is deprecated; From #{caller.first}."
+    end
   end
 
-  # TODO: remove method
   def all_gems
     @gems
   end
@@ -113,7 +123,9 @@ class Gem::SourceIndex
       spec_files = Dir.glob File.join(spec_dir, '*.gemspec')
 
       spec_files.each do |spec_file|
-        gemspec = Gem::Specification.load spec_file
+        gemspec = Deprecate.skip_during do
+          Gem::Specification.load spec_file
+        end
         add_spec gemspec if gemspec
       end
     end
@@ -125,7 +137,7 @@ class Gem::SourceIndex
   # Returns an Array specifications for the latest released versions
   # of each gem in this index.
 
-  def latest_specs
+  def latest_specs(include_prerelease=false)
     result = Hash.new { |h,k| h[k] = [] }
     latest = {}
 
@@ -134,7 +146,7 @@ class Gem::SourceIndex
       curr_ver = spec.version
       prev_ver = latest.key?(name) ? latest[name].version : nil
 
-      next if curr_ver.prerelease?
+      next if !include_prerelease && curr_ver.prerelease?
       next unless prev_ver.nil? or curr_ver >= prev_ver or
                   latest[name].platform != Gem::Platform::RUBY
 
@@ -267,6 +279,7 @@ class Gem::SourceIndex
     when Gem::Dependency then
       only_platform = platform_only
       requirement = gem_pattern.requirement
+
       gem_pattern = if Regexp === gem_pattern.name then
                       gem_pattern.name
                     elsif gem_pattern.name.empty? then
@@ -283,7 +296,7 @@ class Gem::SourceIndex
       requirement = Gem::Requirement.create requirement
     end
 
-    specs = all_gems.values.select do |spec|
+    specs = @gems.values.select do |spec|
       spec.name =~ gem_pattern and
         requirement.satisfied_by? spec.version
     end
@@ -337,6 +350,15 @@ class Gem::SourceIndex
     Marshal.dump(self)
   end
 
+  extend Deprecate
+  deprecate :all_gems, :none,  2011, 10
+
+  class << self
+    extend Deprecate
+    deprecate :from_installed_gems,        :none, 2011, 10
+    deprecate :from_gems_in,               :none, 2011, 10
+    deprecate :load_specification,         :none, 2011, 10
+  end
 end
 
 # :stopdoc:

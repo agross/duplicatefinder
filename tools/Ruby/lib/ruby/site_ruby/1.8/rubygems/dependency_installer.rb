@@ -46,7 +46,7 @@ class Gem::DependencyInstaller
   def initialize(options = {})
     if options[:install_dir] then
       spec_dir = options[:install_dir], 'specifications'
-      @source_index = Gem::SourceIndex.from_gems_in spec_dir
+      @source_index = Gem::SourceIndex.new [spec_dir]
     else
       @source_index = Gem.source_index
     end
@@ -130,17 +130,33 @@ class Gem::DependencyInstaller
   def gather_dependencies
     specs = @specs_and_sources.map { |spec,_| spec }
 
+    # these gems were listed by the user, always install them
+    keep_names = specs.map { |spec| spec.full_name }
+
     dependency_list = Gem::DependencyList.new @development
     dependency_list.add(*specs)
     to_do = specs.dup
 
     add_found_dependencies to_do, dependency_list unless @ignore_dependencies
 
+    dependency_list.specs.reject! { |spec|
+      ! keep_names.include? spec.full_name and
+        @source_index.any? { |n,_| n == spec.full_name }
+    }
+
+    unless dependency_list.ok? or @ignore_dependencies or @force then
+      reason = dependency_list.why_not_ok?.map { |k,v|
+        "#{k} requires #{v.join(", ")}"
+      }.join("; ")
+      raise Gem::DependencyError, "Unable to resolve dependencies: #{reason}"
+    end
+
     @gems_to_install = dependency_list.dependency_order.reverse
   end
 
   def add_found_dependencies to_do, dependency_list
     seen = {}
+    dependencies = Hash.new { |h, name| h[name] = Gem::Dependency.new name }
 
     until to_do.empty? do
       spec = to_do.shift
@@ -151,10 +167,10 @@ class Gem::DependencyInstaller
       deps |= spec.development_dependencies if @development
 
       deps.each do |dep|
+        dependencies[dep.name] = dependencies[dep.name].merge dep
+
         results = find_gems_with_sources(dep).reverse
 
-        # FIX: throw in everything that satisfies, and let
-        # FIX: dependencylist reduce to the chosen few
         results.reject! do |dep_spec,|
           to_do.push dep_spec
 
@@ -166,14 +182,14 @@ class Gem::DependencyInstaller
         end
 
         results.each do |dep_spec, source_uri|
-          next if seen[dep_spec.name]
           @specs_and_sources << [dep_spec, source_uri]
 
-          # FIX: this is the bug
           dependency_list.add dep_spec
         end
       end
     end
+
+    dependency_list.remove_specs_unsatisfied_by dependencies
   end
 
   ##
@@ -253,7 +269,6 @@ class Gem::DependencyInstaller
 
     @gems_to_install.each do |spec|
       last = spec == @gems_to_install.last
-      # HACK is this test for full_name acceptable?
       next if @source_index.any? { |n,_| n == spec.full_name } and not last
 
       # TODO: make this sorta_verbose so other users can benefit from it

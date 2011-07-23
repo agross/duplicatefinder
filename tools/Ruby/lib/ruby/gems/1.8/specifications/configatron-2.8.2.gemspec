@@ -10,11 +10,11 @@ Gem::Specification.new do |s|
   s.description = %q{configatron was developed by: markbates}
   s.email = %q{mark@markbates.com}
   s.extra_rdoc_files = ["LICENSE"]
-  s.files = ["lib/configatron/configatron.rb", "lib/configatron/core_ext/class.rb", "lib/configatron/core_ext/kernel.rb", "lib/configatron/core_ext/object.rb", "lib/configatron/core_ext/string.rb", "lib/configatron/errors.rb", "lib/configatron/proc.rb", "lib/configatron/rails.rb", "lib/configatron/store.rb", "lib/configatron.rb", "README.textile", "LICENSE", "generators/configatron_generator.rb", "generators/templates/configatron/cucumber.rb", "generators/templates/configatron/defaults.rb", "generators/templates/configatron/development.rb", "generators/templates/configatron/production.rb", "generators/templates/configatron/test.rb", "generators/templates/initializers/configatron.rb"]
+  s.files = ["LICENSE"]
   s.homepage = %q{http://www.metabates.com}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{magrathea}
-  s.rubygems_version = %q{1.5.2}
+  s.rubygems_version = %q{1.7.2}
   s.summary = %q{A powerful Ruby configuration system.}
 
   if s.respond_to? :specification_version then

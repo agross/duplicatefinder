@@ -10,7 +10,7 @@ module Config
   DESTDIR = TOPDIR && TOPDIR[/\A[a-z]:/i] || '' unless defined? DESTDIR
   CONFIG = {}
   CONFIG["DESTDIR"] = DESTDIR
-  CONFIG["PATCHLEVEL"] = "334"
+  CONFIG["PATCHLEVEL"] = "352"
   CONFIG["INSTALL"] = '/usr/bin/install -c'
   CONFIG["EXEEXT"] = ".exe"
   CONFIG["prefix"] = (TOPDIR || DESTDIR + "")
@@ -19,7 +19,7 @@ module Config
   CONFIG["RUBY_SO_NAME"] = "msvcrt-ruby18"
   CONFIG["MANTYPE"] = "man"
   CONFIG["NROFF"] = "/bin/false"
-  CONFIG["configure_args"] = " '--enable-shared' '--with-winsock2' '--disable-install-doc' 'CFLAGS=-g -O2 -DFD_SETSIZE=256' '--prefix='"
+  CONFIG["configure_args"] = " '--enable-shared' '--with-winsock2' '--disable-install-doc' 'CFLAGS=-g -O2 -DFD_SETSIZE=256' '--with-tcl-dir=C:/Users/Luis/Projects/oss/oneclick/rubyinstaller/sandbox/tcl' '--with-tk-dir=C:/Users/Luis/Projects/oss/oneclick/rubyinstaller/sandbox/tk' '--with-tcllib=tcl85-ri' '--with-tklib=tk85-ri' '--prefix=' 'LDFLAGS=-LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\tk\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\tcl\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\pdcurses\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\openssl\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\zlib\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\iconv\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\gdbm\\\\lib '"
   CONFIG["vendordir"] = "$(libdir)/ruby/vendor_ruby"
   CONFIG["sitedir"] = "$(libdir)/ruby/site_ruby"
   CONFIG["sitearch"] = "i386-msvcrt"
@@ -95,7 +95,7 @@ module Config
   CONFIG["CPP"] = "gcc -E"
   CONFIG["OBJEXT"] = "o"
   CONFIG["CPPFLAGS"] = " $(DEFS) $(cppflags)"
-  CONFIG["LDFLAGS"] = "-L. "
+  CONFIG["LDFLAGS"] = "-L. -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\tk\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\tcl\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\pdcurses\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\openssl\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\zlib\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\iconv\\\\lib -LC:\\\\Users\\\\Luis\\\\Projects\\\\oss\\\\oneclick\\\\rubyinstaller\\\\sandbox\\\\gdbm\\\\lib "
   CONFIG["CFLAGS"] = "-g -O2 -DFD_SETSIZE=256  $(cflags)"
   CONFIG["CC"] = "gcc"
   CONFIG["target_os"] = "mingw32"

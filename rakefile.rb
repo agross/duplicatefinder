@@ -5,6 +5,8 @@ Dir.glob(File.join(File.dirname(__FILE__), 'tools/Rake/*.rb')).each do |f|
 	require f
 end
 
+include Rake::DSL
+
 task :default => [:clobber, 'compile:all', 'tests:run', 'package:all']
 
 desc 'Runs a quick build just compiling the libs that are not up to date'

@@ -3,7 +3,7 @@
   intern.h -
 
   $Author: shyouhei $
-  $Date: 2010-06-08 17:42:55 +0900 (Tue, 08 Jun 2010) $
+  $Date: 2011-05-23 13:49:40 +0900 (Mon, 23 May 2011) $
   created at: Thu Jun 10 14:22:17 JST 1993
 
   Copyright (C) 1993-2003 Yukihiro Matsumoto
@@ -380,6 +380,7 @@ VALUE rb_length_by_each _((VALUE));
 /* random.c */
 unsigned long rb_genrand_int32(void);
 double rb_genrand_real(void);
+void rb_reset_random_seed(void);
 /* re.c */
 int rb_memcmp _((const void*,const void*,long));
 int rb_memcicmp _((const void*,const void*,long));
