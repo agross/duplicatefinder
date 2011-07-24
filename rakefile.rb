@@ -6,6 +6,7 @@ Dir.glob(File.join(File.dirname(__FILE__), 'tools/Rake/*.rb')).each do |f|
 end
 
 include Rake::DSL
+verbose true
 
 task :default => [:clobber, 'compile:all', 'tests:run', 'package:all']
 
@@ -267,9 +268,10 @@ desc 'Packages the build artifacts'
 namespace :package do
 	desc "Merges the application's binaries into one executable"
 	task :ilmerge => ['compile:app'] do
-		assemblies = FileList.new("#{configatron.dir.build}/Application/*.exe") \
-      .include("#{configatron.dir.build}/Application/*.dll") \
-      .exclude("#{configatron.dir.build}/Application/*.vshost.exe")
+		assemblies = FileList.new("#{configatron.dir.build}/Application/DuplicateFinder*.exe") \
+			.include("#{configatron.dir.build}/Application/DuplicateFinder*.dll") \
+			.include("#{configatron.dir.build}/Application/NDesk.Options.dll") \
+			.exclude("#{configatron.dir.build}/Application/*.vshost.exe")
 
 		ILMerge.merge \
 			:tool => configatron.tools.ilmerge, 
