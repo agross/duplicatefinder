@@ -6,6 +6,7 @@ using System.Linq;
 using DuplicateFinder.Core.Abstractions;
 using DuplicateFinder.Core.Commands;
 using DuplicateFinder.Core.Deletion;
+using DuplicateFinder.Core.HashCodeHistory;
 using DuplicateFinder.Core.HashCodeProviders;
 using DuplicateFinder.Core.Streams;
 
@@ -31,6 +32,7 @@ namespace DuplicateFinder.Core
 			var decorators = new List<IStreamDecorator>();
 			var deletionSelector = (ISelectFilesToDelete) new AllButFirstDuplicateSelector();
 			var deleter = (IFileDeleter) new FileDeleter(_fileSystem, _output);
+			var history = (IRememberHashCodes) new NullHistory();
 
 			var options = new OptionSet
 			              {
@@ -59,6 +61,10 @@ namespace DuplicateFinder.Core
 			              		"Keeps the first duplicate encountered under {DIRECTORY}, and deletes duplicates from other directories. If not specified, all but the first duplicate encountered are deleted.",
 			              		v => deletionSelector = new KeepOneCopyInDirectorySelector(v)
 			              		},
+							{
+			              		"history=", "Keep a list of seen hashes in {FILE}, deletes files with hashes that reappear after not being seen at least once",
+			              		v => history = new DatabaseHistory(v, _fileSystem)
+			              		},
 			              	{
 			              		"whatif|dry-run", "Do not delete anything",
 			              		v => deleter = new WhatIfFileDeleter(_output)
@@ -81,7 +87,8 @@ namespace DuplicateFinder.Core
 
 			var finder = new DuplicateFinder(directories.Select(x => (IFileFinder) new RecursiveFileFinder(_fileSystem, x)),
 			                                 hashes.Select(x => x()),
-			                                 _output);
+			                                 _output,
+											 history);
 
 			return new FindDuplicatesCommand(_output,
 			                                 finder,

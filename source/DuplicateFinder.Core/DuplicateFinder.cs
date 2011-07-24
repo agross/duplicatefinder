@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+using DuplicateFinder.Core.HashCodeHistory;
+
 namespace DuplicateFinder.Core
 {
 	internal class DuplicateFinder : IDuplicateFinder
@@ -12,11 +14,13 @@ namespace DuplicateFinder.Core
 
 		public DuplicateFinder(IEnumerable<IFileFinder> fileFinders,
 		                       IEnumerable<IHashCodeProvider> hashCodeProviders,
-		                       IOutput output)
+		                       IOutput output,
+		                       IRememberHashCodes history)
 		{
 			_output = output;
 			FileFinders = fileFinders;
 			HashCodeProviders = hashCodeProviders;
+			History = history;
 		}
 
 		public IEnumerable<IFileFinder> FileFinders
@@ -31,18 +35,32 @@ namespace DuplicateFinder.Core
 			private set;
 		}
 
-		public IEnumerable<IEnumerable<string>> FindDuplicates()
+		public IRememberHashCodes History
+		{
+			get;
+			private set;
+		}
+
+		public FindResult FindDuplicates()
 		{
 			var fileList = FileFinders
 				.SelectMany(x => x.GetFiles())
 				.RemoveDuplicateEntries();
 
-			return fileList
+			var hashesAndFiles = fileList
 				.Select(x => new { File = x, Hashes = HashesOf(x) })
 				.Where(x => x.Hashes.Any())
 				.Select(x => new { x.File, Hash = Aggregate(x.Hashes) })
-				.GroupBy(x => x.Hash, x => x.File, (hash, files) => files)
-				.Where(x => x.Count() > 1);
+				.GroupBy(x => x.Hash, x => x.File)
+				.ToList();
+
+			var resurrectedHashes = History.Snapshot(hashesAndFiles.Select(x => x.Key));
+
+			return new FindResult
+			       {
+			       	Duplicates = hashesAndFiles.Where(x => x.Count() > 1),
+			       	Resurrected = hashesAndFiles.Where(x => resurrectedHashes.Any(y => y == x.Key))
+			       };
 		}
 
 		IEnumerable<string> HashesOf(string path)

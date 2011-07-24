@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using DuplicateFinder.Core.HashCodeHistory;
+
 using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Integration.Tests
 {
-	public class When_all_files_are_removed_before_they_are_be_hashed
+	public class When_all_files_are_removed_before_they_are_hashed
 	{
 		static DuplicateFinder Finder;
 
@@ -17,10 +19,11 @@ namespace DuplicateFinder.Core.Integration.Tests
 
 					Finder = new DuplicateFinder(new[] { new NonExistingFilesFinder() },
 					                             new[] { new ThrowingHashCodeProvider() },
-					                             Output);
+					                             Output,
+					                             new NullHistory());
 				};
 
-		Because of = () => Finder.FindDuplicates().ToArray();
+		Because of = () => Finder.FindDuplicates().Duplicates.ToArray();
 
 		It should_succeed =
 			() => true.ShouldBeTrue();

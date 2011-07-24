@@ -9,5 +9,8 @@ namespace DuplicateFinder.Core
 		Stream CreateStreamFrom(string path);
 		long GetSize(string path);
 		void Delete(string path);
+		bool Exists(string path);
+		IEnumerable<string> ReadAllLines(string path);
+		void WriteAllLines(string path, IEnumerable<string> lines);
 	}
 }

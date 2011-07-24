@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 
+using DuplicateFinder.Core.HashCodeHistory;
+
 using FakeItEasy;
 
 using Machine.Specifications;
@@ -50,10 +52,10 @@ namespace DuplicateFinder.Core
 					.CallTo(() => hash1.CalculateHashCode(A<string>.That.Matches(x => x.Contains("no dup"))))
 					.Returns(new[] { "some other hash" });
 
-				Finder = new DuplicateFinder(FileFinders, HashCodeProviders, A.Fake<IOutput>());
+				Finder = new DuplicateFinder(FileFinders, HashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>());
 			};
 
-		Because of = () => { Duplicates = Finder.FindDuplicates().ToArray(); };
+		Because of = () => { Duplicates = Finder.FindDuplicates().Duplicates.ToArray(); };
 
 		It should_search_for_files =
 			() => FileFinders.Each(x => A.CallTo(() => x.GetFiles()).MustHaveHappened());
@@ -95,10 +97,10 @@ namespace DuplicateFinder.Core
 				                        	A.Fake<IHashCodeProvider>()
 				                        };
 
-				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>());
+				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>());
 			};
 
-		Because of = () => { Duplicates = Finder.FindDuplicates(); };
+		Because of = () => { Duplicates = Finder.FindDuplicates().Duplicates.ToArray(); };
 
 		It should_not_find_duplicates =
 			() => Duplicates.ShouldBeEmpty();
@@ -134,10 +136,10 @@ namespace DuplicateFinder.Core
 				                        	throws
 				                        };
 
-				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>());
+				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>());
 			};
 
-		Because of = () => { Duplicates = Finder.FindDuplicates(); };
+		Because of = () => { Duplicates = Finder.FindDuplicates().Duplicates.ToArray(); };
 
 		It should_succeed =
 			() => true.ShouldBeTrue();

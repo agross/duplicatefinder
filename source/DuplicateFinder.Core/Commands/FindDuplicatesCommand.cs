@@ -26,7 +26,7 @@ namespace DuplicateFinder.Core.Commands
 			private set;
 		}
 
-		public IEnumerable<IEnumerable<string>> Duplicates
+		public FindResult Results
 		{
 			get;
 			private set;
@@ -40,9 +40,9 @@ namespace DuplicateFinder.Core.Commands
 
 		public void Execute()
 		{
-			Duplicates = DuplicateFinder.FindDuplicates().ToList();
+			Results = DuplicateFinder.FindDuplicates();
 
-			var bytesDeleted = Duplicates
+			var bytesDeleted = Results.Duplicates
 				.Select(x =>
 					{
 						var delete = _select.FilesToDelete(x);
@@ -59,6 +59,8 @@ namespace DuplicateFinder.Core.Commands
 
 						return x.Delete;
 					})
+				.Concat(Results.Resurrected.SelectMany(x => x))
+				.Distinct()
 				.Select(FileDeleter.Delete)
 				.Sum();
 

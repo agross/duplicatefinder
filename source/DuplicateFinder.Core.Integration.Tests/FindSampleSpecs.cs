@@ -112,7 +112,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 
 		public static IEnumerable<string> AllDuplicates(this object instance)
 		{
-			return instance.As<FindDuplicatesCommand>().Duplicates.SelectMany(x => x);
+			return instance.As<FindDuplicatesCommand>().Results.Duplicates.SelectMany(x => x);
 		}
 	}
 }

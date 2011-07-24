@@ -88,6 +88,11 @@
     <Compile Include="FileSizeExtensionsSpecs.cs">
       <DependentUpon>FileSizeExtensions.cs</DependentUpon>
     </Compile>
+    <Compile Include="HashCodeHistory\DatabaseHistory.cs" />
+    <Compile Include="HashCodeHistory\DatabaseHistorySpecs.cs">
+      <DependentUpon>DatabaseHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HashCodeHistory\IRememberHashCodes.cs" />
     <Compile Include="ISelectFilesToDelete.cs" />
     <Compile Include="Deletion\WhatIfFileDeleter.cs" />
     <Compile Include="HashCodeProviders\FileContentHashCodeProvider.cs" />
@@ -103,6 +108,7 @@
       <DependentUpon>FileSizeHashCodeProvider.cs</DependentUpon>
     </Compile>
     <Compile Include="ICommandLineParser.cs" />
+    <Compile Include="HashCodeHistory\NullHistory.cs" />
     <Compile Include="Streams\HeadStreamDecorator.cs" />
     <Compile Include="IFileDeleter.cs" />
     <Compile Include="IHashCodeProvider.cs" />

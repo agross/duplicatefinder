@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DuplicateFinder.Core.Abstractions
 {
@@ -24,6 +25,26 @@ namespace DuplicateFinder.Core.Abstractions
 		{
 			File.SetAttributes(path, FileAttributes.Normal);
 			File.Delete(path);
+		}
+
+		public IEnumerable<string> ReadAllLines(string path)
+		{
+			if (File.Exists(path))
+			{
+				return File.ReadAllLines(path);
+			}
+
+			return Enumerable.Empty<string>();
+		}
+
+		public void WriteAllLines(string path, IEnumerable<string> lines)
+		{
+			File.WriteAllLines(path, lines);
+		}
+
+		public bool Exists(string path)
+		{
+			return File.Exists(path);
 		}
 	}
 }

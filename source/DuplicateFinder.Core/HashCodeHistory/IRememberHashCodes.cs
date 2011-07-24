@@ -4,7 +4,6 @@ namespace DuplicateFinder.Core.HashCodeHistory
 {
 	public interface IRememberHashCodes
 	{
-		void Snapshot(IEnumerable<string> hashes);
-		IEnumerable<string> Resurrected();
+		IEnumerable<string> Snapshot(IEnumerable<string> hashes);
 	}
 }

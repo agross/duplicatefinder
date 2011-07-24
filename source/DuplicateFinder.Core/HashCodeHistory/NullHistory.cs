@@ -4,11 +4,7 @@ namespace DuplicateFinder.Core.HashCodeHistory
 {
 	public class NullHistory : IRememberHashCodes
 	{
-		public void Snapshot(IEnumerable<string> hashes)
-		{
-		}
-
-		public IEnumerable<string> Resurrected()
+		public IEnumerable<string> Snapshot(IEnumerable<string> hashes)
 		{
 			yield break;
 		}

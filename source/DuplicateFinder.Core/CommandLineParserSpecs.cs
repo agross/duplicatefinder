@@ -4,6 +4,7 @@ using System.Linq;
 
 using DuplicateFinder.Core.Commands;
 using DuplicateFinder.Core.Deletion;
+using DuplicateFinder.Core.HashCodeHistory;
 using DuplicateFinder.Core.HashCodeProviders;
 using DuplicateFinder.Core.Streams;
 
@@ -336,6 +337,63 @@ namespace DuplicateFinder.Core
 			      	.OfType<FileContentHashCodeProvider>()
 			      	.First()
 			      	.StreamDecorators.Count().ShouldEqual(2);
+	}
+
+	[Subject(typeof(CommandLineParser))]
+	public class When_not_keeping_a_list_of_seen_hashes
+	{
+		static ICommand Command;
+		static CommandLineParser CommandLine;
+		static FindDuplicatesCommand FindCommand;
+		static DuplicateFinder DuplicateFinder;
+
+		Establish context = () => { CommandLine = new CommandLineParser(); };
+
+		Because of = () =>
+		{
+			Command = CommandLine.Parse(@"--name c:\1".Args());
+			FindCommand = Command as FindDuplicatesCommand;
+			DuplicateFinder = (DuplicateFinder)FindCommand.DuplicateFinder;
+		};
+
+		It should_be_able_to_parse_the_command_line =
+			() => Command.ShouldNotBeNull();
+
+		It should_create_the_find_command =
+			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+
+		It should_not_maintain_history_of_seen_hashes =
+			() => DuplicateFinder.History.ShouldBeOfType<NullHistory>();
+	}
+	
+	[Subject(typeof(CommandLineParser))]
+	public class When_keeping_a_list_of_seen_hashes
+	{
+		static ICommand Command;
+		static CommandLineParser CommandLine;
+		static FindDuplicatesCommand FindCommand;
+		static DuplicateFinder DuplicateFinder;
+
+		Establish context = () => { CommandLine = new CommandLineParser(); };
+
+		Because of = () =>
+		{
+			Command = CommandLine.Parse(@"--name --history file c:\1".Args());
+			FindCommand = Command as FindDuplicatesCommand;
+			DuplicateFinder = (DuplicateFinder)FindCommand.DuplicateFinder;
+		};
+
+		It should_be_able_to_parse_the_command_line =
+			() => Command.ShouldNotBeNull();
+
+		It should_create_the_find_command =
+			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+
+		It should_maintain_a_history_of_seen_hashes =
+			() => DuplicateFinder.History.ShouldBeOfType<DatabaseHistory>();
+
+		It should_maintain_a_history_of_seen_hashes_in_the_file_specified_on_the_command_line =
+			() => ((DatabaseHistory) DuplicateFinder.History).DatabaseFile.ShouldEqual("file");
 	}
 
 	internal static partial class EnumerableExtensions
