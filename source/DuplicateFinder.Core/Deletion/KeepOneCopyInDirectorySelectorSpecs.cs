@@ -28,7 +28,7 @@ namespace DuplicateFinder.Core.Deletion
 
 		Because of = () => { ToDelete = Selector.FilesToDelete(new[] { @"no-keep\1", @"no-keep\2", @"no-keep\3", @"no-keep\4" }); };
 
-		It should_select_all_but_the_first_file =
-			() => ToDelete.ShouldContainOnly(@"no-keep\2", @"no-keep\3", @"no-keep\4");
+		It should_select_all_but_the_last_file =
+			() => ToDelete.ShouldContainOnly(@"no-keep\1", @"no-keep\2", @"no-keep\3");
 	}
 }

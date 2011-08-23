@@ -18,7 +18,7 @@ namespace DuplicateFinder.Core.Deletion
 		{
 			var keep = duplicates
 			           	.FirstOrDefault(x => InPath(_keepDirectory, x)) ??
-			           duplicates.First();
+			           duplicates.Last();
 
 			return duplicates.Except(new[] { keep });
 		}
