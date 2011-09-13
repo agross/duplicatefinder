@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Machine.Specifications;
 using Machine.Specifications.Utility;
@@ -78,4 +79,26 @@ namespace DuplicateFinder.Core.Integration.Tests
 		It should_delete_the_recreated_second_duplicate =
 			() => File.Exists(@"HashCodeHistory\Run3_FileIsRecreatedAndDuplicate\match-dup-2.txt").ShouldBeFalse();
 	}
+
+    public class When_files_outside_the_scanned_directories_are_moved_to_the_archive : HistorySpecs
+    {
+      static ICommand Run2;
+
+      Establish context = () =>
+      {
+        var parser = new CommandLineParser();
+
+        var run1 = parser.Parse((@"--content --history " + History + @" --keep HashCodeHistory_FileWasMoved\Run1_FileExists\Archive HashCodeHistory_FileWasMoved\Run1_FileExists\Archive HashCodeHistory_FileWasMoved\Run1_FileExists\Scanned").Args());
+        run1.Execute();
+
+        Run2 = parser.Parse((@"--content --history " + History + @"  --keep HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Scanned").Args());
+      };
+
+      Because of = () => Run2.Execute();
+
+      Cleanup after = () => Directory.EnumerateFiles(".", History + "*").Each(File.Delete);
+
+      It should_not_delete_the_moved_file =
+          () => File.Exists(@"HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive\match.txt").ShouldBeTrue();
+    }
 }

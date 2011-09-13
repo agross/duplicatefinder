@@ -55,6 +55,21 @@
     <Compile Include="HashCodeHistorySpecs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HashCodeHistory_FileWasMoved\Run1_FileExists\Archive\placeholder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_FileWasMoved\Run1_FileExists\Not_Scanned\match.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_FileWasMoved\Run1_FileExists\Scanned\placeholder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Scanned\placeholder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive\match.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="HashCodeHistory_with_Duplicate\Run1_FileExists\match.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -130,7 +145,9 @@
       <Name>DuplicateFinder.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Not_Scanned\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
