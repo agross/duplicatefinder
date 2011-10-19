@@ -43,12 +43,12 @@ class SideBySideSpecs
 			project = Document.new(File.read(projectFile)) 
 			
 			@references.each do |ref|
-				query = "/x:Project/x:ItemGroup/x:Reference[@Include='#{ref}']"
+				query = "/x:Project/x:ItemGroup/x:Reference[starts-with(lower-case(@Include), '#{ref.downcase}')]"
 				project.elements.delete_all query, {"x" => XMLNS}
 			end
 			
 			@specs.each do |spec|
-				query = "/x:Project/x:ItemGroup/x:Compile[ends-with(lower-case(@Include), '#{spec.pathmap('%f').downcase}'})]"
+				query = "/x:Project/x:ItemGroup/x:Compile[ends-with(lower-case(@Include), '#{spec.pathmap('%f').downcase}')]"
 				project.elements.delete_all query, {"x" => XMLNS}
 			end
 			
