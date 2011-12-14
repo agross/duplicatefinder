@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using NDesk.Options;
+using Mono.Options;
 
 namespace DuplicateFinder.Core.Commands
 {

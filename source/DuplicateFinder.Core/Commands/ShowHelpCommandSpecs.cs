@@ -4,7 +4,7 @@ using FakeItEasy;
 
 using Machine.Specifications;
 
-using NDesk.Options;
+using Mono.Options;
 
 namespace DuplicateFinder.Core.Commands
 {

@@ -11,6 +11,10 @@ using Machine.Specifications.Utility;
 
 namespace DuplicateFinder.Core.CommandLine
 {
+	public class When_the_first_command_line_argument_cannot_be_handled
+	{
+	}
+
 	[Subject(typeof(CommandLineParser))]
 	public class When_help_is_requested
 	{
@@ -394,7 +398,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => ((DatabaseHistory) DuplicateFinder.History).DatabaseFile.ShouldEqual("file");
 	}
 
-	internal static partial class EnumerableExtensions
+	internal static class EnumerableExtensions
 	{
 		public static void ShouldContainInstanceOf<TElement>(this IEnumerable instance)
 		{

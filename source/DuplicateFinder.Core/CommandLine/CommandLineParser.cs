@@ -1,107 +1,91 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
+
 using DuplicateFinder.Core.Abstractions;
+using DuplicateFinder.Core.CommandLine.Factories;
 using DuplicateFinder.Core.Commands;
-using DuplicateFinder.Core.Deletion;
-using DuplicateFinder.Core.HashCodeHistory;
-using DuplicateFinder.Core.HashCodeProviders;
-using DuplicateFinder.Core.Streams;
-using NDesk.Options;
 
 namespace DuplicateFinder.Core.CommandLine
 {
 	public class CommandLineParser : ICommandLineParser
 	{
+		readonly ICommandFactory[] _factories;
 		readonly FileSystem _fileSystem;
-		readonly ConsoleOutput _output;
+		readonly ModifyableOptionSet _options;
+		readonly IOutput _output;
 
 		public CommandLineParser()
 		{
 			_fileSystem = new FileSystem();
 			_output = new ConsoleOutput();
+
+			_options = new ModifyableOptionSet
+			           {
+						{
+			           		Args.Name, 
+							"Compare files by name", 
+							v => { }
+			           		},
+			           	{
+			           		Args.Size,
+			           		"Compare files by file size",
+			           		v => { }
+			           		},
+			           	{
+			           		Args.Content,
+			           		"Compare files by content",
+			           		v => { }
+			           		},
+			           	{
+			           		Args.Head,
+			           		"Compare files by head content (first {N} bytes, requires --content)",
+			           		v => { }
+			           		},
+			           	{
+			           		Args.Tail,
+			           		"Compare files by tail content (last {N} bytes, requires --content)",
+			           		v => { }
+			           		},
+			           	{
+			           		Args.Keep,
+			           		"Keeps the first duplicate encountered under {DIRECTORY}, and deletes duplicates from other directories. If not specified, all but the first duplicate encountered are deleted."
+			           		,
+			           		v => { }
+			           		},
+			           	{
+			           		Args.History,
+			           		"Keep a list of seen hashes in {FILE}, deletes files with hashes that reappear after not being seen at least once"
+			           		,
+			           		v => { }
+			           		},
+			           	{
+			           		Args.WhatIf,
+			           		"Do not delete anything",
+			           		v => { }
+			           		},
+			           	{
+			           		Args.Help,
+			           		"Show this message and exit",
+			           		v => { }
+			           		},
+			           };
+
+			_factories = new ICommandFactory[]
+			             {
+			             	new FindDuplicatesCommandFactory(_output, _fileSystem, _options),
+			             	new ShowHelpCommandFactory(_output, _options)
+			             };
 		}
 
 		public ICommand Parse(string[] args)
 		{
-			var showHelp = false;
-			var hashes = new List<Func<IHashCodeProvider>>();
-			var decorators = new List<IStreamDecorator>();
-			var deletionSelector = (ISelectFilesToDelete) new AllButFirstDuplicateSelector();
-			var deleter = (IFileDeleter) new FileDeleter(_fileSystem, _output);
-			var history = (IRememberHashCodes) new NullHistory();
-
-			var options = new OptionSet
-			              {
-			              	{
-			              		"n|name", "Compare files by name",
-			              		v => hashes.Add(() => new FileNameHashCodeProvider())
-			              		},
-			              	{
-			              		"s|size", "Compare files by file size",
-			              		v => hashes.Add(() => new FileSizeHashCodeProvider(_fileSystem))
-			              		},
-			              	{
-			              		"c|content", "Compare files by content",
-			              		v => hashes.Add(() => new FileContentHashCodeProvider(_fileSystem, decorators.ToArray()))
-			              		},
-			              	{
-			              		"h|head|first=", "Compare files by head content (first {N} bytes, requires --content)",
-			              		(long v) => decorators.Add(new HeadStreamDecorator(v))
-			              		},
-			              	{
-			              		"t|tail|last=", "Compare files by tail content (last {N} bytes, requires --content)",
-			              		(long v) => decorators.Add(new TailStreamDecorator(v))
-			              		},
-			              	{
-			              		"k|keep=",
-			              		"Keeps the first duplicate encountered under {DIRECTORY}, and deletes duplicates from other directories. If not specified, all but the first duplicate encountered are deleted.",
-			              		v => deletionSelector = new KeepOneCopyInDirectorySelector(v)
-			              		},
-							{
-			              		"history=", "Keep a list of seen hashes in {FILE}, deletes files with hashes that reappear after not being seen at least once",
-			              		v => history = new DatabaseHistory(v, _fileSystem)
-			              		},
-			              	{
-			              		"whatif|dry-run", "Do not delete anything",
-			              		v => deleter = new WhatIfFileDeleter(_output)
-			              		},
-			              	{
-			              		"?|help", "Show this message and exit",
-			              		v => showHelp = v != null
-			              		}
-			              };
-
-			var directories = options.Parse(args);
-
-			var messages = Missing(hashes, "The comparison type is missing")
-				.Union(Missing(directories, "No directories to compare"));
-
-			if (showHelp || messages.Any())
+			try
 			{
-				return new ShowHelpCommand(options, _output, messages.ToArray());
+				return _factories.First(x => x.CanHandle(args)).CreateCommand(args);
 			}
-
-			var finder = new DuplicateFinder(directories.Select(x => (IFileFinder) new RecursiveFileFinder(_fileSystem, x)),
-			                                 hashes.Select(x => x()),
-			                                 _output,
-											 history);
-
-			return new FindDuplicatesCommand(_output,
-			                                 finder,
-			                                 deletionSelector,
-			                                 deleter);
-		}
-
-		static IEnumerable<string> Missing(IEnumerable hashes, string message)
-		{
-			if (hashes.Cast<object>().Any())
+			catch (CommandLineParserException ex)
 			{
-				yield break;
+				return new ShowHelpCommand(_options, _output, ex.Messages);
 			}
-
-			yield return message;
 		}
 	}
 }
