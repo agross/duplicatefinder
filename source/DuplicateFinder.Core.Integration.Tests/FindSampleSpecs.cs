@@ -13,7 +13,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 		static ICommand Command;
 
 		Establish context =
-			() => { Command = new CommandLineParser().Parse(@"--size --whatif Samples\First Samples\Second".Args()); };
+			() => { Command = new CommandLineParser().Parse(@"--delete --size --whatif Samples\First Samples\Second".Args()); };
 
 		Because of = () => Command.Execute();
 
@@ -29,7 +29,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 		static ICommand Command;
 
 		Establish context =
-			() => { Command = new CommandLineParser().Parse(@"--name --whatif Samples\First Samples\Second".Args()); };
+			() => { Command = new CommandLineParser().Parse(@"--delete --name --whatif Samples\First Samples\Second".Args()); };
 
 		Because of = () => Command.Execute();
 
@@ -43,7 +43,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 		static ICommand Command;
 
 		Establish context =
-			() => { Command = new CommandLineParser().Parse(@"--content --whatif Samples\First Samples\Second".Args()); };
+			() => { Command = new CommandLineParser().Parse(@"--delete --content --whatif Samples\First Samples\Second".Args()); };
 
 		Because of = () => Command.Execute();
 
@@ -57,7 +57,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 		static ICommand Command;
 
 		Establish context =
-			() => { Command = new CommandLineParser().Parse(@"--content --first 5 --whatif Samples\First Samples\Second".Args()); };
+			() => { Command = new CommandLineParser().Parse(@"--delete --content --first 5 --whatif Samples\First Samples\Second".Args()); };
 
 		Because of = () => Command.Execute();
 
@@ -73,7 +73,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 		static ICommand Command;
 
 		Establish context =
-			() => { Command = new CommandLineParser().Parse(@"--content --last 5 --whatif Samples\First Samples\Second".Args()); };
+			() => { Command = new CommandLineParser().Parse(@"--delete --content --last 5 --whatif Samples\First Samples\Second".Args()); };
 
 		Because of = () => Command.Execute();
 
@@ -89,7 +89,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 		static ICommand Command;
 
 		Establish context =
-			() => { Command = new CommandLineParser().Parse(@"--content --first 5 --last 5 --whatif Samples\First Samples\Second".Args()); };
+			() => { Command = new CommandLineParser().Parse(@"--delete --content --first 5 --last 5 --whatif Samples\First Samples\Second".Args()); };
 
 		Because of = () => Command.Execute();
 

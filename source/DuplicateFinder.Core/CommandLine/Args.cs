@@ -1,5 +1,12 @@
 namespace DuplicateFinder.Core.CommandLine
 {
+	static class Commands
+	{
+		public const string PruneHistory = "p|prune";
+		public const string DeleteDuplicates = "d|delete";
+		public const string Help = "?|help";
+	}
+
 	static class Args
 	{
 		public const string Content = "c|content";
@@ -8,7 +15,6 @@ namespace DuplicateFinder.Core.CommandLine
 		public const string Keep = "k|keep=";
 		public const string History = "history=";
 		public const string WhatIf = "whatif|dry-run";
-		public const string Help = "?|help";
 		public const string Name = "n|name";
 		public const string Size = "s|size";
 	}

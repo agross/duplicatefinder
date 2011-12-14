@@ -15,10 +15,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
 
 		public bool CanHandle(string[] args)
 		{
-			var showHelp = false;
-			_options.Update<string>(Args.Help, v => showHelp = v != null);
-			_options.Parse(args);
-			return showHelp;
+			return true;
 		}
 
 		public ICommand CreateCommand(string[] args)

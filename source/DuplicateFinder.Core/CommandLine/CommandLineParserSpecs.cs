@@ -44,7 +44,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 			{
-				Command = CommandLine.Parse(@"--name --whatif c:\1 c:\2".Args());
+				Command = CommandLine.Parse(@"--delete --name --whatif c:\1 c:\2".Args());
 				FindCommand = Command as FindDuplicatesCommand;
 				DuplicateFinder = (DuplicateFinder)FindCommand.DuplicateFinder;
 			};
@@ -94,12 +94,6 @@ namespace DuplicateFinder.Core.CommandLine
 
 		It should_create_the_show_help_command =
 			() => Command.ShouldBeOfType<ShowHelpCommand>();
-
-		It should_create_a_message_for_the_missing_comparison_option =
-			() => ShowHelpCommand.Messages.ShouldContain("The comparison type is missing");
-
-		It should_create_a_message_for_the_missing_directories =
-			() => ShowHelpCommand.Messages.ShouldContain("No directories to compare");
 	}
 
 	[Subject(typeof(CommandLineParser))]
@@ -113,7 +107,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 			{
-				Command = CommandLine.Parse(@"--name --size --content c:\1 c:\2".Args());
+				Command = CommandLine.Parse(@"--delete --name --size --content c:\1 c:\2".Args());
 				DuplicateFinder = (DuplicateFinder)(Command as FindDuplicatesCommand).DuplicateFinder;
 			};
 
@@ -147,7 +141,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 			{
-				Command = CommandLine.Parse(@"--name c:\1 c:\2".Args());
+				Command = CommandLine.Parse(@"--delete --name c:\1 c:\2".Args());
 				DuplicateFinder = (DuplicateFinder)((FindDuplicatesCommand) Command).DuplicateFinder;
 			};
 
@@ -175,7 +169,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 			{
-				Command = CommandLine.Parse(@"--size c:\1 c:\2".Args());
+				Command = CommandLine.Parse(@"--delete --size c:\1 c:\2".Args());
 				DuplicateFinder = (DuplicateFinder)((FindDuplicatesCommand) Command).DuplicateFinder;
 			};
 
@@ -203,7 +197,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 			{
-				Command = CommandLine.Parse(@"--content c:\1 c:\2".Args());
+				Command = CommandLine.Parse(@"--delete --content c:\1 c:\2".Args());
 				DuplicateFinder = (DuplicateFinder)((FindDuplicatesCommand) Command).DuplicateFinder;
 			};
 
@@ -237,7 +231,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 			{
-				Command = CommandLine.Parse(@"--content --first 10 c:\1 c:\2".Args());
+				Command = CommandLine.Parse(@"--delete --content --first 10 c:\1 c:\2".Args());
 				DuplicateFinder = (DuplicateFinder)((FindDuplicatesCommand) Command).DuplicateFinder;
 			};
 
@@ -271,7 +265,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 			{
-				Command = CommandLine.Parse(@"--content --last 10 c:\1 c:\2".Args());
+				Command = CommandLine.Parse(@"--delete --content --last 10 c:\1 c:\2".Args());
 				DuplicateFinder = (DuplicateFinder)((FindDuplicatesCommand) Command).DuplicateFinder;
 			};
 
@@ -305,7 +299,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 			{
-				Command = CommandLine.Parse(@"--content --first 10 --last 10 c:\1 c:\2".Args());
+				Command = CommandLine.Parse(@"--delete --content --first 10 --last 10 c:\1 c:\2".Args());
 				DuplicateFinder = (DuplicateFinder) ((FindDuplicatesCommand) Command).DuplicateFinder;
 			};
 
@@ -353,7 +347,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 		{
-			Command = CommandLine.Parse(@"--name c:\1".Args());
+			Command = CommandLine.Parse(@"--delete --name c:\1".Args());
 			FindCommand = Command as FindDuplicatesCommand;
 			DuplicateFinder = (DuplicateFinder)FindCommand.DuplicateFinder;
 		};
@@ -380,7 +374,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		Because of = () =>
 		{
-			Command = CommandLine.Parse(@"--name --history file c:\1".Args());
+			Command = CommandLine.Parse(@"--delete --name --history file c:\1".Args());
 			FindCommand = Command as FindDuplicatesCommand;
 			DuplicateFinder = (DuplicateFinder)FindCommand.DuplicateFinder;
 		};
