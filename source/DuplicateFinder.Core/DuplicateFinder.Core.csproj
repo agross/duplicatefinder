@@ -62,6 +62,9 @@
     <Compile Include="CommandLine\Factories\ShowHelpCommandFactory.cs" />
     <Compile Include="CommandLine\ModifyableOptionSet.cs" />
     <Compile Include="CommandLine\Args.cs" />
+    <Compile Include="CommandLine\ModifyableOptionSetSpecs.cs">
+      <DependentUpon>ModifyableOptionSet.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Commands\FindDuplicatesCommand.cs" />
     <Compile Include="Abstractions\ConsoleOutput.cs" />

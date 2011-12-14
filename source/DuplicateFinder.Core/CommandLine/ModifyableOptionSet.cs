@@ -9,11 +9,23 @@ namespace DuplicateFinder.Core.CommandLine
 	{
 		public void Update<T>(string key, Action<T> parser)
 		{
-			var option = Items.First(x => x.Prototype.Equals(key));
-			var index = IndexOf(option);
-			RemoveItem(index);
+			int originalIndex;
+			var option = Delete(key, out originalIndex);
 
 			Add(option.Prototype, option.Description, parser);
+
+			int iDontCare;
+			option = Delete(key, out iDontCare);
+
+			InsertItem(originalIndex, option);
+		}
+
+		Option Delete(string key, out int index)
+		{
+			var option = Items.First(x => x.Prototype.Equals(key));
+			index = IndexOf(option);
+			RemoveItem(index);
+			return option;
 		}
 	}
 }
