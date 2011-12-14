@@ -55,8 +55,8 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="CommandLineParser.cs" />
-    <Compile Include="CommandLineParserSpecs.cs">
+    <Compile Include="CommandLine\CommandLineParser.cs" />
+    <Compile Include="CommandLine\CommandLineParserSpecs.cs">
       <DependentUpon>CommandLineParser.cs</DependentUpon>
     </Compile>
     <Compile Include="Commands\FindDuplicatesCommand.cs" />

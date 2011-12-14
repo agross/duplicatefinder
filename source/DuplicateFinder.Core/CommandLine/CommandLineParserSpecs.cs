@@ -1,17 +1,15 @@
 using System;
 using System.Collections;
 using System.Linq;
-
 using DuplicateFinder.Core.Commands;
 using DuplicateFinder.Core.Deletion;
 using DuplicateFinder.Core.HashCodeHistory;
 using DuplicateFinder.Core.HashCodeProviders;
 using DuplicateFinder.Core.Streams;
-
 using Machine.Specifications;
 using Machine.Specifications.Utility;
 
-namespace DuplicateFinder.Core
+namespace DuplicateFinder.Core.CommandLine
 {
 	[Subject(typeof(CommandLineParser))]
 	public class When_help_is_requested

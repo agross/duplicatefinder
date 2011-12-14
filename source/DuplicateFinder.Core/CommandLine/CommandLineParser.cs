@@ -2,17 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using DuplicateFinder.Core.Abstractions;
 using DuplicateFinder.Core.Commands;
 using DuplicateFinder.Core.Deletion;
 using DuplicateFinder.Core.HashCodeHistory;
 using DuplicateFinder.Core.HashCodeProviders;
 using DuplicateFinder.Core.Streams;
-
 using NDesk.Options;
 
-namespace DuplicateFinder.Core
+namespace DuplicateFinder.Core.CommandLine
 {
 	public class CommandLineParser : ICommandLineParser
 	{

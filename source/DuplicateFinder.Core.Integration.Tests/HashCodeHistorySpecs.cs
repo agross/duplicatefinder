@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using DuplicateFinder.Core.CommandLine;
 using Machine.Specifications;
 using Machine.Specifications.Utility;
 

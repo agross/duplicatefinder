@@ -1,4 +1,5 @@
 ﻿using DuplicateFinder.Core;
+using DuplicateFinder.Core.CommandLine;
 
 namespace DuplicateFinder.Console
 {

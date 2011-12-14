@@ -1,5 +1,5 @@
 using System.IO;
-
+using DuplicateFinder.Core.CommandLine;
 using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Integration.Tests

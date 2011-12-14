@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using DuplicateFinder.Core.CommandLine;
 using DuplicateFinder.Core.Commands;
 
 using Machine.Specifications;
