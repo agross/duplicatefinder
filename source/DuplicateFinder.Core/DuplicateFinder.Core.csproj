@@ -58,6 +58,8 @@
     <Compile Include="CommandLine\CommandLineParserSpecs.cs">
       <DependentUpon>CommandLineParser.cs</DependentUpon>
     </Compile>
+    <Compile Include="CommandLine\Factories\OptionSetExtensions.cs" />
+    <Compile Include="CommandLine\Factories\PruneHistoryCommandFactory.cs" />
     <Compile Include="CommandLine\ICommandFactory.cs" />
     <Compile Include="CommandLine\Factories\ShowHelpCommandFactory.cs" />
     <Compile Include="CommandLine\ModifyableOptionSet.cs" />
@@ -71,13 +73,19 @@
     <Compile Include="Commands\FindDuplicatesCommandSpecs.cs">
       <DependentUpon>FindDuplicatesCommand.cs</DependentUpon>
     </Compile>
-    <Compile Include="Commands\PruneHistoryDuplicatesCommand.cs" />
+    <Compile Include="Commands\PruneHistoryCommand.cs" />
+    <Compile Include="Commands\PruneHistoryCommandSpecs.cs">
+      <DependentUpon>PruneHistoryCommand.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commands\ShowHelpCommand.cs" />
     <Compile Include="Commands\ShowHelpCommandSpecs.cs">
       <DependentUpon>ShowHelpCommand.cs</DependentUpon>
     </Compile>
     <Compile Include="Deletion\AllButFirstDuplicateSelectorSpecs.cs">
       <DependentUpon>AllButFirstDuplicateSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Deletion\WhatIfFileDeleterSpecs.cs">
+      <DependentUpon>WhatIfFileDeleter.cs</DependentUpon>
     </Compile>
     <Compile Include="Deletion\FileDeleterSpecs.cs">
       <DependentUpon>FileDeleter.cs</DependentUpon>

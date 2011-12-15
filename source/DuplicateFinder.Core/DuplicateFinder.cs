@@ -41,18 +41,23 @@ namespace DuplicateFinder.Core
 			private set;
 		}
 
-		public FindResult FindDuplicates()
+		public IEnumerable<IGrouping<string, string>> CalculateHashes()
 		{
 			var fileList = FileFinders
 				.SelectMany(x => x.GetFiles())
 				.RemoveDuplicateEntries();
 
-			var hashesAndFiles = fileList
-				.Select(x => new { File = x, Hashes = HashesOf(x) })
+			return fileList
+				.Select(x => new {File = x, Hashes = HashesOf(x)})
 				.Where(x => x.Hashes.Any())
-				.Select(x => new { x.File, Hash = Aggregate(x.Hashes) })
+				.Select(x => new {x.File, Hash = Aggregate(x.Hashes)})
 				.GroupBy(x => x.Hash, x => x.File)
 				.ToList();
+		}
+
+		public FindResult FindDuplicates()
+		{
+			var hashesAndFiles = CalculateHashes();
 
 			var resurrectedHashes = History.Snapshot(hashesAndFiles.Select(x => x.Key));
 
@@ -88,7 +93,7 @@ namespace DuplicateFinder.Core
 		}
 	}
 
-	internal static partial class EnumerableExtensions
+	internal static class EnumerableExtensions
 	{
 		public static IEnumerable<T> RemoveDuplicateEntries<T>(this IEnumerable<T> instance)
 		{

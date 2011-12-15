@@ -35,6 +35,14 @@ namespace DuplicateFinder.Core.HashCodeHistory
 			}
 		}
 
+		public void Forget(IEnumerable<string> hashes)
+		{
+			using (var scope = new Scope(_fileSystem, DatabaseFile))
+			{
+				scope.Remove(hashes);
+			}
+		}
+
 		class Scope : IDisposable
 		{
 			IEnumerable<string> _allSeen = new List<string>();
@@ -98,6 +106,15 @@ namespace DuplicateFinder.Core.HashCodeHistory
 
 				_gone = lastSnapshot.Except(CurrentSnapshot).ToList();
 				_allGone = _allGone.Union(_gone).ToList();
+			}
+			
+			public void Remove(IEnumerable<string> hashes)
+			{
+				hashes = hashes.ToList();
+
+				_allSeen = _allSeen.Except(hashes).ToList();
+				_allGone = _allGone.Except(hashes).ToList();
+				_currentSnapshot = _currentSnapshot.Except(hashes).ToList();
 			}
 
 			public IEnumerable<string> Resurrected()

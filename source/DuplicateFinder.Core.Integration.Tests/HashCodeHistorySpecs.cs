@@ -25,6 +25,21 @@ namespace DuplicateFinder.Core.Integration.Tests
 		{
 			get { return Directory.EnumerateFiles(".", History + "*"); }
 		}
+		
+		protected static string Gone
+		{
+			get { return HistoryFiles.First(x => x.EndsWith("-gone")); }
+		}
+		
+		protected static string Current
+		{
+			get { return HistoryFiles.First(x => x.EndsWith("-current")); }
+		}
+		
+		protected static string Seen
+		{
+			get { return HistoryFiles.First(x => x.EndsWith("-seen")); }
+		}
 	}
 
 	public class When_deleted_files_are_resurrected : HistorySpecs

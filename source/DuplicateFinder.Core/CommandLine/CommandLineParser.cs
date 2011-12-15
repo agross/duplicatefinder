@@ -47,14 +47,14 @@ namespace DuplicateFinder.Core.CommandLine
 			           		},
 			           	{
 			           		Args.Keep,
-			           		"Keeps the first duplicate encountered under {DIRECTORY}, and deletes duplicates from other directories. If not specified, all but the first duplicate encountered are deleted."
-			           		,
+			           		"Keeps the first duplicate encountered under {DIRECTORY}, and deletes duplicates from other" +
+			           		" directories. If not specified, all but the first duplicate encountered are deleted.",
 			           		v => { }
 			           		},
 			           	{
 			           		Args.History,
-			           		"Keep a list of seen hashes in {FILE}, deletes files with hashes that reappear after not being seen at least once"
-			           		,
+			           		"Keep a list of seen hashes in {FILE}, deletes files with hashes that reappear after not" +
+			           		" being seen at least once",
 			           		v => { }
 			           		},
 			           	{
@@ -64,7 +64,7 @@ namespace DuplicateFinder.Core.CommandLine
 			           		},
 			           	{
 			           		Args.WhatIf,
-			           		"Do not delete anything",
+			           		"Do not delete files",
 			           		v => { }
 			           		},
 			           	{
@@ -76,6 +76,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 			_factories = new ICommandFactory[]
 			             {
+			             	new PruneHistoryCommandFactory(_output, _fileSystem, _options), 
 			             	new FindDuplicatesCommandFactory(_output, _fileSystem, _options),
 			             	new ShowHelpCommandFactory(_output, _options)
 			             };

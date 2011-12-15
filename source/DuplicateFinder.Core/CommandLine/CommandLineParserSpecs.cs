@@ -388,7 +388,6 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof (CommandLineParser))]
-	[Ignore("not implemented")]
 	public class When_pruning_the_list_of_seen_hashes
 	{
 		static ICommand Command;
@@ -404,16 +403,32 @@ namespace DuplicateFinder.Core.CommandLine
 		It should_create_the_prune_history_command =
 			() => Command.ShouldBeOfType<PruneHistoryCommand>();
 
-		It should_maintain_a_history_of_seen_hashes =
+		It should_not_maintain_a_history_of_seen_hashes =
 			() => Command.As<PruneHistoryCommand>()
 			      	.DuplicateFinder.As<DuplicateFinder>()
-			      	.History.ShouldBeOfType<DatabaseHistory>();
+			      	.History.ShouldBeOfType<NullHistory>();
 
-		It should_maintain_a_history_of_seen_hashes_in_the_file_specified_on_the_command_line =
+		It should_delete_hashes_from_the_history_file =
 			() => Command.As<PruneHistoryCommand>()
-			      	.DuplicateFinder.As<DuplicateFinder>()
 			      	.History.As<DatabaseHistory>()
 			      	.DatabaseFile.ShouldEqual("file");
+	}
+	
+	[Subject(typeof (CommandLineParser))]
+	public class When_pruning_the_list_of_seen_hashes_while_omitting_the_history
+	{
+		static ICommand Command;
+		static CommandLineParser CommandLine;
+
+		Establish context = () => { CommandLine = new CommandLineParser(); };
+
+		Because of = () => { Command = CommandLine.Parse(@"--prune --name c:\1".Args()); };
+
+		It should_be_able_to_parse_the_command_line =
+			() => Command.ShouldNotBeNull();
+
+		It should_create_the_show_help_command =
+			() => Command.ShouldBeOfType<ShowHelpCommand>();
 	}
 
 	static class EnumerableExtensions

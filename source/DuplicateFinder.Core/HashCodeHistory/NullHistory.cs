@@ -8,5 +8,9 @@ namespace DuplicateFinder.Core.HashCodeHistory
 		{
 			yield break;
 		}
+
+		public void Forget(IEnumerable<string> hashes)
+		{
+		}
 	}
 }

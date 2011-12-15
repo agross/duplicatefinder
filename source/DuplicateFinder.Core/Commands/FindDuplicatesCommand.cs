@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DuplicateFinder.Core.Commands
 {
-	public class FindDuplicatesCommand : ICommand
+	class FindDuplicatesCommand : ICommand
 	{
 		readonly IOutput _output;
 		readonly ISelectFilesToDelete _select;

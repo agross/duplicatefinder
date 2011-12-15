@@ -56,13 +56,28 @@
     <Compile Include="HashCodeHistorySpecs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HashCodeHistory_Prune\Run1_FileExists\match.txt">
+    <Content Include="HashCodeHistory_PruneSubset\Run1_FileExists\match.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HashCodeHistory_Prune\Run2_FileWasDeleted\no-match.txt">
+    <Content Include="HashCodeHistory_PruneSubset\Run2_FileWasDeleted\no-match.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HashCodeHistory_Prune\Run3_FileIsRecreated\match.txt">
+    <Content Include="HashCodeHistory_PruneSubset\Run3_FileIsRecreated\match.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_Prune\Run1_FileExists\match-1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_Prune\Run1_FileExists\match-2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_Prune\Run2_FileWasDeleted\placeholder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_Prune\Run4_FileIsRecreated\match-1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_Prune\Run4_FileIsRecreated\match-2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="HashCodeHistory_FileWasMoved\Run1_FileExists\Archive\placeholder.txt">

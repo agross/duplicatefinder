@@ -6,6 +6,7 @@ namespace DuplicateFinder.Core
 	public interface IDuplicateFinder
 	{
 		FindResult FindDuplicates();
+		IEnumerable<IGrouping<string, string>> CalculateHashes();
 	}
 
 	public class FindResult
