@@ -388,6 +388,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof (CommandLineParser))]
+	[Ignore("not implemented")]
 	public class When_pruning_the_list_of_seen_hashes
 	{
 		static ICommand Command;

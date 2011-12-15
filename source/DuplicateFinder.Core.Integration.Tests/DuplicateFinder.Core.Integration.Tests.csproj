@@ -49,12 +49,22 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="AllFilesRemovedBeforeHashingSpecs.cs" />
+    <Compile Include="HashCodeHistoryPruningSpecs.cs" />
     <Compile Include="KeepSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FindSampleSpecs.cs" />
     <Compile Include="HashCodeHistorySpecs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HashCodeHistory_Prune\Run1_FileExists\match.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_Prune\Run2_FileWasDeleted\no-match.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HashCodeHistory_Prune\Run3_FileIsRecreated\match.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="HashCodeHistory_FileWasMoved\Run1_FileExists\Archive\placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
