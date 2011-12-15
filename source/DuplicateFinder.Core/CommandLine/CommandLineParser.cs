@@ -20,20 +20,10 @@ namespace DuplicateFinder.Core.CommandLine
 
 			_options = new ModifyableOptionSet
 			           {
-						{
-			           		Commands.DeleteDuplicates, 
-							"Delete duplicates found by the specified criteria", 
-							v => { }
-			           		},
-						{
-			           		Commands.PruneHistory, 
-							"Remove hashes from the history, does not delete files", 
-							v => { }
-			           		},
-						{
-			           		Args.Name, 
-							"Compare files by name", 
-							v => { }
+			           	{
+			           		Args.Name,
+			           		"Compare files by name",
+			           		v => { }
 			           		},
 			           	{
 			           		Args.Size,
@@ -68,12 +58,17 @@ namespace DuplicateFinder.Core.CommandLine
 			           		v => { }
 			           		},
 			           	{
+			           		Args.PruneHistory,
+			           		"Remove hashes from the history, does not delete files",
+			           		v => { }
+			           		},
+			           	{
 			           		Args.WhatIf,
 			           		"Do not delete anything",
 			           		v => { }
 			           		},
 			           	{
-			           		Commands.Help,
+			           		Args.Help,
 			           		"Show this message and exit",
 			           		v => { }
 			           		},

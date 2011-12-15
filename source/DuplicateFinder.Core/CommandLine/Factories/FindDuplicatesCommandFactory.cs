@@ -26,10 +26,10 @@ namespace DuplicateFinder.Core.CommandLine.Factories
 
 		public bool CanHandle(string[] args)
 		{
-			var delete = false;
-			_options.Update<string>(Commands.DeleteDuplicates, v => delete = v != null);
+			var prune = false;
+			_options.Update<string>(Args.PruneHistory, v => prune = v != null);
 			_options.Parse(args);
-			return delete;
+			return !prune;
 		}
 
 		public ICommand CreateCommand(string[] args)

@@ -35,13 +35,13 @@ namespace DuplicateFinder.Core.Integration.Tests
 		{
 			var parser = new CommandLineParser();
 
-			var run1 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory\Run1_FileExists").Args());
+			var run1 = parser.Parse((@"--content --history " + History + @" HashCodeHistory\Run1_FileExists").Args());
 			run1.Execute();
 
-			var run2 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory\Run2_FileWasDeleted").Args());
+			var run2 = parser.Parse((@"--content --history " + History + @" HashCodeHistory\Run2_FileWasDeleted").Args());
 			run2.Execute();
 
-			Run3 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory\Run3_FileIsRecreated").Args());
+			Run3 = parser.Parse((@"--content --history " + History + @" HashCodeHistory\Run3_FileIsRecreated").Args());
 		};
 
 		Because of = () => Run3.Execute();
@@ -60,13 +60,13 @@ namespace DuplicateFinder.Core.Integration.Tests
 		{
 			var parser = new CommandLineParser();
 
-			var run1 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory_with_Duplicate\Run1_FileExists").Args());
+			var run1 = parser.Parse((@"--content --history " + History + @" HashCodeHistory_with_Duplicate\Run1_FileExists").Args());
 			run1.Execute();
 
-			var run2 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory_with_Duplicate\Run2_FileWasDeleted").Args());
+			var run2 = parser.Parse((@"--content --history " + History + @" HashCodeHistory_with_Duplicate\Run2_FileWasDeleted").Args());
 			run2.Execute();
 
-			Run3 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory_with_Duplicate\Run3_FileIsRecreatedAsDuplicate").Args());
+			Run3 = parser.Parse((@"--content --history " + History + @" HashCodeHistory_with_Duplicate\Run3_FileIsRecreatedAsDuplicate").Args());
 		};
 
 		Because of = () => Run3.Execute();
@@ -88,10 +88,10 @@ namespace DuplicateFinder.Core.Integration.Tests
       {
         var parser = new CommandLineParser();
 
-		var run1 = parser.Parse((@"--delete --content --history " + History + @" --keep HashCodeHistory_FileWasMoved\Run1_FileExists\Archive HashCodeHistory_FileWasMoved\Run1_FileExists\Archive HashCodeHistory_FileWasMoved\Run1_FileExists\Scanned").Args());
+		var run1 = parser.Parse((@"--content --history " + History + @" --keep HashCodeHistory_FileWasMoved\Run1_FileExists\Archive HashCodeHistory_FileWasMoved\Run1_FileExists\Archive HashCodeHistory_FileWasMoved\Run1_FileExists\Scanned").Args());
         run1.Execute();
 
-		Run2 = parser.Parse((@"--delete --content --history " + History + @"  --keep HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Scanned").Args());
+		Run2 = parser.Parse((@"--content --history " + History + @"  --keep HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Scanned").Args());
       };
 
       Because of = () => Run2.Execute();

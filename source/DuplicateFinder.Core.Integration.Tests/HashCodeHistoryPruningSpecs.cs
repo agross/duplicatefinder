@@ -15,10 +15,10 @@ namespace DuplicateFinder.Core.Integration.Tests
 		{
 			var parser = new CommandLineParser();
 
-			var run1 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory_Prune\Run1_FileExists").Args());
+			var run1 = parser.Parse((@"--content --history " + History + @" HashCodeHistory_Prune\Run1_FileExists").Args());
 			run1.Execute();
 
-			var run2 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory_Prune\Run2_FileWasDeleted").Args());
+			var run2 = parser.Parse((@"--content --history " + History + @" HashCodeHistory_Prune\Run2_FileWasDeleted").Args());
 			run2.Execute();
 
 			Run3 = parser.Parse((@"--prune --content --history " + History + @" HashCodeHistory_Prune").Args());
@@ -41,10 +41,10 @@ namespace DuplicateFinder.Core.Integration.Tests
 		{
 			var parser = new CommandLineParser();
 
-			var run1 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory_Prune\Run1_FileExists").Args());
+			var run1 = parser.Parse((@"--content --history " + History + @" HashCodeHistory_Prune\Run1_FileExists").Args());
 			run1.Execute();
 
-			var run2 = parser.Parse((@"--delete --content --history " + History + @" HashCodeHistory_Prune\Run2_FileWasDeleted").Args());
+			var run2 = parser.Parse((@"--content --history " + History + @" HashCodeHistory_Prune\Run2_FileWasDeleted").Args());
 			run2.Execute();
 
 			Run3 = parser.Parse((@"--prune --content --history " + History + @" HashCodeHistory_Prune\Run2_FileWasDeleted").Args());

@@ -13,7 +13,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 				{
 					Command =
 						new CommandLineParser()
-						.Parse(@"--delete --size --content --name --keep Keep\Second Keep\First Keep\Second Keep\Third".Args());
+						.Parse(@"--size --content --name --keep Keep\Second Keep\First Keep\Second Keep\Third".Args());
 				};
 
 		Because of = () => Command.Execute();
@@ -37,7 +37,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 				{
 					Command =
 						new CommandLineParser()
-						.Parse(@"--delete --size --keep Keep\DuplicatesInOne Keep\DuplicatesInOne".Args());
+						.Parse(@"--size --keep Keep\DuplicatesInOne Keep\DuplicatesInOne".Args());
 				};
 
 		Because of = () => Command.Execute();
