@@ -71,6 +71,7 @@
     <Compile Include="Commands\FindDuplicatesCommandSpecs.cs">
       <DependentUpon>FindDuplicatesCommand.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commands\PruneHistoryDuplicatesCommand.cs" />
     <Compile Include="Commands\ShowHelpCommand.cs" />
     <Compile Include="Commands\ShowHelpCommandSpecs.cs">
       <DependentUpon>ShowHelpCommand.cs</DependentUpon>
