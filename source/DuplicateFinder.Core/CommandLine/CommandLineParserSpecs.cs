@@ -11,8 +11,26 @@ using Machine.Specifications.Utility;
 
 namespace DuplicateFinder.Core.CommandLine
 {
-	public class When_the_first_command_line_argument_cannot_be_handled
+	[Subject(typeof(CommandLineParser))]
+	public class When_options_are_missing
 	{
+		static ICommand Command;
+		static CommandLineParser CommandLine;
+		static ShowHelpCommand ShowHelpCommand;
+
+		Establish context = () => { CommandLine = new CommandLineParser(); };
+
+		Because of = () =>
+		{
+			Command = CommandLine.Parse(new string[] { });
+			ShowHelpCommand = Command as ShowHelpCommand;
+		};
+
+		It should_be_able_to_parse_the_command_line =
+			() => Command.ShouldNotBeNull();
+
+		It should_create_the_show_help_command =
+			() => Command.ShouldBeOfType<ShowHelpCommand>();
 	}
 
 	[Subject(typeof(CommandLineParser))]
@@ -33,7 +51,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof(CommandLineParser))]
-	public class When_finding_duplicates_in_a_dry_run
+	public class When_deleting_duplicates_in_a_dry_run
 	{
 		static ICommand Command;
 		static CommandLineParser CommandLine;
@@ -75,29 +93,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof(CommandLineParser))]
-	public class When_options_are_missing
-	{
-		static ICommand Command;
-		static CommandLineParser CommandLine;
-		static ShowHelpCommand ShowHelpCommand;
-
-		Establish context = () => { CommandLine = new CommandLineParser(); };
-
-		Because of = () =>
-			{
-				Command = CommandLine.Parse(new string[] { });
-				ShowHelpCommand = Command as ShowHelpCommand;
-			};
-
-		It should_be_able_to_parse_the_command_line =
-			() => Command.ShouldNotBeNull();
-
-		It should_create_the_show_help_command =
-			() => Command.ShouldBeOfType<ShowHelpCommand>();
-	}
-
-	[Subject(typeof(CommandLineParser))]
-	public class When_finding_duplicates_by_name_size_and_contents
+	public class When_deleting_duplicates_by_name_size_and_contents
 	{
 		static ICommand Command;
 		static CommandLineParser CommandLine;
@@ -131,7 +127,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof(CommandLineParser))]
-	public class When_finding_duplicates_by_name
+	public class When_deleting_duplicates_by_name
 	{
 		static ICommand Command;
 		static CommandLineParser CommandLine;
@@ -159,7 +155,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof(CommandLineParser))]
-	public class When_finding_duplicates_by_size
+	public class When_deleting_duplicates_by_size
 	{
 		static ICommand Command;
 		static CommandLineParser CommandLine;
@@ -187,7 +183,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof(CommandLineParser))]
-	public class When_finding_duplicates_by_content
+	public class When_deleting_duplicates_by_content
 	{
 		static ICommand Command;
 		static CommandLineParser CommandLine;
@@ -221,7 +217,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof(CommandLineParser))]
-	public class When_finding_duplicates_by_head_content
+	public class When_deleting_duplicates_by_head_content
 	{
 		static ICommand Command;
 		static CommandLineParser CommandLine;
@@ -255,7 +251,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof(CommandLineParser))]
-	public class When_finding_duplicates_by_tail_content
+	public class When_deleting_duplicates_by_tail_content
 	{
 		static ICommand Command;
 		static CommandLineParser CommandLine;
@@ -289,7 +285,7 @@ namespace DuplicateFinder.Core.CommandLine
 	}
 
 	[Subject(typeof(CommandLineParser))]
-	public class When_finding_duplicates_by_head_and_tail_content
+	public class When_deleting_duplicates_by_head_and_tail_content
 	{
 		static ICommand Command;
 		static CommandLineParser CommandLine;
