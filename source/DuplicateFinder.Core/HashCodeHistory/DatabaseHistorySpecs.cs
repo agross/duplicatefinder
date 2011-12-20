@@ -108,24 +108,4 @@ namespace DuplicateFinder.Core.HashCodeHistory
 		It should_identify_the_files_that_were_resurrected =
 			() => Resurrected.ShouldContainOnly("1", "2");
 	}
-	
-	[Subject(typeof(DatabaseHistory))]
-	public class When_hash_codes_should_be_forgotten : DatabaseHistorySpecs
-	{
-		static DatabaseHistory History;
-		static IEnumerable<string> Resurrected;
-
-		Establish context = () =>
-		{
-			History = new DatabaseHistory(FileName, new FileSystem());
-			History.Snapshot(new[] { "1", "2" });
-		};
-
-		Because of = () => History.Forget(new[] { "1" });
-
-		Cleanup after = () => HistoryFiles.Each(File.Delete);
-
-		It should_identify_the_files_that_were_resurrected =
-			() => Resurrected.ShouldContainOnly("1", "2");
-	}
 }

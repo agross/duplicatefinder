@@ -23,7 +23,7 @@ namespace DuplicateFinder.Core.HashCodeHistory
 			}
 		}
 
-		public  IEnumerable<string> Snapshot(IEnumerable<string> hashes)
+		public IEnumerable<string> Snapshot(IEnumerable<string> hashes)
 		{
 			using (var scope = new Scope(_fileSystem, DatabaseFile))
 			{
