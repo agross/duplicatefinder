@@ -133,7 +133,7 @@ namespace :compile do
 				:project => project,
 				:clrversion => "v4.0.30319",
 				:properties => {
-					:SolutionDir => configatron.dir.source.to_absolute.chomp('/').concat('/').escape,
+					:SolutionDir => '.'.to_absolute.chomp('/').concat('/').escape,
 					:Configuration => configatron.build.configuration,
 					:TreatWarningsAsErrors => true
 				}
@@ -147,7 +147,7 @@ namespace :compile do
 				:project => project,
 				:clrversion => "v4.0.30319",
 				:properties => {
-					:SolutionDir => configatron.dir.source.to_absolute.chomp('/').concat('/').escape,
+					:SolutionDir => '.'.to_absolute.chomp('/').concat('/').escape,
 					:Configuration => configatron.build.configuration,
 					:TreatWarningsAsErrors => false
 				}
