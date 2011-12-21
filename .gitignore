@@ -26,3 +26,4 @@ teamcity-info.xml
 local-properties.yml
 build
 deploy
+packages
