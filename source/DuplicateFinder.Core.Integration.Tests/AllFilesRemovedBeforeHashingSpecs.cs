@@ -8,6 +8,7 @@ using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Integration.Tests
 {
+	[Tags("integration")]
 	public class When_all_files_are_removed_before_they_are_hashed
 	{
 		static DuplicateFinder Finder;

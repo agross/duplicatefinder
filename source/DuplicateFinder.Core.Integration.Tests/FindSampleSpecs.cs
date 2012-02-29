@@ -8,6 +8,7 @@ using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Integration.Tests
 {
+	[Tags("integration")]
 	public class When_duplicates_are_searched_by_size
 	{
 		static ICommand Command;
@@ -24,6 +25,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 															@"Samples\Second\size-second.txt");
 	}
 
+	[Tags("integration")]
 	public class When_duplicates_are_searched_by_name
 	{
 		static ICommand Command;
@@ -38,6 +40,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 															@"Samples\Second\name.txt");
 	}
 
+	[Tags("integration")]
 	public class When_duplicates_are_searched_by_contents
 	{
 		static ICommand Command;
@@ -52,6 +55,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 															@"Samples\Second\content-full-second.txt");
 	}
 
+	[Tags("integration")]
 	public class When_duplicates_are_searched_by_head_contents
 	{
 		static ICommand Command;
@@ -68,6 +72,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 															@"Samples\Second\content-head-second.txt");
 	}
 
+	[Tags("integration")]
 	public class When_duplicates_are_searched_by_tail_contents
 	{
 		static ICommand Command;
@@ -84,6 +89,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 															@"Samples\Second\content-tail-second.txt");
 	}
 
+	[Tags("integration")]
 	public class When_duplicates_are_searched_by_head_and_tail_contents
 	{
 		static ICommand Command;

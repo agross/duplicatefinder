@@ -4,6 +4,7 @@ using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Integration.Tests
 {
+	[Tags("integration")]
 	public class When_duplicate_files_have_to_be_kept_in_the_second_directory_of_three
 	{
 		static ICommand Command;
@@ -27,7 +28,8 @@ namespace DuplicateFinder.Core.Integration.Tests
 		It should_delete_the_file_in_the_third_directory =
 			() => File.Exists(@"Keep\Third\match.txt").ShouldBeFalse();
 	}
-	
+
+	[Tags("integration")]
 	public class When_duplicate_files_are_found_in_one_directory
 	{
 		static ICommand Command;

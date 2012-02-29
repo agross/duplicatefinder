@@ -8,6 +8,7 @@ using Machine.Specifications.Utility;
 
 namespace DuplicateFinder.Core.Integration.Tests
 {
+	[Tags("integration")]
 	public abstract class HistorySpecs
 	{
 		protected HistorySpecs()
@@ -42,6 +43,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 		}
 	}
 
+	[Tags("integration")]
 	public class When_deleted_files_are_resurrected : HistorySpecs
 	{
 		static ICommand Run3;
@@ -67,6 +69,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 			() => File.Exists(@"HashCodeHistory\Run3_FileIsRecreated\match.txt").ShouldBeFalse();
 	}
 
+	[Tags("integration")]
 	public class When_deleted_files_are_resurrected_multiple_times : HistorySpecs
 	{
 		static ICommand Run3;
@@ -95,25 +98,26 @@ namespace DuplicateFinder.Core.Integration.Tests
 			() => File.Exists(@"HashCodeHistory\Run3_FileIsRecreatedAndDuplicate\match-dup-2.txt").ShouldBeFalse();
 	}
 
-    public class When_files_outside_the_scanned_directories_are_moved_to_the_archive : HistorySpecs
-    {
-      static ICommand Run2;
+	[Tags("integration")]
+	public class When_files_outside_the_scanned_directories_are_moved_to_the_archive : HistorySpecs
+	{
+	  static ICommand Run2;
 
-      Establish context = () =>
-      {
-        var parser = new CommandLineParser();
+	  Establish context = () =>
+	  {
+		var parser = new CommandLineParser();
 
 		var run1 = parser.Parse((@"--content --history " + History + @" --keep HashCodeHistory_FileWasMoved\Run1_FileExists\Archive HashCodeHistory_FileWasMoved\Run1_FileExists\Archive HashCodeHistory_FileWasMoved\Run1_FileExists\Scanned").Args());
-        run1.Execute();
+		run1.Execute();
 
 		Run2 = parser.Parse((@"--content --history " + History + @"  --keep HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Scanned").Args());
-      };
+	  };
 
-      Because of = () => Run2.Execute();
+	  Because of = () => Run2.Execute();
 
-      Cleanup after = () => Directory.EnumerateFiles(".", History + "*").Each(File.Delete);
+	  Cleanup after = () => Directory.EnumerateFiles(".", History + "*").Each(File.Delete);
 
-      It should_not_delete_the_moved_file =
-          () => File.Exists(@"HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive\match.txt").ShouldBeTrue();
-    }
+	  It should_not_delete_the_moved_file =
+		  () => File.Exists(@"HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive\match.txt").ShouldBeTrue();
+	}
 }

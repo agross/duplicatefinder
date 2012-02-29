@@ -6,6 +6,7 @@ using Machine.Specifications.Utility;
 
 namespace DuplicateFinder.Core.Integration.Tests
 {
+	[Tags("integration")]
 	public class When_all_seen_files_are_pruned : HistorySpecs
 	{
 		static ICommand Prune;
@@ -30,7 +31,8 @@ namespace DuplicateFinder.Core.Integration.Tests
 		It should_remove_all_hash_codes_from_the_history =
 			() => HistoryFiles.Each(f => File.ReadLines(f).ShouldBeEmpty());
 	}
-	
+
+	[Tags("integration")]
 	public class When_all_seen_files_are_pruned_and_later_are_recreated : HistorySpecs
 	{
 		static ICommand Prune;
@@ -69,7 +71,8 @@ namespace DuplicateFinder.Core.Integration.Tests
 		It should_have_no_gone_files =
 			() => File.ReadLines(Gone).ShouldBeEmpty();
 	}
-	
+
+	[Tags("integration")]
 	public class When_a_subset_of_seen_files_is_pruned : HistorySpecs
 	{
 		static ICommand Prune;
@@ -101,6 +104,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 			() => File.ReadLines(Gone).ShouldBeEmpty();
 	}
 
+	[Tags("integration")]
 	public class When_a_subset_of_seen_files_is_pruned_and_later_is_recreated : HistorySpecs
 	{
 		static ICommand Prune;
