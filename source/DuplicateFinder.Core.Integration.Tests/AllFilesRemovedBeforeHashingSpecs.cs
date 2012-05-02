@@ -21,7 +21,8 @@ namespace DuplicateFinder.Core.Integration.Tests
 					Finder = new DuplicateFinder(new[] { new NonExistingFilesFinder() },
 					                             new[] { new ThrowingHashCodeProvider() },
 					                             Output,
-					                             new NullHistory());
+					                             new NullHistory(),
+					                             new TaskbarProgress());
 				};
 
 		Because of = () => Finder.FindDuplicates().Duplicates.ToArray();

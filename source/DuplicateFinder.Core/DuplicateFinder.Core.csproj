@@ -43,8 +43,15 @@
     <Reference Include="Machine.Specifications">
       <HintPath>..\..\packages\Machine.Specifications.0.5.2.0\lib\Machine.Specifications.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell">
+      <HintPath>..\..\lib\WindowsAPICodePack.1.1\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs">
@@ -110,6 +117,7 @@
       <DependentUpon>DatabaseHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="HashCodeHistory\IRememberHashCodes.cs" />
+    <Compile Include="IDisplayProgress.cs" />
     <Compile Include="ISelectFilesToDelete.cs" />
     <Compile Include="Deletion\WhatIfFileDeleter.cs" />
     <Compile Include="HashCodeProviders\FileContentHashCodeProvider.cs" />

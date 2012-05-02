@@ -52,7 +52,8 @@ namespace DuplicateFinder.Core
 					.CallTo(() => hash1.CalculateHashCode(A<string>.That.Matches(x => x.Contains("no dup"))))
 					.Returns(new[] { "some other hash" });
 
-				Finder = new DuplicateFinder(FileFinders, HashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>());
+				Finder = new DuplicateFinder(FileFinders, HashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>(),
+				                             A.Fake<IDisplayProgress>());
 			};
 
 		Because of = () => { Duplicates = Finder.FindDuplicates().Duplicates.ToArray(); };
@@ -97,7 +98,8 @@ namespace DuplicateFinder.Core
 				                        	A.Fake<IHashCodeProvider>()
 				                        };
 
-				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>());
+				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>(),
+				                             A.Fake<IDisplayProgress>());
 			};
 
 		Because of = () => { Duplicates = Finder.FindDuplicates().Duplicates.ToArray(); };
@@ -136,7 +138,8 @@ namespace DuplicateFinder.Core
 				                        	throws
 				                        };
 
-				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>());
+				Finder = new DuplicateFinder(FileFinders, hashCodeProviders, A.Fake<IOutput>(), A.Fake<IRememberHashCodes>(),
+				                             A.Fake<IDisplayProgress>());
 			};
 
 		Because of = () => { Duplicates = Finder.FindDuplicates().Duplicates.ToArray(); };

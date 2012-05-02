@@ -270,6 +270,7 @@ namespace :package do
 	task :ilmerge => ['compile:app'] do
 		assemblies = FileList.new("#{configatron.dir.build}/Application/DuplicateFinder*.exe") \
 			.include("#{configatron.dir.build}/Application/DuplicateFinder*.dll") \
+			.include("#{configatron.dir.build}/Application/Microsoft.WindowsAPI*.dll") \
 			.exclude("#{configatron.dir.build}/Application/*.vshost.exe")
 
 		ILMerge.merge \
