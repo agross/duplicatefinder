@@ -35,30 +35,34 @@ namespace DuplicateFinder.Core
 
     public IEnumerable<IGrouping<string, string>> CalculateHashes()
     {
-      _progress.Intermediate();
+      try
+      {
+        _progress.Intermediate();
 
-      var fileList = FileFinders
-        .SelectMany(x => x.GetFiles())
-        .RemoveDuplicateEntries()
-        .ToList();
+        var fileList = FileFinders
+          .SelectMany(x => x.GetFiles())
+          .RemoveDuplicateEntries();
 
-      var totalFiles = fileList.Count();
+        var currentFile = 0;
+        var totalFiles = fileList.Count();
 
-      var filesByDrive = new FilesByDrive(fileList);
-      var result = filesByDrive
-        .AsParallel()
-        .Select((x, i) =>
-        {
-          _progress.Percent(i, totalFiles);
-          return new { File = x, Hashes = HashesOf(x) };
-        })
-        .Where(x => x.Hashes.Any())
-        .Select(x => new { x.File, Hash = Aggregate(x.Hashes) })
-        .GroupBy(x => x.Hash, x => x.File)
-        .ToList();
-
-      _progress.Stop();
-      return result;
+        var filesByDrive = new FilesByDrive(fileList);
+        return filesByDrive
+          .AsParallel()
+          .Select(x =>
+          {
+            _progress.Percent(++currentFile, totalFiles);
+            return new { File = x, Hashes = HashesOf(x) };
+          })
+          .Where(x => x.Hashes.Any())
+          .Select(x => new { x.File, Hash = Aggregate(x.Hashes) })
+          .GroupBy(x => x.Hash, x => x.File)
+          .ToList();
+      }
+      finally
+      {
+        _progress.Stop();
+      }
     }
 
     public FindResult FindDuplicates()
