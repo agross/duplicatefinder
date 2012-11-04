@@ -8,7 +8,8 @@ namespace DuplicateFinder.Core.Abstractions
 	{
 		public IEnumerable<string> AllFilesWithin(string path)
 		{
-			return Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+			return Directory
+        .GetFiles(path, "*.*", SearchOption.AllDirectories);
 		}
 
 		public Stream CreateStreamFrom(string path)

@@ -8,17 +8,13 @@ namespace DuplicateFinder.Core.HashCodeProviders
 {
 	internal class FileContentHashCodeProvider : IHashCodeProvider
 	{
-		static readonly SHA1CryptoServiceProvider Sha;
+	  readonly SHA1CryptoServiceProvider _sha;
 		readonly IFileSystem _fileSystem;
 
-		static FileContentHashCodeProvider()
+	  public FileContentHashCodeProvider(IFileSystem fileSystem, params IStreamDecorator[] streamDecorators)
 		{
-			Sha = new SHA1CryptoServiceProvider();
-		}
-
-		public FileContentHashCodeProvider(IFileSystem fileSystem, params IStreamDecorator[] streamDecorators)
-		{
-			_fileSystem = fileSystem;
+      _sha = new SHA1CryptoServiceProvider();
+      _fileSystem = fileSystem;
 			StreamDecorators = streamDecorators;
 		}
 
@@ -34,7 +30,7 @@ namespace DuplicateFinder.Core.HashCodeProviders
 			{
 				using (stream)
 				{
-					var hash = Sha.ComputeHash(stream);
+					var hash = _sha.ComputeHash(stream);
 					yield return Convert.ToBase64String(hash);
 				}
 			}

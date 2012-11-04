@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,11 +39,14 @@ namespace DuplicateFinder.Core
 
       var fileList = FileFinders
         .SelectMany(x => x.GetFiles())
-        .RemoveDuplicateEntries();
+        .RemoveDuplicateEntries()
+        .ToList();
 
       var totalFiles = fileList.Count();
 
-      var result = fileList
+      var filesByDrive = new FilesByDrive(fileList);
+      var result = filesByDrive
+        .AsParallel()
         .Select((x, i) =>
         {
           _progress.Percent(i, totalFiles);
@@ -64,10 +68,10 @@ namespace DuplicateFinder.Core
       var resurrectedHashes = History.Snapshot(hashesAndFiles.Select(x => x.Key));
 
       return new FindResult
-             {
-               Duplicates = hashesAndFiles.Where(x => x.Count() > 1),
-               Resurrected = hashesAndFiles.Where(x => resurrectedHashes.Any(y => y == x.Key))
-             };
+      {
+        Duplicates = hashesAndFiles.Where(x => x.Count() > 1),
+        Resurrected = hashesAndFiles.Where(x => resurrectedHashes.Any(y => y == x.Key))
+      };
     }
 
     IEnumerable<string> HashesOf(string path)
@@ -92,6 +96,58 @@ namespace DuplicateFinder.Core
       return hashes
         .Aggregate(new StringBuilder(), (h1, h2) => h1.Append(h2))
         .ToString();
+    }
+
+    internal class FilesByDrive : Partitioner<string>
+    {
+      readonly IEnumerable<string> _files;
+
+      public FilesByDrive(IEnumerable<string> files)
+      {
+        _files = files;
+      }
+
+      public override bool SupportsDynamicPartitions
+      {
+        get
+        {
+          return false;
+        }
+      }
+
+      public override IList<IEnumerator<string>> GetPartitions(int partitionCount)
+      {
+        var allPartitions = _files
+          .GroupBy(Path.GetPathRoot)
+          .Select(grouping => grouping.AsEnumerable())
+          .ToList();
+
+        IEnumerable<IEnumerable<string>> result = allPartitions;
+
+        if (partitionCount > allPartitions.Count)
+        {
+          var fillUpToPartitionCount = Enumerable.Repeat(Enumerable.Empty<string>(),
+                                                         partitionCount - allPartitions.Count);
+
+          result = allPartitions.Concat(fillUpToPartitionCount);
+        }
+
+        if (partitionCount < allPartitions.Count)
+        {
+          var upToPartitionCountMinusOne = allPartitions.TakeWhile((partition, i) => i < partitionCount - 1);
+
+          var mergedLast = allPartitions
+            .Skip(partitionCount - 1)
+            .Select(byDrive => byDrive.AsEnumerable())
+            .Aggregate((acc, next) => acc.Concat(next));
+
+          result = upToPartitionCountMinusOne.Concat(new[] { mergedLast });
+        }
+
+        return result
+          .Select(byDrive => byDrive.GetEnumerator())
+          .ToList();
+      }
     }
   }
 

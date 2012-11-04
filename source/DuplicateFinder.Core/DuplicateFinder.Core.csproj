@@ -126,6 +126,7 @@
       <DependentUpon>DatabaseHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="HashCodeHistory\IRememberHashCodes.cs" />
+    <Compile Include="HashCodeProviders\FilesByDriveSpecs.cs" />
     <Compile Include="IDisplayProgress.cs" />
     <Compile Include="ISelectFilesToDelete.cs" />
     <Compile Include="Deletion\WhatIfFileDeleter.cs" />
