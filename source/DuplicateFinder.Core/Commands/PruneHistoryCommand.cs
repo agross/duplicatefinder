@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 using DuplicateFinder.Core.HashCodeHistory;
@@ -32,13 +33,24 @@ namespace DuplicateFinder.Core.Commands
 
 		public void Execute()
 		{
-			var hashesAndFiles = DuplicateFinder.CalculateHashes().ToList();
+      var timer = new Stopwatch();
+      timer.Start();
 
-			History.Forget(hashesAndFiles.Select(x => x.Key));
+      try
+      {
+			  var hashesAndFiles = DuplicateFinder.CalculateHashes().ToList();
 
-			_output.WriteLine(String.Format("Forgot {0} hashes for {1} files.",
-			                                hashesAndFiles.Count(),
-			                                hashesAndFiles.Sum(x => x.Count())));
+			  History.Forget(hashesAndFiles.Select(x => x.Key));
+
+			  _output.WriteLine(String.Format("Forgot {0} hashes for {1} files.",
+			                                  hashesAndFiles.Count(),
+			                                  hashesAndFiles.Sum(x => x.Count())));
+      }
+      finally
+      {
+        timer.Stop();
+        _output.WriteLine(String.Format("Took {0}", timer.Elapsed));
+      }
 		}
 	}
 }

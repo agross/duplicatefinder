@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace DuplicateFinder.Core.Commands
@@ -39,31 +40,42 @@ namespace DuplicateFinder.Core.Commands
 
 		public void Execute()
 		{
-			Results = DuplicateFinder.FindDuplicates();
+		  var timer = new Stopwatch();
+      timer.Start();
 
-			var bytesDeleted = Results.Duplicates
-				.Select(x =>
-					{
-						var delete = _select.FilesToDelete(x);
-						var keep = x.Except(delete);
+      try
+      {
+        Results = DuplicateFinder.FindDuplicates();
+			  var bytesDeleted = Results.Duplicates
+				  .Select(x =>
+					  {
+						  var delete = _select.FilesToDelete(x);
+						  var keep = x.Except(delete);
 
-						return new { Keep = keep, Delete = delete };
-					})
-				.SelectMany(x =>
-					{
-						foreach (var keep in x.Keep)
-						{
-							_output.WriteLine(String.Format("Keeping {0}", keep));
-						}
+						  return new { Keep = keep, Delete = delete };
+					  })
+				  .SelectMany(x =>
+					  {
+						  foreach (var keep in x.Keep)
+						  {
+							  _output.WriteLine(String.Format("Keeping {0}", keep));
+						  }
 
-						return x.Delete;
-					})
-				.Concat(Results.Resurrected.SelectMany(x => x))
-				.Distinct()
-				.Select(FileDeleter.Delete)
-				.Sum();
+						  return x.Delete;
+					  })
+				  .Concat(Results.Resurrected.SelectMany(x => x))
+				  .Distinct()
+				  .Select(FileDeleter.Delete)
+				  .Sum();
 
-			_output.WriteLine(String.Format("{0} deleted.", bytesDeleted.ToFileSize()));
+        
+			  _output.WriteLine(String.Format("{0} deleted.", bytesDeleted.ToFileSize()));
+      }
+      finally
+      { 
+        timer.Stop();
+        _output.WriteLine(String.Format("Took {0}", timer.Elapsed));
+      }
 		}
 	}
 }
