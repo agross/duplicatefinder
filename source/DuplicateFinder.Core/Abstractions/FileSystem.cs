@@ -1,18 +1,75 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 
 namespace DuplicateFinder.Core.Abstractions
 {
 	internal class FileSystem : IFileSystem
 	{
-		public IEnumerable<string> AllFilesWithin(string path)
-		{
-			return Directory
-        .GetFiles(path, "*.*", SearchOption.AllDirectories);
-		}
+	  public IEnumerable<string> AllFilesWithin(string path)
+	  {
+	    return ReadableFiles(path);
+	  }
 
-		public Stream CreateStreamFrom(string path)
+	  static IEnumerable<string> ReadableFiles(string path)
+    {
+      if(!CanRead(path))
+      {
+        Console.WriteLine("Cannot read {0}", path);
+        yield break;
+      }
+
+      var subdirs = Directory.EnumerateDirectories(path, "*.*", SearchOption.TopDirectoryOnly);
+	    foreach (var child in subdirs.SelectMany(ReadableFiles))
+	    {
+	      yield return child;
+	    }
+
+      foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly))
+      {
+        yield return file;
+      }
+	  }
+
+	  static bool CanRead(string path)
+	  {
+	    DirectorySecurity acl;
+
+      try
+	    {
+	      acl = Directory.GetAccessControl(path);
+	    }
+	    catch (UnauthorizedAccessException)
+	    {
+	      return false;
+	    }
+
+	    var rules = acl.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
+      var readRelatedRules = rules
+        .Cast<FileSystemAccessRule>()
+        .Where(rule => (FileSystemRights.Read & rule.FileSystemRights) == FileSystemRights.Read);
+
+	    var allowed = false;
+	    var denied = false;
+	    foreach (var rule in readRelatedRules)
+	    {
+	      switch (rule.AccessControlType)
+	      {
+	        case AccessControlType.Allow:
+	          allowed = true;
+	          break;
+	        case AccessControlType.Deny:
+	          denied = true;
+	          break;
+	      }
+	    }
+
+	    return allowed && !denied;
+	  }
+
+    public Stream CreateStreamFrom(string path)
 		{
 			return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 		}
