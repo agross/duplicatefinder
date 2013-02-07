@@ -5,27 +5,35 @@ using System.Linq;
 
 namespace DuplicateFinder.Core.Deletion
 {
-	internal class KeepOneCopyInDirectorySelector : ISelectFilesToDelete
-	{
-		readonly string _keepDirectory;
+  class KeepOneCopyInDirectorySelector : ISelectFilesToDelete
+  {
+    readonly string _keepDirectory;
 
-		public KeepOneCopyInDirectorySelector(string keepFilesInDirectory)
-		{
-			_keepDirectory = Path.GetFullPath(keepFilesInDirectory);
-		}
+    public KeepOneCopyInDirectorySelector(string keepFilesInDirectory)
+    {
+      _keepDirectory = Path.GetFullPath(keepFilesInDirectory);
+    }
 
-		public IEnumerable<string> FilesToDelete(IEnumerable<string> duplicates)
-		{
-			var keep = duplicates
-			           	.FirstOrDefault(x => InPath(_keepDirectory, x)) ??
-			           duplicates.Last();
+    public IEnumerable<string> FilesToDelete(IEnumerable<string> duplicates)
+    {
+      var keep = duplicates
+                   .FirstOrDefault(x => InPath(_keepDirectory, x)) ??
+                 duplicates
+                   .OrderBy(NumberOfPathSeparators)
+                   .ThenBy(Path.GetFileName)
+                   .First();
 
-			return duplicates.Except(new[] { keep });
-		}
+      return duplicates.Except(new[] { keep });
+    }
 
-		static bool InPath(string keepDirectory, string file)
-		{
-			return Path.GetFullPath(file).StartsWith(keepDirectory, StringComparison.OrdinalIgnoreCase);
-		}
-	}
+    static int NumberOfPathSeparators(string file)
+    {
+      return file.Count(ch => ch == Path.DirectorySeparatorChar);
+    }
+
+    static bool InPath(string keepDirectory, string file)
+    {
+      return Path.GetFullPath(file).StartsWith(keepDirectory, StringComparison.OrdinalIgnoreCase);
+    }
+  }
 }

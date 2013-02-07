@@ -14,7 +14,7 @@ namespace DuplicateFinder.Core.Deletion
 
 		Because of = () => { ToDelete = Selector.FilesToDelete(new[] { @"no-keep\1", @"keep\2", @"keep\3", @"no-keep\4" }); };
 
-		It should_select_all_but_the_first_file_in_the_directory_to_keep =
+		It should_delete_all_but_the_first_file_in_the_directory_to_keep =
 			() => ToDelete.ShouldContainOnly(@"no-keep\1", @"keep\3", @"no-keep\4");
 	}
 
@@ -26,9 +26,20 @@ namespace DuplicateFinder.Core.Deletion
 
 		Establish context = () => { Selector = new KeepOneCopyInDirectorySelector("keep"); };
 
-		Because of = () => { ToDelete = Selector.FilesToDelete(new[] { @"no-keep\1", @"no-keep\2", @"no-keep\3", @"no-keep\4" }); };
+	  Because of = () =>
+	  {
+	    ToDelete = Selector.FilesToDelete(new[]
+	    {
+	      @"no-keep\deeper\than\the\others",
+	      @"no-keep\with-a-longer-file-name-than-the-previous-path",
+	      @"no-keep\1",
+	      @"no-keep\2"
+	    });
+	  };
 
-		It should_select_all_but_the_last_file =
-			() => ToDelete.ShouldContainOnly(@"no-keep\1", @"no-keep\2", @"no-keep\3");
+	  It should_delete_the_first_shallow_file =
+	    () => ToDelete.ShouldContainOnly(@"no-keep\2",
+	                                     @"no-keep\deeper\than\the\others",
+	                                     @"no-keep\with-a-longer-file-name-than-the-previous-path");
 	}
 }
