@@ -29,9 +29,8 @@ namespace DuplicateFinder.Core
 
     public IEnumerable<IFileFinder> FileFinders { get; private set; }
 
-    public IEnumerable<IHashCodeProvider> HashCodeProviders { get; private set; }
-
     public IRememberHashCodes History { get; private set; }
+    public IEnumerable<IHashCodeProvider> HashCodeProviders { get; private set; }
 
     public IEnumerable<IGrouping<string, string>> CalculateHashes()
     {
@@ -72,10 +71,10 @@ namespace DuplicateFinder.Core
       var resurrectedHashes = History.Snapshot(hashesAndFiles.Select(x => x.Key), HashCodeProviders);
 
       return new FindResult
-      {
-        Duplicates = hashesAndFiles.Where(x => x.Count() > 1),
-        Resurrected = hashesAndFiles.Where(x => resurrectedHashes.Any(y => y == x.Key))
-      };
+             {
+               Duplicates = hashesAndFiles.Where(x => x.Count() > 1),
+               Resurrected = hashesAndFiles.Where(x => resurrectedHashes.Any(y => y == x.Key))
+             };
     }
 
     IEnumerable<string> HashesOf(string path)

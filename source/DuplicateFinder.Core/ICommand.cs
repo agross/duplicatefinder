@@ -1,7 +1,7 @@
 ﻿namespace DuplicateFinder.Core
 {
-	public interface ICommand
-	{
-		void Execute();
-	}
+  public interface ICommand
+  {
+    void Execute();
+  }
 }

@@ -42,7 +42,7 @@ namespace DuplicateFinder.Core.HashCodeProviders
 
     const int PartitionCount = 2;
   }
-  
+
   [Subject(typeof(DuplicateFinder.FilesByDrive))]
   public class When_the_number_of_partitions_is_smaller_than_the_number_of_drives
   {
@@ -63,7 +63,7 @@ namespace DuplicateFinder.Core.HashCodeProviders
 
     It should_yield_a_nonempty_enumerator_for_the_first_partition =
       () => Partitions.First().Count().ShouldEqual(1);
-    
+
     It should_merge_the_last_drives_into_one_partition =
       () => Partitions.Last().Count().ShouldEqual(2);
 

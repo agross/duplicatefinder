@@ -2,8 +2,8 @@
 
 namespace DuplicateFinder.Core
 {
-	public interface IFileFinder
-	{
-		IEnumerable<string> GetFiles();
-	}
+  public interface IFileFinder
+  {
+    IEnumerable<string> GetFiles();
+  }
 }

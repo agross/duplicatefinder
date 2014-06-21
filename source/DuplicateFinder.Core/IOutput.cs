@@ -2,9 +2,9 @@
 
 namespace DuplicateFinder.Core
 {
-	public interface IOutput
-	{
-		void WriteLine(string value);
-		TextWriter GetTextWriter();
-	}
+  public interface IOutput
+  {
+    void WriteLine(string value);
+    TextWriter GetTextWriter();
+  }
 }

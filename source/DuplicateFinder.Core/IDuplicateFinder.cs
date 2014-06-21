@@ -3,31 +3,23 @@ using System.Linq;
 
 namespace DuplicateFinder.Core
 {
-	public interface IDuplicateFinder
-	{
-		FindResult FindDuplicates();
-		IEnumerable<IGrouping<string, string>> CalculateHashes();
-		IEnumerable<IHashCodeProvider> HashCodeProviders { get; }
-	}
+  public interface IDuplicateFinder
+  {
+    IEnumerable<IHashCodeProvider> HashCodeProviders { get; }
+    FindResult FindDuplicates();
+    IEnumerable<IGrouping<string, string>> CalculateHashes();
+  }
 
-	public class FindResult
-	{
-		public FindResult()
-		{
-			Duplicates = Enumerable.Empty<IEnumerable<string>>();
-			Resurrected = Enumerable.Empty<IEnumerable<string>>();
-		}
+  public class FindResult
+  {
+    public FindResult()
+    {
+      Duplicates = Enumerable.Empty<IEnumerable<string>>();
+      Resurrected = Enumerable.Empty<IEnumerable<string>>();
+    }
 
-		public IEnumerable<IEnumerable<string>> Duplicates
-		{
-			get;
-			set;
-		}
-		
-		public IEnumerable<IEnumerable<string>> Resurrected
-		{
-			get;
-			set;
-		}
-	}
+    public IEnumerable<IEnumerable<string>> Duplicates { get; set; }
+
+    public IEnumerable<IEnumerable<string>> Resurrected { get; set; }
+  }
 }

@@ -6,17 +6,17 @@ using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Streams
 {
-	[Subject(typeof(TailStreamDecorator))]
-	public class When_a_stream_s_tail_is_requested
-	{
-		static TailStreamDecorator Decorator;
-		static Stream Decorated;
+  [Subject(typeof(TailStreamDecorator))]
+  public class When_a_stream_s_tail_is_requested
+  {
+    static TailStreamDecorator Decorator;
+    static Stream Decorated;
 
-		Establish context = () => { Decorator = new TailStreamDecorator(42); };
+    Establish context = () => { Decorator = new TailStreamDecorator(42); };
 
-		Because of = () => { Decorated = Decorator.GetStream(A.Fake<Stream>()); };
+    Because of = () => { Decorated = Decorator.GetStream(A.Fake<Stream>()); };
 
-		It should_create_a_tail_stream =
-            () => Decorated.ShouldBeOfExactType<TailStream>();
-	}
+    It should_create_a_tail_stream =
+      () => Decorated.ShouldBeOfExactType<TailStream>();
+  }
 }

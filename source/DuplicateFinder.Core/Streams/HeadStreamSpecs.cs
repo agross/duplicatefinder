@@ -7,156 +7,156 @@ using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Streams
 {
-	[Subject(typeof(HeadStream))]
-	public class When_a_head_stream_is_created
-	{
-		static Stream Stream;
-		static Stream Inner;
+  [Subject(typeof(HeadStream))]
+  public class When_a_head_stream_is_created
+  {
+    static Stream Stream;
+    static Stream Inner;
 
-		Establish context = () =>
-			{
-				var bytes = Enumerable
-					.Range(1, StreamLength)
-					.Select(Convert.ToByte)
-					.ToArray();
+    Establish context = () =>
+    {
+      var bytes = Enumerable
+        .Range(1, StreamLength)
+        .Select(Convert.ToByte)
+        .ToArray();
 
-				Inner = new MemoryStream(bytes);
-			};
+      Inner = new MemoryStream(bytes);
+    };
 
-		Because of = () => { Stream = new HeadStream(Inner, Head); };
+    Because of = () => { Stream = new HeadStream(Inner, Head); };
 
-		It should_report_the_head_length_as_the_stream_length =
-			() => Stream.Length.ShouldEqual(Head);
+    It should_report_the_head_length_as_the_stream_length =
+      () => Stream.Length.ShouldEqual(Head);
 
-		It should_report_zero_as_the_current_seek_position =
-			() => Stream.Position.ShouldEqual(0);
+    It should_report_zero_as_the_current_seek_position =
+      () => Stream.Position.ShouldEqual(0);
 
-		const int StreamLength = 200;
-		const int Head = 20;
-	}
-	
-	[Subject(typeof(HeadStream))]
-	public class When_a_head_stream_is_closed
-	{
-		static Stream Stream;
-		static Stream Inner;
+    const int StreamLength = 200;
+    const int Head = 20;
+  }
 
-		Establish context = () =>
-			{
-				Inner = new MemoryStream();
-				Stream = new HeadStream(Inner, 1);
-			};
+  [Subject(typeof(HeadStream))]
+  public class When_a_head_stream_is_closed
+  {
+    static Stream Stream;
+    static Stream Inner;
 
-		Because of = () => Stream.Close();
+    Establish context = () =>
+    {
+      Inner = new MemoryStream();
+      Stream = new HeadStream(Inner, 1);
+    };
 
-		It should_close_the_inner_stream =
-			() => Inner.CanRead.ShouldBeFalse();
-	}
+    Because of = () => Stream.Close();
 
-	[Subject(typeof(HeadStream))]
-	public class When_a_head_stream_is_created_with_the_head_being_longer_than_the_stream
-	{
-		static Stream Stream;
-		static Stream Inner;
+    It should_close_the_inner_stream =
+      () => Inner.CanRead.ShouldBeFalse();
+  }
 
-		Establish context = () =>
-			{
-				var bytes = Enumerable
-					.Range(1, StreamLength)
-					.Select(Convert.ToByte)
-					.ToArray();
+  [Subject(typeof(HeadStream))]
+  public class When_a_head_stream_is_created_with_the_head_being_longer_than_the_stream
+  {
+    static Stream Stream;
+    static Stream Inner;
 
-				Inner = new MemoryStream(bytes);
-			};
+    Establish context = () =>
+    {
+      var bytes = Enumerable
+        .Range(1, StreamLength)
+        .Select(Convert.ToByte)
+        .ToArray();
 
-		Because of = () => { Stream = new HeadStream(Inner, Head); };
+      Inner = new MemoryStream(bytes);
+    };
 
-		It should_report_the_inner_stream_s_length_as_the_stream_length =
-			() => Stream.Length.ShouldEqual(StreamLength);
+    Because of = () => { Stream = new HeadStream(Inner, Head); };
 
-		It should_report_zero_as_the_current_seek_position =
-			() => Stream.Position.ShouldEqual(0);
+    It should_report_the_inner_stream_s_length_as_the_stream_length =
+      () => Stream.Length.ShouldEqual(StreamLength);
 
-		const int StreamLength = 20;
-		const int Head = 200;
-	}
+    It should_report_zero_as_the_current_seek_position =
+      () => Stream.Position.ShouldEqual(0);
 
-	[Subject(typeof(HeadStream), "Reading")]
-	public class When_the_head_of_a_stream_is_read
-	{
-		static Stream Stream;
-		static Stream Inner;
-		static string Contents;
-		static string HeadBytes;
-		static Encoding StreamEncoding;
+    const int StreamLength = 20;
+    const int Head = 200;
+  }
 
-		Establish context = () =>
-			{
-				StreamEncoding = Encoding.Default;
+  [Subject(typeof(HeadStream), "Reading")]
+  public class When_the_head_of_a_stream_is_read
+  {
+    static Stream Stream;
+    static Stream Inner;
+    static string Contents;
+    static string HeadBytes;
+    static Encoding StreamEncoding;
 
-				var bytes = Enumerable
-					.Range(1, StreamLength)
-					.Select(Convert.ToByte).ToArray();
+    Establish context = () =>
+    {
+      StreamEncoding = Encoding.Default;
 
-				HeadBytes = StreamEncoding.GetString(bytes.Take(Head).ToArray());
+      var bytes = Enumerable
+        .Range(1, StreamLength)
+        .Select(Convert.ToByte).ToArray();
 
-				Inner = new MemoryStream(bytes);
+      HeadBytes = StreamEncoding.GetString(bytes.Take(Head).ToArray());
 
-				Stream = new HeadStream(Inner, Head);
-			};
+      Inner = new MemoryStream(bytes);
 
-		Because of = () => { Contents = new StreamReader(Stream, StreamEncoding).ReadToEnd(); };
+      Stream = new HeadStream(Inner, Head);
+    };
 
-		It should_yield_the_specified_number_of_head_bytes =
-			() => Contents.Length.ShouldEqual(Head);
+    Because of = () => { Contents = new StreamReader(Stream, StreamEncoding).ReadToEnd(); };
 
-		It should_yield_the_head_bytes =
-			() => Contents.ShouldEqual(HeadBytes);
+    It should_yield_the_specified_number_of_head_bytes =
+      () => Contents.Length.ShouldEqual(Head);
 
-		It should_report_the_head_as_the_current_seek_position =
-			() => Stream.Position.ShouldEqual(Head);
+    It should_yield_the_head_bytes =
+      () => Contents.ShouldEqual(HeadBytes);
 
-		const int StreamLength = 200;
-		const int Head = 20;
-	}
+    It should_report_the_head_as_the_current_seek_position =
+      () => Stream.Position.ShouldEqual(Head);
 
-	[Subject(typeof(HeadStream), "Reading")]
-	public class When_the_head_is_longer_than_the_stream
-	{
-		static Stream Stream;
-		static Stream Inner;
-		static string Contents;
-		static string HeadBytes;
-		static Encoding StreamEncoding;
+    const int StreamLength = 200;
+    const int Head = 20;
+  }
 
-		Establish context = () =>
-			{
-				StreamEncoding = Encoding.Default;
+  [Subject(typeof(HeadStream), "Reading")]
+  public class When_the_head_is_longer_than_the_stream
+  {
+    static Stream Stream;
+    static Stream Inner;
+    static string Contents;
+    static string HeadBytes;
+    static Encoding StreamEncoding;
 
-				var bytes = Enumerable
-					.Range(1, StreamLength)
-					.Select(Convert.ToByte)
-					.ToArray();
+    Establish context = () =>
+    {
+      StreamEncoding = Encoding.Default;
 
-				HeadBytes = StreamEncoding.GetString(bytes);
+      var bytes = Enumerable
+        .Range(1, StreamLength)
+        .Select(Convert.ToByte)
+        .ToArray();
 
-				Inner = new MemoryStream(bytes);
+      HeadBytes = StreamEncoding.GetString(bytes);
 
-				Stream = new HeadStream(Inner, Head);
-			};
+      Inner = new MemoryStream(bytes);
 
-		Because of = () => { Contents = new StreamReader(Stream, StreamEncoding).ReadToEnd(); };
+      Stream = new HeadStream(Inner, Head);
+    };
 
-		It should_yield_the_stream_s_number_of_bytes =
-			() => Contents.Length.ShouldEqual(StreamLength);
+    Because of = () => { Contents = new StreamReader(Stream, StreamEncoding).ReadToEnd(); };
 
-		It should_yield_all_bytes =
-			() => Contents.ShouldEqual(HeadBytes);
+    It should_yield_the_stream_s_number_of_bytes =
+      () => Contents.Length.ShouldEqual(StreamLength);
 
-		It should_report_the_stream_length_as_the_current_seek_position =
-			() => Stream.Position.ShouldEqual(StreamLength);
+    It should_yield_all_bytes =
+      () => Contents.ShouldEqual(HeadBytes);
 
-		const int StreamLength = 20;
-		const int Head = 200;
-	}
+    It should_report_the_stream_length_as_the_current_seek_position =
+      () => Stream.Position.ShouldEqual(StreamLength);
+
+    const int StreamLength = 20;
+    const int Head = 200;
+  }
 }

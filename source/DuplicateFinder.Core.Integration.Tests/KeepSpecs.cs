@@ -1,53 +1,61 @@
 using System.IO;
+
 using DuplicateFinder.Core.CommandLine;
+
 using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Integration.Tests
 {
-	[Tags("integration")]
-	public class When_duplicate_files_have_to_be_kept_in_the_second_directory_of_three
-	{
-		static ICommand Command;
+  [Tags("integration")]
+  public class When_duplicate_files_have_to_be_kept_in_the_second_directory_of_three
+  {
+    static ICommand Command;
 
-		Establish context =
-			() =>
-				{
-					Command =
-						new CommandLineParser()
-						.Parse(@"--size --content --name --keep Keep\Second Keep\First Keep\Second Keep\Third".Args());
-				};
+    Establish context =
+      () =>
+      {
+        Command =
+          new CommandLineParser()
+            .Parse(
+                   CommandLine.EnumerableExtensions.Args(
+                                                         (string)
+                                                         @"--size --content --name --keep Keep\Second Keep\First Keep\Second Keep\Third"));
+      };
 
-		Because of = () => Command.Execute();
+    Because of = () => Command.Execute();
 
-		It should_keep_the_file_in_the_second =
-			() => File.Exists(@"Keep\Second\match.txt").ShouldBeTrue();
+    It should_keep_the_file_in_the_second =
+      () => File.Exists(@"Keep\Second\match.txt").ShouldBeTrue();
 
-		It should_delete_the_file_in_the_first_directory =
-			() => File.Exists(@"Keep\First\match.txt").ShouldBeFalse();
+    It should_delete_the_file_in_the_first_directory =
+      () => File.Exists(@"Keep\First\match.txt").ShouldBeFalse();
 
-		It should_delete_the_file_in_the_third_directory =
-			() => File.Exists(@"Keep\Third\match.txt").ShouldBeFalse();
-	}
+    It should_delete_the_file_in_the_third_directory =
+      () => File.Exists(@"Keep\Third\match.txt").ShouldBeFalse();
+  }
 
-	[Tags("integration")]
-	public class When_duplicate_files_are_found_in_one_directory
-	{
-		static ICommand Command;
+  [Tags("integration")]
+  public class When_duplicate_files_are_found_in_one_directory
+  {
+    static ICommand Command;
 
-		Establish context =
-			() =>
-				{
-					Command =
-						new CommandLineParser()
-						.Parse(@"--size --keep Keep\DuplicatesInOne Keep\DuplicatesInOne".Args());
-				};
+    Establish context =
+      () =>
+      {
+        Command =
+          new CommandLineParser()
+            .Parse(
+                   CommandLine.EnumerableExtensions.Args(
+                                                         (string)
+                                                         @"--size --keep Keep\DuplicatesInOne Keep\DuplicatesInOne"));
+      };
 
-		Because of = () => Command.Execute();
+    Because of = () => Command.Execute();
 
-		It should_keep_the_first_match =
-			() => File.Exists(@"Keep\DuplicatesInOne\match-1.txt").ShouldBeTrue();
+    It should_keep_the_first_match =
+      () => File.Exists(@"Keep\DuplicatesInOne\match-1.txt").ShouldBeTrue();
 
-		It should_delete_the_second_match =
-			() => File.Exists(@"Keep\DuplicatesInOne\match-2.txt").ShouldBeFalse();
-	}
+    It should_delete_the_second_match =
+      () => File.Exists(@"Keep\DuplicatesInOne\match-2.txt").ShouldBeFalse();
+  }
 }

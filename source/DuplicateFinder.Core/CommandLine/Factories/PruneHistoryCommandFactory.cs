@@ -33,7 +33,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
       var hashes = new List<Func<IHashCodeProvider>>();
       var decorators = new List<IStreamDecorator>();
       IRememberHashCodes history = null;
-      var applyWhatIf = new Action(() => {});
+      var applyWhatIf = new Action(() => { });
 
       _options.Update<string>(Args.Name, v => hashes.Add(() => new FileNameHashCodeProvider()));
       _options.Update<string>(Args.Size, v => hashes.Add(() => new FileSizeHashCodeProvider(_fileSystem)));
@@ -53,7 +53,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
                                   }
                                 };
                               });
-                            
+
       var directories = _options.Parse(args);
       applyWhatIf();
 

@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Linq.Expressions;
 
 using FakeItEasy;
 
@@ -8,35 +10,35 @@ using Mono.Options;
 
 namespace DuplicateFinder.Core.Commands
 {
-	[Subject(typeof(ShowHelpCommand))]
-	public class When_the_help_screen_is_displayed
-	{
-		static IOutput Output;
-		static ShowHelpCommand Command;
-		static StringWriter OutputString;
+  [Subject(typeof(ShowHelpCommand))]
+  public class When_the_help_screen_is_displayed
+  {
+    static IOutput Output;
+    static ShowHelpCommand Command;
+    static StringWriter OutputString;
 
-		Establish context = () =>
-			{
-				OutputString = new StringWriter();
+    Establish context = () =>
+    {
+      OutputString = new StringWriter();
 
-				Output = A.Fake<IOutput>();
-				A
-					.CallTo(() => Output.GetTextWriter())
-					.Returns(OutputString);
+      Output = A.Fake<IOutput>();
+      A
+        .CallTo((() => Output.GetTextWriter()))
+        .Returns(OutputString);
 
-				var options = new OptionSet { { "foo", v => { } } };
+      var options = new OptionSet { { "foo", v => { } } };
 
-				Command = new ShowHelpCommand(options, Output, "some message");
-			};
+      Command = new ShowHelpCommand(options, Output, "some message");
+    };
 
-		Because of = () => Command.Execute();
+    Because of = () => Command.Execute();
 
-		It should_display_messages =
-			() => A
-				.CallTo(() => Output.WriteLine("some message"))
-				.MustHaveHappened();
+    It should_display_messages =
+      () => A
+              .CallTo(() => Output.WriteLine("some message"))
+              .MustHaveHappened();
 
-		It should_display_the_help_contents =
-			() => OutputString.GetStringBuilder().ToString().ShouldContain("foo");
-	}
+    It should_display_the_help_contents =
+      () => OutputString.GetStringBuilder().ToString().ShouldContain("foo");
+  }
 }

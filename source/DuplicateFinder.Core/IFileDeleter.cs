@@ -1,7 +1,7 @@
 ﻿namespace DuplicateFinder.Core
 {
-	public interface IFileDeleter
-	{
-		long Delete(string path);
-	}
+  public interface IFileDeleter
+  {
+    long Delete(string path);
+  }
 }

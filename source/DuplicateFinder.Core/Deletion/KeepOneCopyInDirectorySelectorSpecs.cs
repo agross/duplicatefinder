@@ -4,42 +4,43 @@ using Machine.Specifications;
 
 namespace DuplicateFinder.Core.Deletion
 {
-	[Subject(typeof(KeepOneCopyInDirectorySelector))]
-	public class When_one_copy_in_a_certain_directory_should_be_kept
-	{
-		static KeepOneCopyInDirectorySelector Selector;
-		static IEnumerable<string> ToDelete;
+  [Subject(typeof(KeepOneCopyInDirectorySelector))]
+  public class When_one_copy_in_a_certain_directory_should_be_kept
+  {
+    static KeepOneCopyInDirectorySelector Selector;
+    static IEnumerable<string> ToDelete;
 
-		Establish context = () => { Selector = new KeepOneCopyInDirectorySelector("keep"); };
+    Establish context = () => { Selector = new KeepOneCopyInDirectorySelector("keep"); };
 
-		Because of = () => { ToDelete = Selector.FilesToDelete(new[] { @"no-keep\1", @"keep\2", @"keep\3", @"no-keep\4" }); };
+    Because of =
+      () => { ToDelete = Selector.FilesToDelete(new[] { @"no-keep\1", @"keep\2", @"keep\3", @"no-keep\4" }); };
 
-		It should_delete_all_but_the_first_file_in_the_directory_to_keep =
-			() => ToDelete.ShouldContainOnly(@"no-keep\1", @"keep\3", @"no-keep\4");
-	}
+    It should_delete_all_but_the_first_file_in_the_directory_to_keep =
+      () => ToDelete.ShouldContainOnly(@"no-keep\1", @"keep\3", @"no-keep\4");
+  }
 
-	[Subject(typeof(KeepOneCopyInDirectorySelector))]
-	public class When_one_copy_in_a_certain_directory_should_be_kept_and_all_duplicates_are_outside_of_this_directory
-	{
-		static KeepOneCopyInDirectorySelector Selector;
-		static IEnumerable<string> ToDelete;
+  [Subject(typeof(KeepOneCopyInDirectorySelector))]
+  public class When_one_copy_in_a_certain_directory_should_be_kept_and_all_duplicates_are_outside_of_this_directory
+  {
+    static KeepOneCopyInDirectorySelector Selector;
+    static IEnumerable<string> ToDelete;
 
-		Establish context = () => { Selector = new KeepOneCopyInDirectorySelector("keep"); };
+    Establish context = () => { Selector = new KeepOneCopyInDirectorySelector("keep"); };
 
-	  Because of = () =>
-	  {
-	    ToDelete = Selector.FilesToDelete(new[]
-	    {
-	      @"no-keep\deeper\than\the\others",
-	      @"no-keep\with-a-longer-file-name-than-the-previous-path",
-	      @"no-keep\1",
-	      @"no-keep\2"
-	    });
-	  };
+    Because of = () =>
+    {
+      ToDelete = Selector.FilesToDelete(new[]
+                                        {
+                                          @"no-keep\deeper\than\the\others",
+                                          @"no-keep\with-a-longer-file-name-than-the-previous-path",
+                                          @"no-keep\1",
+                                          @"no-keep\2"
+                                        });
+    };
 
-	  It should_delete_the_first_shallow_file =
-	    () => ToDelete.ShouldContainOnly(@"no-keep\2",
-	                                     @"no-keep\deeper\than\the\others",
-	                                     @"no-keep\with-a-longer-file-name-than-the-previous-path");
-	}
+    It should_delete_the_first_shallow_file =
+      () => ToDelete.ShouldContainOnly(@"no-keep\2",
+                                       @"no-keep\deeper\than\the\others",
+                                       @"no-keep\with-a-longer-file-name-than-the-previous-path");
+  }
 }

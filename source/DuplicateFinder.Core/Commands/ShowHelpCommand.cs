@@ -6,38 +6,35 @@ using Mono.Options;
 
 namespace DuplicateFinder.Core.Commands
 {
-	internal class ShowHelpCommand : ICommand
-	{
-		readonly OptionSet _options;
-		readonly IOutput _output;
+  class ShowHelpCommand : ICommand
+  {
+    readonly OptionSet _options;
+    readonly IOutput _output;
 
-		public ShowHelpCommand(OptionSet options, IOutput output, params string[] messages)
-		{
-			_options = options;
-			_output = output;
-			Messages = messages;
-		}
+    public ShowHelpCommand(OptionSet options, IOutput output, params string[] messages)
+    {
+      _options = options;
+      _output = output;
+      Messages = messages;
+    }
 
-		public IEnumerable<string> Messages
-		{
-			get;
-			private set;
-		}
+    public IEnumerable<string> Messages { get; private set; }
 
-		public void Execute()
-		{
-			_output.WriteLine(String.Format("Usage: {0} [options] directory [directory]", Process.GetCurrentProcess().ProcessName));
-			_output.WriteLine("Searches and deletes duplicate files." + Environment.NewLine);
-			_output.WriteLine("Options:");
+    public void Execute()
+    {
+      _output.WriteLine(String.Format("Usage: {0} [options] directory [directory]",
+                                      Process.GetCurrentProcess().ProcessName));
+      _output.WriteLine("Searches and deletes duplicate files." + Environment.NewLine);
+      _output.WriteLine("Options:");
 
-			_options.WriteOptionDescriptions(_output.GetTextWriter());
+      _options.WriteOptionDescriptions(_output.GetTextWriter());
 
-			_output.WriteLine(String.Empty);
+      _output.WriteLine(String.Empty);
 
-			foreach (var message in Messages)
-			{
-				_output.WriteLine(message);
-			}
-		}
-	}
+      foreach (var message in Messages)
+      {
+        _output.WriteLine(message);
+      }
+    }
+  }
 }
