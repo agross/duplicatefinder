@@ -64,6 +64,9 @@
     <Compile Include="HashCodeHistorySpecs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HashCodeParamOrder\file.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="HashCodeHistory_PruneSubset\Run1_FileExists\match.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

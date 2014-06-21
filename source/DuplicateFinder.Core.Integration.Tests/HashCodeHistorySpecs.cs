@@ -68,6 +68,29 @@ namespace DuplicateFinder.Core.Integration.Tests
 		It should_delete_the_file_that_was_recreated =
 			() => File.Exists(@"HashCodeHistory\Run3_FileIsRecreated\match.txt").ShouldBeFalse();
 	}
+    
+    [Tags("integration")]
+	public class When_a_historized_scan_is_run_with_different_parameter_order : HistorySpecs
+	{
+		static ICommand Run2;
+
+		Establish context = () =>
+		{
+			var parser = new CommandLineParser();
+
+			var run1 = parser.Parse((@"--content --size --history " + History + @" HashCodeParamOrder").Args());
+			run1.Execute();
+
+            Run2 = parser.Parse((@"--size --content --history " + History + @" HashCodeParamOrder").Args());
+		};
+
+		Because of = () => Run2.Execute();
+
+		Cleanup after = () => HistoryFiles.Each(File.Delete);
+
+		It should_have_only_one_hash_in_seen_history =
+            () => File.ReadLines(Seen).Count().ShouldEqual(1);
+	}
 
 	[Tags("integration")]
 	public class When_deleted_files_are_resurrected_multiple_times : HistorySpecs

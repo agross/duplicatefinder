@@ -23,7 +23,7 @@ namespace DuplicateFinder.Core
       _output = output;
       _progress = progress;
       FileFinders = fileFinders;
-      HashCodeProviders = hashCodeProviders;
+      HashCodeProviders = hashCodeProviders.OrderBy(x => x.GetType().AssemblyQualifiedName);
       History = history;
     }
 
