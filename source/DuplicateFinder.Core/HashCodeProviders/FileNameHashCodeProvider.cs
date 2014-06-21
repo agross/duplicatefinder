@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace DuplicateFinder.Core.HashCodeProviders
@@ -8,6 +9,11 @@ namespace DuplicateFinder.Core.HashCodeProviders
 		public IEnumerable<string> CalculateHashCode(string path)
 		{
 			yield return Path.GetFileName(path);
+		}
+
+		public override string ToString()
+		{
+			return "name";
 		}
 	}
 }

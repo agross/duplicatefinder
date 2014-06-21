@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace DuplicateFinder.Core.Streams
 {
@@ -14,6 +15,11 @@ namespace DuplicateFinder.Core.Streams
 		public Stream GetStream(Stream stream)
 		{
 			return new HeadStream(stream, _length);
+		}
+
+		public override string ToString()
+		{
+			return String.Format("head({0})", _length);
 		}
 	}
 }

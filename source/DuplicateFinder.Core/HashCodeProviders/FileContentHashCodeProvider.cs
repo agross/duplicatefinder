@@ -49,5 +49,10 @@ namespace DuplicateFinder.Core.HashCodeProviders
 				yield return decorator.GetStream(_fileSystem.CreateStreamFrom(path));
 			}
 		}
+
+		public override string ToString()
+		{
+			return String.Format("content " + String.Join(" ", StreamDecorators.Select(x => x.ToString())));
+		}
 	}
 }

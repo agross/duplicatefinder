@@ -69,7 +69,7 @@ namespace DuplicateFinder.Core
     {
       var hashesAndFiles = CalculateHashes();
 
-      var resurrectedHashes = History.Snapshot(hashesAndFiles.Select(x => x.Key));
+      var resurrectedHashes = History.Snapshot(hashesAndFiles.Select(x => x.Key), HashCodeProviders);
 
       return new FindResult
       {

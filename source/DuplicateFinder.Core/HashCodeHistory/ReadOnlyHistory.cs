@@ -14,19 +14,19 @@ namespace DuplicateFinder.Core.HashCodeHistory
 			_inner = inner;
 
 			var scopeFactory = _inner.ScopeFactory;
-			_inner.ScopeFactory = () => new ReadOnlyScope(scopeFactory());
+			_inner.ScopeFactory = p => new ReadOnlyScope(scopeFactory(p));
 		}
 
-		public Func<IScope> ScopeFactory { get; set; }
+		public Func<IEnumerable<IHashCodeProvider>, IScope> ScopeFactory { get; set; }
 
-		IEnumerable<string> IRememberHashCodes.Snapshot(IEnumerable<string> hashes)
+		public IEnumerable<string> Snapshot(IEnumerable<string> hashes, IEnumerable<IHashCodeProvider> hashCodeProviders)
 		{
-			return _inner.Snapshot(hashes);
+			return _inner.Snapshot(hashes, hashCodeProviders);
 		}
 
-		public void Forget(IEnumerable<string> hashes)
+		public void Forget(IEnumerable<string> hashes, IEnumerable<IHashCodeProvider> hashCodeProviders)
 		{
-			_inner.Forget(hashes);
+			_inner.Forget(hashes, hashCodeProviders);
 		}
 	}
 }

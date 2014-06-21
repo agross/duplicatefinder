@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DuplicateFinder.Core.HashCodeHistory.Scopes
 {
@@ -25,6 +24,11 @@ namespace DuplicateFinder.Core.HashCodeHistory.Scopes
 		public IEnumerable<string> Resurrected()
 		{
 			return _inner.Resurrected();
+		}
+
+		public void EnsureCompatibilityWith(IEnumerable<IHashCodeProvider> hashCodeProviders)
+		{
+			_inner.EnsureCompatibilityWith(hashCodeProviders);
 		}
 
 		public void Dispose()

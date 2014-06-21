@@ -40,7 +40,7 @@ namespace DuplicateFinder.Core.Commands
       {
 			  var hashesAndFiles = DuplicateFinder.CalculateHashes().ToList();
 
-			  History.Forget(hashesAndFiles.Select(x => x.Key));
+			  History.Forget(hashesAndFiles.Select(x => x.Key), DuplicateFinder.HashCodeProviders);
       }
       finally
       {

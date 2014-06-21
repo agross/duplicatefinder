@@ -7,14 +7,14 @@ namespace DuplicateFinder.Core.HashCodeHistory
 {
 	public class NullHistory : IRememberHashCodes
 	{
-		public Func<IScope> ScopeFactory { get; set; }
+		public Func<IEnumerable<IHashCodeProvider>, IScope> ScopeFactory { get; set; }
 
-		public IEnumerable<string> Snapshot(IEnumerable<string> hashes)
+		public IEnumerable<string> Snapshot(IEnumerable<string> hashes, IEnumerable<IHashCodeProvider> hashCodeProviders)
 		{
 			yield break;
 		}
 
-		public void Forget(IEnumerable<string> hashes)
+		public void Forget(IEnumerable<string> hashes, IEnumerable<IHashCodeProvider> hashCodeProviders)
 		{
 		}
 	}

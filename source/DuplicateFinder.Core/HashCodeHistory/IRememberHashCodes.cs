@@ -7,8 +7,8 @@ namespace DuplicateFinder.Core.HashCodeHistory
 {
 	public interface IRememberHashCodes
 	{
-		Func<IScope> ScopeFactory { get; set; }
-		IEnumerable<string> Snapshot(IEnumerable<string> hashes);
-		void Forget(IEnumerable<string> hashes);
+		Func<IEnumerable<IHashCodeProvider>, IScope> ScopeFactory { get; set; }
+		IEnumerable<string> Snapshot(IEnumerable<string> hashes, IEnumerable<IHashCodeProvider> hashCodeProviders);
+		void Forget(IEnumerable<string> hashes, IEnumerable<IHashCodeProvider> hashCodeProviders);
 	}
 }

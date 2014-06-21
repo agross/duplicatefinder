@@ -7,6 +7,7 @@ namespace DuplicateFinder.Core
 	{
 		FindResult FindDuplicates();
 		IEnumerable<IGrouping<string, string>> CalculateHashes();
+		IEnumerable<IHashCodeProvider> HashCodeProviders { get; }
 	}
 
 	public class FindResult

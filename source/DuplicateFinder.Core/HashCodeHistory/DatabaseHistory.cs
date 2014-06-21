@@ -8,29 +8,19 @@ namespace DuplicateFinder.Core.HashCodeHistory
 {
 	class DatabaseHistory : IRememberHashCodes
 	{
-		readonly string _databaseFile;
-		readonly IFileSystem _fileSystem;
-
 		public DatabaseHistory(string databaseFile, IFileSystem fileSystem)
 		{
-			_databaseFile = databaseFile;
-			_fileSystem = fileSystem;
-			ScopeFactory = () => new Scope(_fileSystem, DatabaseFile);
+			DatabaseFile = databaseFile;
+			ScopeFactory = p => new Scope(fileSystem, DatabaseFile, p);
 		}
 
-		public string DatabaseFile
-		{
-			get
-			{
-				return _databaseFile;
-			}
-		}
+		public string DatabaseFile { get; private set; }
 
-		public Func<IScope> ScopeFactory { get; set; }
+		public Func<IEnumerable<IHashCodeProvider>, IScope> ScopeFactory { get; set; }
 
-		public IEnumerable<string> Snapshot(IEnumerable<string> hashes)
+		public IEnumerable<string> Snapshot(IEnumerable<string> hashes, IEnumerable<IHashCodeProvider> hashCodeProviders)
 		{
-			using (var scope = ScopeFactory())
+			using (var scope = ScopeFactory(hashCodeProviders))
 			{
 				var snapshot = hashes.ToList();
 				scope.AddSnapshot(snapshot);
@@ -39,9 +29,9 @@ namespace DuplicateFinder.Core.HashCodeHistory
 			}
 		}
 
-		public void Forget(IEnumerable<string> hashes)
+		public void Forget(IEnumerable<string> hashes, IEnumerable<IHashCodeProvider> hashCodeProviders)
 		{
-			using (var scope = ScopeFactory())
+			using (var scope = ScopeFactory(hashCodeProviders))
 			{
 				scope.Remove(hashes);
 			}

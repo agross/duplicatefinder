@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using DuplicateFinder.Core.Abstractions;
-
-using FakeItEasy;
 
 using Machine.Specifications;
 using Machine.Specifications.Utility;
@@ -28,6 +27,8 @@ namespace DuplicateFinder.Core.HashCodeHistory
 		{
 			get { return Directory.EnumerateFiles(".", FileName + "*"); }
 		}
+
+		protected static readonly IEnumerable<IHashCodeProvider> HashCodeProviders = Enumerable.Empty<IHashCodeProvider>();
 	}
 
 	[Subject(typeof(DatabaseHistory))]
@@ -41,7 +42,7 @@ namespace DuplicateFinder.Core.HashCodeHistory
 			History = new DatabaseHistory(FileName, new FileSystem());
 		};
 
-		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2", "3" }); };
+		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2", "3" }, HashCodeProviders); };
 		
 		Cleanup after = () => HistoryFiles.Each(File.Delete);
 
@@ -58,10 +59,10 @@ namespace DuplicateFinder.Core.HashCodeHistory
 		Establish context = () =>
 		{
 			History = new DatabaseHistory(FileName, new FileSystem());
-			History.Snapshot(new[] { "1", "2", "3" });
+			History.Snapshot(new[] { "1", "2", "3" }, HashCodeProviders);
 		};
 
-		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2" }); };
+		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2" }, HashCodeProviders); };
 
 		Cleanup after = () => HistoryFiles.Each(File.Delete);
 
@@ -78,11 +79,11 @@ namespace DuplicateFinder.Core.HashCodeHistory
 		Establish context = () =>
 		{
 			History = new DatabaseHistory(FileName, new FileSystem());
-			History.Snapshot(new[] { "1", "2" });
-			History.Snapshot(new[] { "1" });
+			History.Snapshot(new[] { "1", "2" }, HashCodeProviders);
+			History.Snapshot(new[] { "1" }, HashCodeProviders);
 		};
 
-		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2" }); };
+		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2" }, HashCodeProviders); };
 
 		Cleanup after = () => HistoryFiles.Each(File.Delete);
 
@@ -99,15 +100,17 @@ namespace DuplicateFinder.Core.HashCodeHistory
 		Establish context = () =>
 		{
 			History = new DatabaseHistory(FileName, new FileSystem());
-			History.Snapshot(new[] { "1", "2" });
-			History.Snapshot(new string[] { });
+			History.Snapshot(new[] { "1", "2" }, HashCodeProviders);
+			History.Snapshot(new string[] { }, HashCodeProviders);
 		};
 
-		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2" }); };
+		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2" }, HashCodeProviders); };
 
 		Cleanup after = () => HistoryFiles.Each(File.Delete);
 
 		It should_identify_the_files_that_were_resurrected =
 			() => Resurrected.ShouldContainOnly("1", "2");
+
+		
 	}
 }

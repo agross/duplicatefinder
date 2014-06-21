@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DuplicateFinder.Core.CommandLine;
@@ -24,7 +25,7 @@ namespace DuplicateFinder.Core.Integration.Tests
 
 		protected static IEnumerable<string> HistoryFiles
 		{
-			get { return Directory.EnumerateFiles(".", History + "*"); }
+			get { return Directory.EnumerateFiles(".", History + "*").Where(x => !x.EndsWith("-parameters")); }
 		}
 		
 		protected static string Gone
@@ -162,5 +163,29 @@ namespace DuplicateFinder.Core.Integration.Tests
 
       It should_not_touch_the_history =
           () => HistoryFiles.ShouldEachConformTo(x => !File.ReadLines(x).Any());
+    }
+
+    [Tags("integration")]
+    public class When_a_historized_scan_is_run_a_second_time_with_different_hash_providers : HistorySpecs
+    {
+        static ICommand Run2;
+        static Exception Exception;
+
+        Establish context = () =>
+        {
+            var parser = new CommandLineParser();
+
+            var run1 = parser.Parse((@"--content --first=1 --history " + History + @" HashCodeHistory\Run1_FileExists").Args());
+            run1.Execute();
+
+            Run2 = parser.Parse((@"--content --last=1 --history " + History + @" HashCodeHistory\Run1_FileExists").Args());
+        };
+
+        Because of = () => Exception = Catch.Exception(() => Run2.Execute());
+
+        Cleanup after = () => HistoryFiles.Each(File.Delete);
+
+        It should_fail =
+            () => Exception.ShouldNotBeNull();
     }
 }

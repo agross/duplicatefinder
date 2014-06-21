@@ -13,18 +13,22 @@ namespace DuplicateFinder.Core.Commands
 	public class When_no_files_are_found
 	{
 		static PruneHistoryCommand Command;
+		static IDuplicateFinder DuplicateFinder;
 		static IRememberHashCodes History;
 
 		Establish context = () =>
 		{
+			DuplicateFinder = A.Fake<IDuplicateFinder>();
 			History = A.Fake<IRememberHashCodes>();
-			Command = new PruneHistoryCommand(A.Fake<IOutput>(), A.Fake<IDuplicateFinder>(), History);
+
+			Command = new PruneHistoryCommand(A.Fake<IOutput>(), DuplicateFinder, History);
 		};
 
 		Because of = () => Command.Execute();
 
 		It should_not_forget_hash_codes =
-			() => A.CallTo(() => History.Forget(A<IEnumerable<string>>.That.IsEmpty())).MustHaveHappened();
+			() => A.CallTo(() => History.Forget(A<IEnumerable<string>>.That.IsEmpty(), DuplicateFinder.HashCodeProviders))
+			       .MustHaveHappened();
 	}
 
 	[Subject(typeof(PruneHistoryCommand))]
@@ -55,7 +59,7 @@ namespace DuplicateFinder.Core.Commands
 
 		It should_forget_all_hash_codes =
 			() => A
-			      	.CallTo(() => History.Forget(A<IEnumerable<string>>.That.IsSameSequenceAs(new[] {"1", "2"})))
+					.CallTo(() => History.Forget(A<IEnumerable<string>>.That.IsSameSequenceAs(new[] { "1", "2" }), DuplicateFinder.HashCodeProviders))
 			      	.MustHaveHappened();
 	}
 }

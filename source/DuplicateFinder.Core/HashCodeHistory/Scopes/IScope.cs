@@ -8,5 +8,6 @@ namespace DuplicateFinder.Core.HashCodeHistory.Scopes
 	    void AddSnapshot(IEnumerable<string> snapshot);
 	    void Remove(IEnumerable<string> hashes);
 	    IEnumerable<string> Resurrected();
+	    void EnsureCompatibilityWith(IEnumerable<IHashCodeProvider> hashCodeProviders);
     }
 }
