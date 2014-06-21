@@ -41,10 +41,6 @@ namespace DuplicateFinder.Core.Commands
 			  var hashesAndFiles = DuplicateFinder.CalculateHashes().ToList();
 
 			  History.Forget(hashesAndFiles.Select(x => x.Key));
-
-			  _output.WriteLine(String.Format("Forgot {0} hashes for {1} files.",
-			                                  hashesAndFiles.Count(),
-			                                  hashesAndFiles.Sum(x => x.Count())));
       }
       finally
       {

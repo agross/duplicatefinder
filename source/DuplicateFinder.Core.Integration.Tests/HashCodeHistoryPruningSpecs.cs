@@ -1,6 +1,8 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
+using System.IO;
+
 using DuplicateFinder.Core.CommandLine;
+
 using Machine.Specifications;
 using Machine.Specifications.Utility;
 
@@ -30,6 +32,35 @@ namespace DuplicateFinder.Core.Integration.Tests
 
 		It should_remove_all_hash_codes_from_the_history =
 			() => HistoryFiles.Each(f => File.ReadLines(f).ShouldBeEmpty());
+	}
+
+	[Tags("integration")]
+	public class When_files_are_pruned_with_whatif : HistorySpecs
+	{
+		static ICommand Prune;
+
+		Establish context = () =>
+		{
+			var parser = new CommandLineParser();
+
+			var run = parser.Parse((@"--name --history " + History + @" HashCodeHistory_Prune\Run1_FileExists").Args());
+			run.Execute();
+
+			Prune = parser.Parse((@"--prune --whatif --name --history " + History + @" HashCodeHistory_Prune\Run1_FileExists").Args());
+		};
+
+		Because of = () => Prune.Execute();
+
+		Cleanup after = () => HistoryFiles.Each(File.Delete);
+
+		It should_not_modify_the_seen_history =
+			() => File.ReadLines(Seen).ShouldNotBeEmpty();
+
+		It should_not_modify_the_current_history =
+			() => File.ReadLines(Current).ShouldNotBeEmpty();
+
+		It should_not_modify_the_gone_history =
+			() => File.ReadLines(Gone).ShouldBeEmpty();
 	}
 
 	[Tags("integration")]

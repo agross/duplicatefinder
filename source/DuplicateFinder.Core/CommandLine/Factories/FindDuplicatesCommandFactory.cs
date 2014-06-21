@@ -44,7 +44,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
       _options.Update(Args.Head, (long v) => decorators.Add(new HeadStreamDecorator(v)));
       _options.Update(Args.Tail, (long v) => decorators.Add(new TailStreamDecorator(v)));
       _options.Update<string>(Args.Keep, v => deletionSelector = new KeepOneCopyInDirectorySelector(v));
-      _options.Update<string>(Args.History, v => history = new DatabaseHistory(v, _fileSystem));
+      _options.Update<string>(Args.History, v => history = new DatabaseHistory(v, _fileSystem, _output));
       _options.Update<string>(Args.WhatIf, v => deleter = new WhatIfFileDeleter(_output));
 
       var directories = _options.Parse(args);

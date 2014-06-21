@@ -64,7 +64,7 @@ namespace DuplicateFinder.Core.CommandLine
 			           		},
 			           	{
 			           		Args.WhatIf,
-			           		"Do not delete files",
+			           		"Do not delete files, do not prune history, do not update histore",
 			           		v => { }
 			           		},
 			           	{

@@ -8,11 +8,13 @@ namespace DuplicateFinder.Core.HashCodeHistory
 	{
 		readonly string _databaseFile;
 		readonly IFileSystem _fileSystem;
-		
-		public DatabaseHistory(string databaseFile, IFileSystem fileSystem)
+	    readonly IOutput _output;
+
+	    public DatabaseHistory(string databaseFile, IFileSystem fileSystem, IOutput output)
 		{
 			_databaseFile = databaseFile;
 			_fileSystem = fileSystem;
+		    _output = output;
 		}
 
 		public string DatabaseFile
@@ -41,6 +43,8 @@ namespace DuplicateFinder.Core.HashCodeHistory
 			{
 				scope.Remove(hashes);
 			}
+
+            _output.WriteLine(String.Format("Forgot {0} hashes.", hashes.Count()));
 		}
 
 		class Scope : IDisposable
