@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
+using DuplicateFinder.Core.HashCodeHistory.Scopes;
 
 namespace DuplicateFinder.Core.HashCodeHistory
 {
-    public class ReadOnlyHistory : IRememberHashCodes
-    {
-        readonly IRememberHashCodes _inner;
-        readonly IOutput _output;
+	class ReadOnlyHistory : IRememberHashCodes
+	{
+		readonly IRememberHashCodes _inner;
 
-        public ReadOnlyHistory(IRememberHashCodes inner, IOutput output)
-        {
-            _inner = inner;
-            _output = output;
-        }
+		public ReadOnlyHistory(IRememberHashCodes inner)
+		{
+			_inner = inner;
 
-        public IEnumerable<string> Snapshot(IEnumerable<string> hashes)
-        {
-            return _inner.Snapshot(hashes);
-        }
+			var scopeFactory = _inner.ScopeFactory;
+			_inner.ScopeFactory = () => new ReadOnlyScope(scopeFactory());
+		}
 
-        public void Forget(IEnumerable<string> hashes)
-        {
-            _output.WriteLine(String.Format("WHATIF: Would forget {0} hashes.", hashes.Count()));
-        }
-    }
+		public Func<IScope> ScopeFactory { get; set; }
+
+		IEnumerable<string> IRememberHashCodes.Snapshot(IEnumerable<string> hashes)
+		{
+			return _inner.Snapshot(hashes);
+		}
+
+		public void Forget(IEnumerable<string> hashes)
+		{
+			_inner.Forget(hashes);
+		}
+	}
 }

@@ -36,6 +36,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
       var deletionSelector = (ISelectFilesToDelete) new AllButFirstDuplicateSelector();
       var deleter = (IFileDeleter) new FileDeleter(_fileSystem, _output);
       var history = (IRememberHashCodes) new NullHistory();
+      var applyWhatIf = new Action(() => { });
 
       _options.Update<string>(Args.Name, v => hashes.Add(() => new FileNameHashCodeProvider()));
       _options.Update<string>(Args.Size, v => hashes.Add(() => new FileSizeHashCodeProvider(_fileSystem)));
@@ -44,10 +45,22 @@ namespace DuplicateFinder.Core.CommandLine.Factories
       _options.Update(Args.Head, (long v) => decorators.Add(new HeadStreamDecorator(v)));
       _options.Update(Args.Tail, (long v) => decorators.Add(new TailStreamDecorator(v)));
       _options.Update<string>(Args.Keep, v => deletionSelector = new KeepOneCopyInDirectorySelector(v));
-      _options.Update<string>(Args.History, v => history = new DatabaseHistory(v, _fileSystem, _output));
-      _options.Update<string>(Args.WhatIf, v => deleter = new WhatIfFileDeleter(_output));
+      _options.Update<string>(Args.History, v => history = new DatabaseHistory(v, _fileSystem));
+      _options.Update<string>(Args.WhatIf,
+                              _ =>
+                              {
+                                applyWhatIf = () =>
+                                {
+                                  deleter = new WhatIfFileDeleter(_output);
+                                  if (history != null)
+                                  {
+                                    history = new ReadOnlyHistory(history);
+                                  }
+                                };
+                              });
 
       var directories = _options.Parse(args);
+      applyWhatIf();
 
       var messages = Missing(hashes, "The comparison type is missing")
         .Union(Missing(directories, "No directories to compare"));

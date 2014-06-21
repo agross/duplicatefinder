@@ -122,7 +122,10 @@
       <DependentUpon>DatabaseHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="HashCodeHistory\IRememberHashCodes.cs" />
+    <Compile Include="HashCodeHistory\Scopes\IScope.cs" />
     <Compile Include="HashCodeHistory\ReadOnlyHistory.cs" />
+    <Compile Include="HashCodeHistory\Scopes\ReadOnlyScope.cs" />
+    <Compile Include="HashCodeHistory\Scopes\Scope.cs" />
     <Compile Include="HashCodeProviders\FilesByDriveSpecs.cs" />
     <Compile Include="IDisplayProgress.cs" />
     <Compile Include="ISelectFilesToDelete.cs" />

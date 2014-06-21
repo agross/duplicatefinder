@@ -38,7 +38,7 @@ namespace DuplicateFinder.Core.HashCodeHistory
 
 		Establish context = () =>
 		{
-			History = new DatabaseHistory(FileName, new FileSystem(), A.Fake<IOutput>());
+			History = new DatabaseHistory(FileName, new FileSystem());
 		};
 
 		Because of = () => { Resurrected = History.Snapshot(new[] { "1", "2", "3" }); };
@@ -57,7 +57,7 @@ namespace DuplicateFinder.Core.HashCodeHistory
 
 		Establish context = () =>
 		{
-			History = new DatabaseHistory(FileName, new FileSystem(), A.Fake<IOutput>());
+			History = new DatabaseHistory(FileName, new FileSystem());
 			History.Snapshot(new[] { "1", "2", "3" });
 		};
 
@@ -77,7 +77,7 @@ namespace DuplicateFinder.Core.HashCodeHistory
 
 		Establish context = () =>
 		{
-			History = new DatabaseHistory(FileName, new FileSystem(), A.Fake<IOutput>());
+			History = new DatabaseHistory(FileName, new FileSystem());
 			History.Snapshot(new[] { "1", "2" });
 			History.Snapshot(new[] { "1" });
 		};
@@ -98,7 +98,7 @@ namespace DuplicateFinder.Core.HashCodeHistory
 
 		Establish context = () =>
 		{
-			History = new DatabaseHistory(FileName, new FileSystem(), A.Fake<IOutput>());
+			History = new DatabaseHistory(FileName, new FileSystem());
 			History.Snapshot(new[] { "1", "2" });
 			History.Snapshot(new string[] { });
 		};

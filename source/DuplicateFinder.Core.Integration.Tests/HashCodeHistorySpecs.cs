@@ -143,4 +143,24 @@ namespace DuplicateFinder.Core.Integration.Tests
 	  It should_not_delete_the_moved_file =
 		  () => File.Exists(@"HashCodeHistory_FileWasMoved\Run2_FileWasMoved\Archive\match.txt").ShouldBeTrue();
 	}
+
+    [Tags("integration")]
+    public class When_a_historized_scan_is_run_with_whatif : HistorySpecs
+    {
+      static ICommand Run;
+
+      Establish context = () =>
+      {
+        var parser = new CommandLineParser();
+
+        Run = parser.Parse((@"--size --whatif --history " + History + @" HashCodeHistory\Run1_FileExists").Args());
+      };
+
+      Because of = () => Run.Execute();
+
+      Cleanup after = () => HistoryFiles.Each(File.Delete);
+
+      It should_not_touch_the_history =
+          () => HistoryFiles.ShouldEachConformTo(x => !File.ReadLines(x).Any());
+    }
 }

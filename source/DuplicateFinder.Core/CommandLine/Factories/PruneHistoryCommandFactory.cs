@@ -41,7 +41,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
                               v => hashes.Add(() => new FileContentHashCodeProvider(_fileSystem, decorators.ToArray())));
       _options.Update(Args.Head, (long v) => decorators.Add(new HeadStreamDecorator(v)));
       _options.Update(Args.Tail, (long v) => decorators.Add(new TailStreamDecorator(v)));
-      _options.Update<string>(Args.History, v => { history = new DatabaseHistory(v, _fileSystem, _output); });
+      _options.Update<string>(Args.History, v => { history = new DatabaseHistory(v, _fileSystem); });
       _options.Update<string>(Args.WhatIf,
                               _ =>
                               {
@@ -49,13 +49,12 @@ namespace DuplicateFinder.Core.CommandLine.Factories
                                 {
                                   if (history != null)
                                   {
-                                    history = new ReadOnlyHistory(history, _output);
+                                    history = new ReadOnlyHistory(history);
                                   }
                                 };
                               });
                             
       var directories = _options.Parse(args);
-
       applyWhatIf();
 
       var messages = Missing(hashes, "The comparison type is missing")
