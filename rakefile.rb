@@ -128,6 +128,8 @@ namespace :compile do
 
   desc 'Compiles the application'
   task :app => [:clobber, 'generate:version', 'generate:config', 'compile:prepare_release'] do
+    sh(*%w(tools/NuGet/NuGet.exe restore))
+
     FileList.new("#{configatron.dir.app}/**/*.csproj").each do |project|
       MSBuild.compile \
         :project => project,
@@ -142,6 +144,8 @@ namespace :compile do
 
   desc 'Compiles tests'
   task :tests => [:clobber, 'generate:version', 'generate:config'] do
+    sh(*%w(tools/NuGet/NuGet.exe restore))
+
     FileList.new("#{configatron.dir.app}/**/*.Tests.csproj").each do |project|
       MSBuild.compile \
         :project => project,
