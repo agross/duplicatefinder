@@ -17,6 +17,6 @@ namespace DuplicateFinder.Core.Streams
 		Because of = () => { Decorated = Decorator.GetStream(A.Fake<Stream>()); };
 
 		It should_create_a_tail_stream =
-			() => Decorated.ShouldBeOfType<TailStream>();
+            () => Decorated.ShouldBeOfExactType<TailStream>();
 	}
 }

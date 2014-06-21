@@ -27,7 +27,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_show_help_command =
-			() => Command.ShouldBeOfType<ShowHelpCommand>();
+            () => Command.ShouldBeOfExactType<ShowHelpCommand>();
 	}
 
 	[Subject(typeof (CommandLineParser))]
@@ -44,7 +44,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_show_help_command =
-			() => Command.ShouldBeOfType<ShowHelpCommand>();
+            () => Command.ShouldBeOfExactType<ShowHelpCommand>();
 	}
 
 	[Subject(typeof (CommandLineParser))]
@@ -61,12 +61,12 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_parse_the_directories_to_scan =
 			() => Command.As<FindDuplicatesCommand>()
 			      	.DuplicateFinder.As<DuplicateFinder>()
-			      	.FileFinders.Each(x => x.ShouldBeOfType<RecursiveFileFinder>());
+                    .FileFinders.Each(x => x.ShouldBeOfExactType<RecursiveFileFinder>());
 
 		It should_parse_the_first_directory_to_scan =
 			() => Command.As<FindDuplicatesCommand>()
@@ -86,7 +86,7 @@ namespace DuplicateFinder.Core.CommandLine
 
 		It should_not_delete_files =
 			() => Command.As<FindDuplicatesCommand>()
-			      	.FileDeleter.ShouldBeOfType<WhatIfFileDeleter>();
+                    .FileDeleter.ShouldBeOfExactType<WhatIfFileDeleter>();
 	}
 
 	[Subject(typeof (CommandLineParser))]
@@ -103,12 +103,12 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_parse_the_directories_to_scan =
 			() => Command.As<FindDuplicatesCommand>()
 			      	.DuplicateFinder.As<DuplicateFinder>()
-			      	.FileFinders.Each(x => x.ShouldBeOfType<RecursiveFileFinder>());
+                    .FileFinders.Each(x => x.ShouldBeOfExactType<RecursiveFileFinder>());
 
 		It should_parse_the_name_hash_code_provider =
 			() => Command.As<FindDuplicatesCommand>()
@@ -140,7 +140,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_parse_the_name_hash_code_provider =
 			() => Command.As<FindDuplicatesCommand>()
@@ -167,7 +167,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_parse_the_size_hash_code_provider =
 			() => Command.As<FindDuplicatesCommand>()
@@ -194,7 +194,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_parse_the_content_hash_code_provider =
 			() => Command.As<FindDuplicatesCommand>()
@@ -229,7 +229,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_parse_the_content_hash_code_provider =
 			() => Command.As<FindDuplicatesCommand>()
@@ -264,7 +264,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_parse_the_content_hash_code_provider =
 			() => Command.As<FindDuplicatesCommand>()
@@ -299,7 +299,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_parse_the_content_hash_code_provider =
 			() => Command.As<FindDuplicatesCommand>()
@@ -351,12 +351,12 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_not_maintain_history_of_seen_hashes =
 			() => Command.As<FindDuplicatesCommand>()
 			      	.DuplicateFinder.As<DuplicateFinder>()
-			      	.History.ShouldBeOfType<NullHistory>();
+                    .History.ShouldBeOfExactType<NullHistory>();
 	}
 
 	[Subject(typeof (CommandLineParser))]
@@ -373,12 +373,12 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_find_command =
-			() => Command.ShouldBeOfType<FindDuplicatesCommand>();
+            () => Command.ShouldBeOfExactType<FindDuplicatesCommand>();
 
 		It should_maintain_a_history_of_seen_hashes =
 			() => Command.As<FindDuplicatesCommand>()
 			      	.DuplicateFinder.As<DuplicateFinder>()
-			      	.History.ShouldBeOfType<DatabaseHistory>();
+                    .History.ShouldBeOfExactType<DatabaseHistory>();
 
 		It should_maintain_a_history_of_seen_hashes_in_the_file_specified_on_the_command_line =
 			() => Command.As<FindDuplicatesCommand>()
@@ -401,12 +401,12 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_prune_history_command =
-			() => Command.ShouldBeOfType<PruneHistoryCommand>();
+            () => Command.ShouldBeOfExactType<PruneHistoryCommand>();
 
 		It should_not_maintain_a_history_of_seen_hashes =
 			() => Command.As<PruneHistoryCommand>()
 			      	.DuplicateFinder.As<DuplicateFinder>()
-			      	.History.ShouldBeOfType<NullHistory>();
+                    .History.ShouldBeOfExactType<NullHistory>();
 
 		It should_delete_hashes_from_the_history_file =
 			() => Command.As<PruneHistoryCommand>()
@@ -428,7 +428,7 @@ namespace DuplicateFinder.Core.CommandLine
 			() => Command.ShouldNotBeNull();
 
 		It should_create_the_show_help_command =
-			() => Command.ShouldBeOfType<ShowHelpCommand>();
+			() => Command.ShouldBeOfExactType<ShowHelpCommand>();
 	}
 
 	static class EnumerableExtensions
