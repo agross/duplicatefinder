@@ -128,7 +128,8 @@ namespace :compile do
 
   desc 'Compiles the application'
   task :app => [:clobber, 'generate:version', 'generate:config', 'compile:prepare_release'] do
-    sh(*%w(tools/NuGet/NuGet.exe restore))
+    sh(*%w(.paket/paket.bootstrapper.exe))
+    sh(*%w(.paket/paket.exe restore))
 
     FileList.new("#{configatron.dir.app}/**/*.csproj").each do |project|
       MSBuild.compile \
@@ -144,7 +145,8 @@ namespace :compile do
 
   desc 'Compiles tests'
   task :tests => [:clobber, 'generate:version', 'generate:config'] do
-    sh(*%w(tools/NuGet/NuGet.exe restore))
+    sh(*%w(.paket/paket.bootstrapper.exe))
+    sh(*%w(.paket/paket.exe restore))
 
     FileList.new("#{configatron.dir.app}/**/*.Tests.csproj").each do |project|
       MSBuild.compile \
@@ -166,7 +168,7 @@ namespace :tests do
   task :run => ['compile:all'] do
     FileList.new("#{configatron.dir.build}/Tests/**/#{configatron.project}*.dll").each do |assembly|
       Mspec.run \
-        :tool => configatron.tools.mspec,
+        :tool => 'packages/Machine.Specifications.Runner.Console/tools/mspec-clr4.exe',
         :reportdirectory => configatron.dir.test_results,
         :assembly => assembly
     end
