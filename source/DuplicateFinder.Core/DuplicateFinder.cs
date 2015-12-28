@@ -120,31 +120,36 @@ namespace DuplicateFinder.Core
 
       public override IList<IEnumerator<string>> GetPartitions(int partitionCount)
       {
-        var allPartitions = _files
+        var drives = _files
           .GroupBy(Path.GetPathRoot)
+          .OrderBy(x => x.Key)
           .Select(grouping => grouping.AsEnumerable())
           .ToList();
 
-        IEnumerable<IEnumerable<string>> result = allPartitions;
+        IEnumerable<IEnumerable<string>> result = drives;
 
-        if (partitionCount > allPartitions.Count)
+        if (partitionCount > drives.Count)
         {
           var fillUpToPartitionCount = Enumerable.Repeat(Enumerable.Empty<string>(),
-                                                         partitionCount - allPartitions.Count);
+                                                         partitionCount - drives.Count);
 
-          result = allPartitions.Concat(fillUpToPartitionCount);
+          result = drives.Concat(fillUpToPartitionCount);
         }
 
-        if (partitionCount < allPartitions.Count)
+        if (partitionCount < drives.Count)
         {
-          var upToPartitionCountMinusOne = allPartitions.TakeWhile((partition, i) => i < partitionCount - 1);
+          var matchedPartitions = drives.Take(partitionCount);
+          var unmatchedPartitions = drives
+            .Skip(partitionCount)
+            .SelectMany(x => x)
+            .Split(partitionCount);
 
-          var mergedLast = allPartitions
-            .Skip(partitionCount - 1)
-            .Select(byDrive => byDrive.AsEnumerable())
-            .Aggregate((acc, next) => acc.Concat(next));
-
-          result = upToPartitionCountMinusOne.Concat(new[] { mergedLast });
+          result = matchedPartitions
+            .Select((partition, index) =>
+            {
+              var rest = unmatchedPartitions.Skip(index).First();
+              return partition.Concat(rest).ToList();
+            });
         }
 
         return result
@@ -156,6 +161,15 @@ namespace DuplicateFinder.Core
 
   static class EnumerableExtensions
   {
+    public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> source, int partitions)
+    {
+      return source
+        .Select((value, index) => new { x = value, index })
+        .GroupBy(x => x.index % partitions)
+        .Select(x => x.Select(group => group.x).ToList())
+        .ToList();
+    }
+
     public static IEnumerable<T> RemoveDuplicateEntries<T>(this IEnumerable<T> instance)
     {
       return instance
