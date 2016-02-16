@@ -47,118 +47,75 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="CommandLine\CommandLineParserException.cs" />
-    <Compile Include="CommandLine\Factories\FindDuplicatesCommandFactory.cs" />
+    <Compile Include="Abstractions\ConsoleOutput.cs" />
+    <Compile Include="Abstractions\FileSystem.cs" />
+    <Compile Include="CommandLine\Args.cs" />
     <Compile Include="CommandLine\CommandLineParser.cs" />
-    <Compile Include="CommandLine\CommandLineParserSpecs.cs">
-      <DependentUpon>CommandLineParser.cs</DependentUpon>
-    </Compile>
+    <Compile Include="CommandLine\CommandLineParserException.cs" />
+    <Compile Include="CommandLine\CommandLineParserSpecs.cs" />
+    <Compile Include="CommandLine\Factories\FindDuplicatesCommandFactory.cs" />
     <Compile Include="CommandLine\Factories\OptionSetExtensions.cs" />
     <Compile Include="CommandLine\Factories\PruneHistoryCommandFactory.cs" />
-    <Compile Include="CommandLine\ICommandFactory.cs" />
     <Compile Include="CommandLine\Factories\ShowHelpCommandFactory.cs" />
+    <Compile Include="CommandLine\ICommandFactory.cs" />
     <Compile Include="CommandLine\ModifyableOptionSet.cs" />
-    <Compile Include="CommandLine\Args.cs" />
-    <Compile Include="CommandLine\ModifyableOptionSetSpecs.cs">
-      <DependentUpon>ModifyableOptionSet.cs</DependentUpon>
-    </Compile>
+    <Compile Include="CommandLine\ModifyableOptionSetSpecs.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Commands\FindDuplicatesCommand.cs" />
-    <Compile Include="Abstractions\ConsoleOutput.cs" />
-    <Compile Include="Commands\FindDuplicatesCommandSpecs.cs">
-      <DependentUpon>FindDuplicatesCommand.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Commands\FindDuplicatesCommandSpecs.cs" />
     <Compile Include="Commands\PruneHistoryCommand.cs" />
-    <Compile Include="Commands\PruneHistoryCommandSpecs.cs">
-      <DependentUpon>PruneHistoryCommand.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Commands\PruneHistoryCommandSpecs.cs" />
     <Compile Include="Commands\ShowHelpCommand.cs" />
-    <Compile Include="Commands\ShowHelpCommandSpecs.cs">
-      <DependentUpon>ShowHelpCommand.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Deletion\AllButFirstDuplicateSelectorSpecs.cs">
-      <DependentUpon>AllButFirstDuplicateSelector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Deletion\WhatIfFileDeleterSpecs.cs">
-      <DependentUpon>WhatIfFileDeleter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Deletion\FileDeleterSpecs.cs">
-      <DependentUpon>FileDeleter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Deletion\KeepOneCopyInDirectorySelector.cs" />
-    <Compile Include="Deletion\KeepOneCopyInDirectorySelectorSpecs.cs">
-      <DependentUpon>KeepOneCopyInDirectorySelector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DuplicateFinder.cs" />
-    <Compile Include="DuplicateFinderSpecs.cs">
-      <DependentUpon>DuplicateFinder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Deletion\FileDeleter.cs" />
+    <Compile Include="Commands\ShowHelpCommandSpecs.cs" />
     <Compile Include="Deletion\AllButFirstDuplicateSelector.cs" />
+    <Compile Include="Deletion\AllButFirstDuplicateSelectorSpecs.cs" />
+    <Compile Include="Deletion\FileDeleter.cs" />
+    <Compile Include="Deletion\FileDeleterSpecs.cs" />
+    <Compile Include="Deletion\KeepOneCopyInDirectorySelector.cs" />
+    <Compile Include="Deletion\KeepOneCopyInDirectorySelectorSpecs.cs" />
+    <Compile Include="Deletion\WhatIfFileDeleter.cs" />
+    <Compile Include="Deletion\WhatIfFileDeleterSpecs.cs" />
+    <Compile Include="DuplicateFinder.cs" />
+    <Compile Include="DuplicateFinderSpecs.cs" />
     <Compile Include="FilesByDriveSpecs.cs" />
     <Compile Include="FileSizeExtensions.cs" />
-    <Compile Include="FileSizeExtensionsSpecs.cs">
-      <DependentUpon>FileSizeExtensions.cs</DependentUpon>
-    </Compile>
+    <Compile Include="FileSizeExtensionsSpecs.cs" />
     <Compile Include="HashCodeHistory\DatabaseHistory.cs" />
-    <Compile Include="HashCodeHistory\DatabaseHistorySpecs.cs">
-      <DependentUpon>DatabaseHistory.cs</DependentUpon>
-    </Compile>
+    <Compile Include="HashCodeHistory\DatabaseHistorySpecs.cs" />
     <Compile Include="HashCodeHistory\IRememberHashCodes.cs" />
-    <Compile Include="HashCodeHistory\Scopes\IScope.cs" />
+    <Compile Include="HashCodeHistory\NullHistory.cs" />
     <Compile Include="HashCodeHistory\ReadOnlyHistory.cs" />
+    <Compile Include="HashCodeHistory\Scopes\IScope.cs" />
     <Compile Include="HashCodeHistory\Scopes\ReadOnlyScope.cs" />
     <Compile Include="HashCodeHistory\Scopes\Scope.cs" />
-    <Compile Include="IDisplayProgress.cs" />
-    <Compile Include="ISelectFilesToDelete.cs" />
-    <Compile Include="Deletion\WhatIfFileDeleter.cs" />
     <Compile Include="HashCodeProviders\FileContentHashCodeProvider.cs" />
-    <Compile Include="HashCodeProviders\FileContentHashCodeProviderSpecs.cs">
-      <DependentUpon>FileContentHashCodeProvider.cs</DependentUpon>
-    </Compile>
+    <Compile Include="HashCodeProviders\FileContentHashCodeProviderSpecs.cs" />
     <Compile Include="HashCodeProviders\FileNameHashCodeProvider.cs" />
-    <Compile Include="HashCodeProviders\FileNameHashCodeProviderSpecs.cs">
-      <DependentUpon>FileNameHashCodeProvider.cs</DependentUpon>
-    </Compile>
+    <Compile Include="HashCodeProviders\FileNameHashCodeProviderSpecs.cs" />
     <Compile Include="HashCodeProviders\FileSizeHashCodeProvider.cs" />
-    <Compile Include="HashCodeProviders\FileSizeHashCodeProviderSpecs.cs">
-      <DependentUpon>FileSizeHashCodeProvider.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ICommandLineParser.cs" />
-    <Compile Include="HashCodeHistory\NullHistory.cs" />
-    <Compile Include="Streams\HeadStreamDecorator.cs" />
-    <Compile Include="IFileDeleter.cs" />
-    <Compile Include="IHashCodeProvider.cs" />
+    <Compile Include="HashCodeProviders\FileSizeHashCodeProviderSpecs.cs" />
     <Compile Include="ICommand.cs" />
+    <Compile Include="ICommandLineParser.cs" />
+    <Compile Include="IDisplayProgress.cs" />
     <Compile Include="IDuplicateFinder.cs" />
-    <Compile Include="IOutput.cs" />
-    <Compile Include="IStreamDecorator.cs" />
-    <Compile Include="Streams\HeadStream.cs" />
-    <Compile Include="Abstractions\FileSystem.cs" />
-    <Compile Include="Streams\HeadStreamDecoratorSpecs.cs">
-      <DependentUpon>HeadStreamDecorator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Streams\HeadStreamSpecs.cs">
-      <DependentUpon>HeadStream.cs</DependentUpon>
-    </Compile>
+    <Compile Include="IFileDeleter.cs" />
     <Compile Include="IFileFinder.cs" />
     <Compile Include="IFileSystem.cs" />
-    <Compile Include="RecursiveFileFinder.cs" />
+    <Compile Include="IHashCodeProvider.cs" />
+    <Compile Include="IOutput.cs" />
+    <Compile Include="ISelectFilesToDelete.cs" />
+    <Compile Include="IStreamDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecursiveFileFinderSpecs.cs">
-      <DependentUpon>RecursiveFileFinder.cs</DependentUpon>
-    </Compile>
+    <Compile Include="RecursiveFileFinder.cs" />
+    <Compile Include="RecursiveFileFinderSpecs.cs" />
+    <Compile Include="Streams\HeadStream.cs" />
+    <Compile Include="Streams\HeadStreamDecorator.cs" />
+    <Compile Include="Streams\HeadStreamDecoratorSpecs.cs" />
+    <Compile Include="Streams\HeadStreamSpecs.cs" />
     <Compile Include="Streams\TailStream.cs" />
     <Compile Include="Streams\TailStreamDecorator.cs" />
-    <Compile Include="Streams\TailStreamDecoratorSpecs.cs">
-      <DependentUpon>TailStreamDecorator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Streams\TailStreamSpecs.cs">
-      <DependentUpon>TailStream.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="paket.references" />
+    <Compile Include="Streams\TailStreamDecoratorSpecs.cs" />
+    <Compile Include="Streams\TailStreamSpecs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
@@ -288,5 +245,8 @@
       <Private>True</Private>
       <Paket>True</Paket>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="paket.references" />
   </ItemGroup>
 </Project>
