@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DuplicateFinder.Core.Deletion
+﻿namespace DuplicateFinder.Core.Deletion
 {
   class WhatIfFileDeleter : IFileDeleter
   {
@@ -13,7 +11,7 @@ namespace DuplicateFinder.Core.Deletion
 
     public long Delete(string path)
     {
-      _output.WriteLine(String.Format("WHATIF: Would delete {0}", path));
+      _output.WriteLine("WHATIF: Would delete {0}", path);
       return 0;
     }
   }

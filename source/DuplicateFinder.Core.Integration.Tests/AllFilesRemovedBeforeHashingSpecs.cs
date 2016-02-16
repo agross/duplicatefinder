@@ -63,9 +63,9 @@ namespace DuplicateFinder.Core.Integration.Tests
       _writer = new StringWriter();
     }
 
-    public void WriteLine(string value)
+    public void WriteLine(string format, params object[] args)
     {
-      _writer.WriteLine(value);
+      _writer.WriteLine(format, args);
     }
 
     public TextWriter GetTextWriter()

@@ -1,5 +1,6 @@
 source https://www.nuget.org/api/v2/
 
+nuget JetBrains.Annotations ~> 10.0
 nuget FakeItEasy ~> 1.22
 nuget Machine.Specifications.Runner.Console ~> 0
 nuget Machine.Specifications.Should ~> 0

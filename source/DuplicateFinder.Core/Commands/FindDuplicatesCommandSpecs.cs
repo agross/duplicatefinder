@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 using FakeItEasy;
 
@@ -80,7 +78,7 @@ namespace DuplicateFinder.Core.Commands
 
     It should_print_the_number_of_bytes_that_were_deleted =
       () => A
-              .CallTo(() => Output.WriteLine("0 Bytes deleted."))
+              .CallTo(() => Output.WriteLine("{0} deleted.", "0 Bytes"))
               .MustHaveHappened();
   }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -79,7 +78,7 @@ namespace DuplicateFinder.Core
 
     IEnumerable<string> HashesOf(string path)
     {
-      _output.WriteLine(String.Format("Hashing {0}", path));
+      _output.WriteLine("Hashing {0}", path);
 
       try
       {
@@ -89,7 +88,7 @@ namespace DuplicateFinder.Core
       }
       catch (IOException)
       {
-        _output.WriteLine(String.Format("File is inaccessible or has been deleted: {0}", path));
+        _output.WriteLine("File is inaccessible or has been deleted: {0}", path);
         return Enumerable.Empty<string>();
       }
     }

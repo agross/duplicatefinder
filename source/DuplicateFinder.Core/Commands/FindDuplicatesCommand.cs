@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 
 namespace DuplicateFinder.Core.Commands
@@ -46,7 +45,7 @@ namespace DuplicateFinder.Core.Commands
                                   {
                                     foreach (var keep in x.Keep)
                                     {
-                                      _output.WriteLine(String.Format("Keeping {0}", keep));
+                                      _output.WriteLine("Keeping {0}", keep);
                                     }
 
                                     return x.Delete;
@@ -56,12 +55,12 @@ namespace DuplicateFinder.Core.Commands
                                   .Select(FileDeleter.Delete)
                                   .Sum();
 
-        _output.WriteLine(String.Format("{0} deleted.", bytesDeleted.ToFileSize()));
+        _output.WriteLine("{0} deleted.", bytesDeleted.ToFileSize());
       }
       finally
       {
         timer.Stop();
-        _output.WriteLine(String.Format("Took {0}", timer.Elapsed));
+        _output.WriteLine("Took {0}", timer.Elapsed);
       }
     }
   }

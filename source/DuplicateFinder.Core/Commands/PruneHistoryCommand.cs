@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 
 using DuplicateFinder.Core.HashCodeHistory;
@@ -37,7 +36,7 @@ namespace DuplicateFinder.Core.Commands
       finally
       {
         timer.Stop();
-        _output.WriteLine(String.Format("Took {0}", timer.Elapsed));
+        _output.WriteLine("Took {0}", timer.Elapsed);
       }
     }
   }

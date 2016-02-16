@@ -20,12 +20,12 @@ namespace DuplicateFinder.Core.Deletion
         var bytesDeleted = _fileSystem.GetSize(path);
         _fileSystem.Delete(path);
 
-        _output.WriteLine(String.Format("Deleted {0}", path));
+        _output.WriteLine("Deleted {0}", path);
         return bytesDeleted;
       }
       catch (Exception ex)
       {
-        _output.WriteLine(String.Format("ERROR: Could not delete {0}: {1}", path, ex.Message));
+        _output.WriteLine("ERROR: Could not delete {0}: {1}", path, ex.Message);
       }
 
       return 0;

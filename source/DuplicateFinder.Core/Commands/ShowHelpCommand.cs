@@ -22,8 +22,7 @@ namespace DuplicateFinder.Core.Commands
 
     public void Execute()
     {
-      _output.WriteLine(String.Format("Usage: {0} [options] directory [directory]",
-                                      Process.GetCurrentProcess().ProcessName));
+      _output.WriteLine("Usage: {0} [options] directory [directory]", Process.GetCurrentProcess().ProcessName);
       _output.WriteLine("Searches and deletes duplicate files." + Environment.NewLine);
       _output.WriteLine("Options:");
 

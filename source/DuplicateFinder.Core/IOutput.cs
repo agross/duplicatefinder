@@ -1,10 +1,13 @@
 ﻿using System.IO;
 
+using JetBrains.Annotations;
+
 namespace DuplicateFinder.Core
 {
   public interface IOutput
   {
-    void WriteLine(string value);
+    [StringFormatMethod("format")]
+    void WriteLine(string format, params object[] args);
     TextWriter GetTextWriter();
   }
 }
