@@ -6,3 +6,6 @@ NUGET
     Machine.Specifications.Runner.Console (0.9.2)
     Machine.Specifications.Should (0.8.0)
       Machine.Specifications (>= 0.9 < 1.0)
+    WindowsAPICodePack-Core (1.1.1)
+    WindowsAPICodePack-Shell (1.1.1)
+      WindowsAPICodePack-Core (>= 1.1.1)
