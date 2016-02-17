@@ -1,0 +1,9 @@
+# Copy this file to local.yaml and put configuration values to temporarily
+# override here.
+#
+# Please do not add local.yaml to source control.
+#
+# Example:
+
+build:
+  configuration: Some-Configuration

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("DuplicateFinder.Core")]
+[assembly: AssemblyTitle("DuplicateFinder.Core.IntegrationSpecs")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -18,4 +18,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("33815a36-d8c5-49cd-b6b8-9f657fbbe531")]
+[assembly: Guid("fbe7e353-7a15-4ad9-b7d2-31105af5e3ef")]

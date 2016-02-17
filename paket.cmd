@@ -1,7 +1,9 @@
 @echo off
+setlocal
 
-set root=%~dp0
-set dir=%root%.paket
+pushd "%~dp0"
+
+set dir=.paket
 set bootstrapper=%dir%\paket.bootstrapper.exe
 set paket=%dir%\paket.exe
 

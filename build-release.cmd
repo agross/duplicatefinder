@@ -1,1 +1,0 @@
-@build.cmd env:production package:all

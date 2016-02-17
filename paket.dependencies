@@ -5,3 +5,4 @@ nuget FakeItEasy ~> 1.22
 nuget Machine.Specifications.Runner.Console ~> 0
 nuget Machine.Specifications.Should ~> 0
 nuget WindowsAPICodePack-Shell !~> 1.1
+nuget ILRepack ~> 2.0

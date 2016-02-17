@@ -1,0 +1,4 @@
+build:
+  configuration: Release
+  metadata:
+    pre:

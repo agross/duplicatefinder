@@ -1,0 +1,8 @@
+project: DuplicateFinder
+
+build:
+  configuration: Debug
+  metadata:
+    pre: alpha<%= ENV['BUILD_NUMBER'].to_s.rjust(3, '0') %>
+    build: <%= ENV['BUILD_NUMBER'] %>
+    sha: <%= (ENV['BUILD_VCS_NUMBER'] || `git rev-parse --short HEAD`)[0...7] %>

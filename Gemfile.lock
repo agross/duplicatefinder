@@ -1,0 +1,22 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    configatron (4.5.0)
+    rake (10.4.2)
+    rake-funnel (0.15.0.pre)
+      configatron (~> 4.5)
+      rake (~> 10.4)
+      rubyzip (~> 1.0)
+      smart_colored
+    rubyzip (1.1.7)
+    smart_colored (1.1.1)
+
+PLATFORMS
+  x64-mingw32
+  x86-mingw32
+
+DEPENDENCIES
+  rake-funnel
+
+BUNDLED WITH
+   1.10.6

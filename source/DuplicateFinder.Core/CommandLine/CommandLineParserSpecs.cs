@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Linq;
 
+using DuplicateFinder.Core.CommandLine.TestHelpers;
 using DuplicateFinder.Core.Commands;
 using DuplicateFinder.Core.Deletion;
 using DuplicateFinder.Core.HashCodeHistory;
@@ -19,9 +19,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(new string[] { }); };
+    Because of = () => Command = CommandLine.Parse(new string[] { });
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -36,9 +36,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--help".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--help".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -53,9 +53,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--name --whatif c:\1 c:\2".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--name --whatif c:\1 c:\2".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -95,9 +95,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--name --size --content c:\1 c:\2".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--name --size --content c:\1 c:\2".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -132,9 +132,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--name c:\1 c:\2".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--name c:\1 c:\2".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -159,9 +159,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--size c:\1 c:\2".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--size c:\1 c:\2".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -186,9 +186,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--content c:\1 c:\2".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--content c:\1 c:\2".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -221,9 +221,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--content --first 10 c:\1 c:\2".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--content --first 10 c:\1 c:\2".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -256,9 +256,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--content --last 10 c:\1 c:\2".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--content --last 10 c:\1 c:\2".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -291,9 +291,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--content --first 10 --last 10 c:\1 c:\2".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--content --first 10 --last 10 c:\1 c:\2".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -334,7 +334,7 @@ namespace DuplicateFinder.Core.CommandLine
                    .HashCodeProviders
                    .OfType<FileContentHashCodeProvider>()
                    .First()
-                   .StreamDecorators.Count().ShouldEqual(2);
+                   .StreamDecorators.Length.ShouldEqual(2);
   }
 
   [Subject(typeof(CommandLineParser))]
@@ -343,9 +343,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--name c:\1".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--name c:\1".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -365,9 +365,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--name --history file c:\1".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--name --history file c:\1".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -393,9 +393,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--prune --name --history file c:\1".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--prune --name --history file c:\1".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -420,9 +420,9 @@ namespace DuplicateFinder.Core.CommandLine
     static ICommand Command;
     static CommandLineParser CommandLine;
 
-    Establish context = () => { CommandLine = new CommandLineParser(); };
+    Establish context = () => CommandLine = new CommandLineParser();
 
-    Because of = () => { Command = CommandLine.Parse(@"--prune --name c:\1".Args()); };
+    Because of = () => Command = CommandLine.Parse(@"--prune --name c:\1".Args());
 
     It should_be_able_to_parse_the_command_line =
       () => Command.ShouldNotBeNull();
@@ -439,19 +439,6 @@ namespace DuplicateFinder.Core.CommandLine
         .OfType<TElement>()
         .Count()
         .ShouldEqual(1);
-    }
-
-    public static string[] Args(this string args)
-    {
-      return args.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-    }
-  }
-
-  static class ObjectExtensions
-  {
-    public static T As<T>(this object instance)
-    {
-      return (T) instance;
     }
   }
 }
