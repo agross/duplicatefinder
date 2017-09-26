@@ -78,7 +78,6 @@ namespace DuplicateFinder.Core.Abstractions
 
       try
       {
-        Console.WriteLine($"Checking ACL of {path}");
         acl = Directory.GetAccessControl(path);
       }
       catch (UnauthorizedAccessException)

@@ -39,10 +39,11 @@ namespace DuplicateFinder.Core
 
         var fileList = FileFinders
           .SelectMany(x => x.GetFiles())
-          .RemoveDuplicateEntries();
+          .RemoveDuplicateEntries()
+          .ToList();
 
         var currentFile = 0;
-        var totalFiles = fileList.Count();
+        var totalFiles = fileList.Count;
 
         var filesByDrive = new FilesByDrive(fileList);
         return filesByDrive
