@@ -58,12 +58,14 @@ namespace DuplicateFinder.Core.Abstractions
         yield break;
       }
 
+      Console.WriteLine($"Enumerating directories: {path}");
       var subdirs = Directory.EnumerateDirectories(path, "*.*", SearchOption.TopDirectoryOnly);
       foreach (var child in subdirs.SelectMany(ReadableFiles))
       {
         yield return child;
       }
 
+      Console.WriteLine($"Enumerating files: {path}");
       foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly))
       {
         yield return file;
@@ -76,6 +78,7 @@ namespace DuplicateFinder.Core.Abstractions
 
       try
       {
+        Console.WriteLine($"Checking ACL of {path}");
         acl = Directory.GetAccessControl(path);
       }
       catch (UnauthorizedAccessException)
