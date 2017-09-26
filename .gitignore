@@ -2,5 +2,6 @@ build/
 deploy/
 obj/
 packages/
+paket-files/
 .vs/
 *.user
