@@ -2,8 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     configatron (4.5.1)
-    rake (12.1.0)
-    rake-funnel (0.20.2)
+    rake (12.3.0)
+    rake-funnel (0.21.1)
       configatron (~> 4.5)
       rake (>= 10.4, < 13)
       rubyzip (~> 1.0)
@@ -19,4 +19,4 @@ DEPENDENCIES
   rake-funnel
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
