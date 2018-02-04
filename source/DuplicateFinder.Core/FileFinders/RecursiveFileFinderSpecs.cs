@@ -4,7 +4,7 @@ using FakeItEasy;
 
 using Machine.Specifications;
 
-namespace DuplicateFinder.Core
+namespace DuplicateFinder.Core.FileFinders
 {
   [Subject(typeof(RecursiveFileFinder))]
   public class When_files_are_searched_recursively
@@ -12,13 +12,19 @@ namespace DuplicateFinder.Core
     static IFileFinder Finder;
     static IEnumerable<string> Files;
     static IFileSystem FileSystem;
+    static string[] FilesOnDisk = new[]
+    {
+      @"c:\some\path\file1.txt",
+      @"c:\some\path\file2.txt",
+      @"c:\some\path\subdir\file1.txt"
+    };
 
     Establish context = () =>
     {
       FileSystem = A.Fake<IFileSystem>();
       A
-        .CallTo((() => FileSystem.AllFilesWithin(@"c:\some\path")))
-        .Returns(new[] { @"c:\some\path\file1.txt", @"c:\some\path\file2.txt" });
+        .CallTo(() => FileSystem.AllFilesWithin(@"c:\some\path", true))
+        .Returns(FilesOnDisk);
 
       Finder = new RecursiveFileFinder(FileSystem, @"c:\some\path");
     };
@@ -26,6 +32,6 @@ namespace DuplicateFinder.Core
     Because of = () => { Files = Finder.GetFiles(); };
 
     It should_yield_the_list_of_files =
-      () => Files.ShouldContainOnly(@"c:\some\path\file1.txt", @"c:\some\path\file2.txt");
+      () => Files.ShouldContainOnly(FilesOnDisk);
   }
 }

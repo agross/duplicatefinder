@@ -5,6 +5,7 @@ using System.Linq;
 
 using DuplicateFinder.Core.Commands;
 using DuplicateFinder.Core.Deletion;
+using DuplicateFinder.Core.FileFinders;
 using DuplicateFinder.Core.HashCodeHistory;
 using DuplicateFinder.Core.HashCodeProviders;
 using DuplicateFinder.Core.Streams;
@@ -37,6 +38,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
       var deleter = (IFileDeleter) new FileDeleter(_fileSystem, _output);
       var history = (IRememberHashCodes) new NullHistory();
       var applyWhatIf = new Action(() => { });
+      Func<IFileSystem, string, IFileFinder> fileFinder = (fs, path) => new RecursiveFileFinder(fs, path);
 
       _options.Update<string>(Args.Name, v => hashes.Add(() => new FileNameHashCodeProvider()));
       _options.Update<string>(Args.Size, v => hashes.Add(() => new FileSizeHashCodeProvider(_fileSystem)));
@@ -46,6 +48,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
       _options.Update(Args.Tail, (long v) => decorators.Add(new TailStreamDecorator(v)));
       _options.Update<string>(Args.Keep, v => deletionSelector = new KeepOneCopyInDirectorySelector(v));
       _options.Update<string>(Args.History, v => history = new DatabaseHistory(v, _fileSystem));
+      _options.Update<string>(Args.DoNotRecurseIntoSubdirectories, v => fileFinder = (fs, path) => new NoRecursionFileFinder(fs, path));
       _options.Update<string>(Args.WhatIf,
                               _ =>
                               {
@@ -70,7 +73,7 @@ namespace DuplicateFinder.Core.CommandLine.Factories
         throw new CommandLineParserException(messages);
       }
 
-      var finder = new DuplicateFinder(directories.Select(x => (IFileFinder) new RecursiveFileFinder(_fileSystem, x)),
+      var finder = new DuplicateFinder(directories.Select(x => fileFinder(_fileSystem, x)),
                                        hashes.Select(x => x()),
                                        _output,
                                        history,

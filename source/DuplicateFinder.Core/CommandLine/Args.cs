@@ -11,6 +11,7 @@ namespace DuplicateFinder.Core.CommandLine
     public const string Name = "n|name";
     public const string Size = "s|size";
     public const string PruneHistory = "p|prune";
+    public const string DoNotRecurseIntoSubdirectories = "r|no-recursion";
     public const string Help = "?|help";
   }
 }

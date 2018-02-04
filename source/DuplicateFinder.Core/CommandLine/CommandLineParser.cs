@@ -64,7 +64,12 @@ namespace DuplicateFinder.Core.CommandLine
                    },
                    {
                      Args.WhatIf,
-                     "Do not delete files, do not prune history, do not update histore",
+                     "Do not delete files, do not prune history, do not update history",
+                     v => { }
+                   },
+                   {
+                     Args.DoNotRecurseIntoSubdirectories,
+                     "Do not recurse into subdirectories",
                      v => { }
                    },
                    {

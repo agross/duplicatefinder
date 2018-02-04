@@ -4,6 +4,7 @@ using System.Linq;
 using DuplicateFinder.Core.CommandLine.TestHelpers;
 using DuplicateFinder.Core.Commands;
 using DuplicateFinder.Core.Deletion;
+using DuplicateFinder.Core.FileFinders;
 using DuplicateFinder.Core.HashCodeHistory;
 using DuplicateFinder.Core.HashCodeProviders;
 using DuplicateFinder.Core.Streams;

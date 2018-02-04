@@ -79,6 +79,7 @@
     <Compile Include="Deletion\WhatIfFileDeleterSpecs.cs" />
     <Compile Include="DuplicateFinder.cs" />
     <Compile Include="DuplicateFinderSpecs.cs" />
+    <Compile Include="FileFinders\NoRecursionFileFinderSpecs.cs" />
     <Compile Include="FilesByDriveSpecs.cs" />
     <Compile Include="FileSizeExtensions.cs" />
     <Compile Include="FileSizeExtensionsSpecs.cs" />
@@ -104,13 +105,14 @@
     <Compile Include="IFileFinder.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="IHashCodeProvider.cs" />
+    <Compile Include="FileFinders\NoRecursionFileFinder.cs" />
     <Compile Include="Properties\InternalsVisibleTo.cs" />
     <Compile Include="IOutput.cs" />
     <Compile Include="ISelectFilesToDelete.cs" />
     <Compile Include="IStreamDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecursiveFileFinder.cs" />
-    <Compile Include="RecursiveFileFinderSpecs.cs" />
+    <Compile Include="FileFinders\RecursiveFileFinder.cs" />
+    <Compile Include="FileFinders\RecursiveFileFinderSpecs.cs" />
     <Compile Include="Streams\HeadStream.cs" />
     <Compile Include="Streams\HeadStreamDecorator.cs" />
     <Compile Include="Streams\HeadStreamDecoratorSpecs.cs" />

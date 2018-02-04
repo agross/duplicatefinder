@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DuplicateFinder.Core
+namespace DuplicateFinder.Core.FileFinders
 {
   public class RecursiveFileFinder : IFileFinder
   {
@@ -16,7 +16,7 @@ namespace DuplicateFinder.Core
 
     public IEnumerable<string> GetFiles()
     {
-      return _fileSystem.AllFilesWithin(BaseDirectory);
+      return _fileSystem.AllFilesWithin(BaseDirectory, true);
     }
   }
 }

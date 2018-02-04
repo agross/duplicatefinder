@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using DuplicateFinder.Core.Commands;
+using DuplicateFinder.Core.FileFinders;
 using DuplicateFinder.Core.HashCodeHistory;
 using DuplicateFinder.Core.HashCodeProviders;
 using DuplicateFinder.Core.Streams;

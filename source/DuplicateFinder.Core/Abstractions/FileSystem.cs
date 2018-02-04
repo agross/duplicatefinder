@@ -9,9 +9,9 @@ namespace DuplicateFinder.Core.Abstractions
 {
   class FileSystem : IFileSystem
   {
-    public IEnumerable<string> AllFilesWithin(string path)
+    public IEnumerable<string> AllFilesWithin(string path, bool recurse)
     {
-      return ReadableFiles(path);
+      return ReadableFiles(path, recurse);
     }
 
     public Stream CreateStreamFrom(string path)
@@ -50,7 +50,7 @@ namespace DuplicateFinder.Core.Abstractions
       return File.Exists(path);
     }
 
-    static IEnumerable<string> ReadableFiles(string path)
+    static IEnumerable<string> ReadableFiles(string path, bool recurse)
     {
       if (!CanRead(path))
       {
@@ -58,11 +58,14 @@ namespace DuplicateFinder.Core.Abstractions
         yield break;
       }
 
-      Console.WriteLine($"Enumerating directories: {path}");
-      var subdirs = Directory.EnumerateDirectories(path, "*.*", SearchOption.TopDirectoryOnly);
-      foreach (var child in subdirs.SelectMany(ReadableFiles))
+      if (recurse)
       {
-        yield return child;
+        Console.WriteLine($"Enumerating directories: {path}");
+        var subdirs = Directory.EnumerateDirectories(path, "*.*", SearchOption.TopDirectoryOnly);
+        foreach (var child in subdirs.SelectMany(x => ReadableFiles(x, recurse)))
+        {
+          yield return child;
+        }
       }
 
       Console.WriteLine($"Enumerating files: {path}");
